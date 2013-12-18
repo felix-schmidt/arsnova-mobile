@@ -24,7 +24,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	requires: ['ARSnova.view.speaker.form.ExpandingAnswerForm', 'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
 	           'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
 	           'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
-	           'ARSnova.view.speaker.form.NullQuestion'],
+	           'ARSnova.view.speaker.form.NullQuestion', 'ARSnova.view.speaker.form.GridSquareQuestion'], // Team4
 	
 	config: {
 		title: 'NewQuestionPanel',
@@ -247,6 +247,11 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			id: 'flashcard',
 			hidden: true
 		});
+		// Team4
+		this.gridsquareQuestion = Ext.create('ARSnova.view.speaker.form.GridSquareQuestion', {
+			id: 'gs',
+			hidden: false
+		});
 		
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
 	        allowDepress: false,
@@ -257,7 +262,9 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	                { text: Messages.FREETEXT },
 	                { text: Messages.EVALUATION },
 	                { text: Messages.SCHOOL },
-	                { text: Messages.FLASHCARD_SHORT }
+	                { text: Messages.FLASHCARD_SHORT },
+	                { text: Messages.GRID_SQUARE }, // Team4
+	                
 	        ],
 	        listeners: {
 				scope: this,
@@ -292,6 +299,14 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 								title = label(Messages.QUESTION_MC, Messages.QUESTION_MC_SHORT);
 							} else {
 								this.multipleChoiceQuestion.hide();
+							}
+							break;
+						case Messages.GRID_SQUARE: //Team4
+							if (pressed) {
+								this.gridsquareQuestion.show();
+								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
+							} else {
+								this.gridsquareQuestion.hide();
 							}
 							break;
 						case Messages.YESNO:
@@ -424,6 +439,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			this.abcdQuestion,
 			this.freetextQuestion,
 			this.flashcardQuestion,
+			this.gridsquareQuestion, // Team4
 			
 			this.abstentionPart,
 			this.releasePart,
@@ -541,6 +557,11 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				values.questionType = "mc";
 				
 				Ext.apply(values, panel.multipleChoiceQuestion.getQuestionValues());
+				break;
+			case Messages.GRID_SQUARE: // Team4
+				values.questionType = "gs";
+				
+				Ext.apply(values, panel.gridsquareQuestion.getQuestionValues());
 				break;
 			case Messages.YESNO:
 				values.questionType = "yesno";
