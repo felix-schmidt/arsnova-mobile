@@ -20,19 +20,60 @@
  +--------------------------------------------------------------------------*/
 Ext.define("ARSnova.controller.Questions", {
 	extend: 'Ext.app.Controller',
-
+	
 	index: function(options){
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.backButton.show();
 		ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel, 'slide');
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.addListener('deactivate', function(panel){
-    		panel.backButton.hide();
-    	}, this, {single: true});
-    },
-    
-    listAudienceQuestions: function(){
-    	var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
+			panel.backButton.hide();
+		}, this, {single: true});
+	},
+	
+	lectureIndex: function(options){
+		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.setLectureMode();
+		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.backButton.show();
+		ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel, 'slide');
+		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.addListener('deactivate', function(panel){
+			panel.backButton.hide();
+		}, this, {single: true});
+	},
+	
+	preparationIndex: function(options){
+		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.setPreparationMode();
+		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.backButton.show();
+		ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel, 'slide');
+		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.addListener('deactivate', function(panel){
+			panel.backButton.hide();
+		}, this, {single: true});
+	},
+	
+	listQuestions: function(){
+		var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
+		sTP.newQuestionPanel.setVariant('lecture');
+		sTP.audienceQuestionPanel.setController(this);
+		sTP.showcaseQuestionPanel.setController(this);
 		sTP.animateActiveItem(sTP.audienceQuestionPanel, 'slide');
-    },
+	},
+	
+	getQuestions: function() {
+		var question = Ext.create('ARSnova.model.Question');
+		question.getLectureQuestions.apply(question, arguments);
+	},
+	
+	deleteAnswers: function() {
+		var question = Ext.create('ARSnova.model.Question');
+		question.deleteAnswers.apply(question, arguments);
+	},
+	
+	destroyAll: function() {
+		var question = Ext.create('ARSnova.model.Question');
+		question.deleteAllLectureQuestions.apply(question, arguments);
+	},
+	
+	countAnswersByQuestion: function() {
+		var question = Ext.create('ARSnova.model.Question');
+		question.countAnswersByQuestion.apply(question, arguments);
+	},
     
     listFeedbackQuestions: function(){
     	ARSnova.app.mainTabPanel.tabPanel.feedbackQuestionsPanel.questionsPanel.backButton.show();
@@ -46,6 +87,7 @@ Ext.define("ARSnova.controller.Questions", {
     	var question = Ext.create('ARSnova.model.Question', {
 			type	 	: options.type,
 			questionType: options.questionType,
+			questionVariant: options.questionVariant,
 			sessionKeyword: options.sessionKeyword,
 			subject		: options.subject.toUpperCase(),
 			text 		: options.text,
@@ -186,7 +228,7 @@ Ext.define("ARSnova.controller.Questions", {
 						}
 					},
 					failure: function(records, operation){
-						Ext.Msg.alert(Messages.NOTIFICATION, Messags.QUESTION_COULD_NOT_BE_SAVED);
+						Ext.Msg.alert(Messages.NOTIFICATION, Messages.QUESTION_COULD_NOT_BE_SAVED);
 					}
 				});
 			},
@@ -209,7 +251,9 @@ Ext.define("ARSnova.controller.Questions", {
     
     adHoc: function(){
     	var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
-		
+    	sTP.audienceQuestionPanel.setController(this);
+		sTP.showcaseQuestionPanel.setController(this);
+    	sTP.newQuestionPanel.setVariant('lecture');
 		sTP.animateActiveItem(sTP.newQuestionPanel, {
 			type: 'slide',
 			duration: 700
@@ -238,5 +282,9 @@ Ext.define("ARSnova.controller.Questions", {
 			};
 			panel.backButton.setText("Fragen");
 		}, this, {single:true});
-    }
+    },
+	
+	deleteAllInterposedQuestions: function(callbacks) {
+		ARSnova.app.questionModel.deleteAllInterposedQuestions(localStorage.getItem('keyword'), callbacks);
+	}
 });

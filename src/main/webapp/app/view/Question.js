@@ -125,7 +125,7 @@ Ext.define('ARSnova.view.Question', {
 				var confirm = function(answer, handler) {
 					Ext.Msg.confirm(Messages.ANSWER + ' "' + answer + '"', Messages.SUBMIT_ANSWER, handler);
 				};
-				if (record.internalId === self.abstentionInternalId) {
+				if (record.get('id') === self.abstentionInternalId) {
 					return confirm(Messages.ABSTENTION, function(button) {
 						if (button !== 'yes') {
 							return;
@@ -325,7 +325,7 @@ Ext.define('ARSnova.view.Question', {
 	getUserAnswer: function() {
 		var self = this;
 		var promise = new RSVP.Promise();
-		
+		console.log(self.questionObj);
 		ARSnova.app.answerModel.getUserAnswer(self.questionObj._id, {
 			empty: function() {
 				var answer = Ext.create('ARSnova.model.Answer', {
@@ -333,7 +333,8 @@ Ext.define('ARSnova.view.Question', {
 					sessionId	: localStorage.getItem("sessionId"),
 					questionId	: self.questionObj._id,
 					user		: localStorage.getItem("login"),
-					timestamp	: Date.now()
+					timestamp	: Date.now(),
+					questionVariant: self.questionObj.questionVariant
 				});
 				promise.resolve(answer);
 			},

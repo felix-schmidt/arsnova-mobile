@@ -67,8 +67,9 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	
 	freetextAnswerStore: Ext.create('Ext.data.JsonStore', {
 		model		: 'FreetextAnswer',
-		sorters		: 'timestamp',
-		groupField	: 'groupDate'
+		sorters		: [{property: 'timestamp', direction: 'DESC'}],
+		groupField	: 'groupDate',
+		grouper		: {property: 'timestamp', direction: 'DESC'}
 	}),
 	
 	renewAnswerDataTask: {
@@ -287,12 +288,12 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 				scope	: this,
 				value 	: this.questionObj.showStatistic? this.questionObj.showStatistic : 0,
 				listeners: {
-					change: function(toggleEl, something, something2, value){
-						if (value == 0 && me.questionObj.showStatistic == undefined || value == me.questionObj.showStatistic) return;
+					change: function(toggle, newValue, oldValue, eOpts ){
+						if (newValue == 0 && me.questionObj.showStatistic == undefined || newValue == me.questionObj.showStatistic) return;
 						var hideLoadMask = ARSnova.app.showLoadMask(Messages.LOAD_MASK_ACTIVATION);
 						var question = Ext.create('ARSnova.model.Question', me.questionObj);
 
-						switch (value) {
+						switch (newValue) {
 							case 0:
 								delete question.data.showStatistic;
 								delete question.raw.showStatistic;
@@ -331,16 +332,17 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 				value 	: this.questionObj.showAnswer? this.questionObj.showAnswer : 0,
 				listeners: {
 					scope: this,
-					change: function(toggle, slider, thumb, value) {
+					change: function(toggle, newValue, oldValue, eOpts) {
 						var panel = this;
 						
-						if (value == 0 && typeof this.questionObj.showAnswer === "undefined" || value == this.questionObj.showAnswer) {
+						if (newValue == 0 && typeof this.questionObj.showAnswer === "undefined" || newValue == this.questionObj.showAnswer) {
 							return;
 						}
 						
 						var hideLoadMask = ARSnova.app.showLoadMask(Messages.LOAD_MASK_ACTIVATION);
 						var question = Ext.create('ARSnova.model.Question', this.questionObj);
-						switch (value) {
+
+						switch (newValue) {
 							case 0:
 								delete question.data.showAnswer;
 								delete question.raw.showAnswer;
@@ -875,6 +877,10 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 						self.freetextAnswerStore.removeAll();
 						if (answers.length > 0) {
 							self.freetextAnswerStore.add(answers);
+							self.freetextAnswerStore.sort([{
+								property : 'timestamp',
+								direction: 'DESC'
+							}]);
 						}
 						self.abstentions.setBadge([{badgeText: abstentions.length}]);
 						

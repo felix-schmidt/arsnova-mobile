@@ -92,7 +92,7 @@ switch (lang) {
 			LOAD_MASK_ACTIVATION: "Releasing question...",
 			
 			/* mySessionsPanel */
-			HOME: "Session",
+			HOME: "Start",
 			SESSION: "Session",
 			CREATE_NEW_SESSION: "Create new session",
 			NEW_SESSIONS: "New session",
@@ -142,7 +142,7 @@ switch (lang) {
 			QUESTIONTEXT_PlACEHOLDER: "Enter question",
 			QUESTIONS: "Questions",
 			QUESTION_DETAILS: "Details",
-			QUESTION_DATE: "Details",
+			QUESTION_DATE: "Date",
 			DELETE: "Delete",
 			EDIT: "Edit",
 			CANCEL: "Cancel",
@@ -220,8 +220,8 @@ switch (lang) {
 			ARE_YOU_SURE: "Are you sure?",
 			DELETE_SESSION_NOTICE: "All questions and answers of this session will be deleted.",
 			DELETE_SESSION: "Delete session",
-			CATEGORY: "Category",
-			CATEGORY_PLACEHOLDER: "Enter category",
+			CATEGORY: "Subject",
+			CATEGORY_PLACEHOLDER: "Enter subject",
 			ALL_SHORT: 'All',
 			ONLY_THM_SHORT: 'Uni only',
 			ALL_LONG: 'All (incl. guest)',
@@ -292,17 +292,16 @@ switch (lang) {
 			SCHOOL_NONE: "abstention",
 			EVALUATION_PLUSPLUS: 	"strongly agree",
 			EVALUATION_PLUS: 		"agree",
-			EVALUATION_NEUTRAL: 	"don't know",
+			EVALUATION_NEUTRAL: 	"neutral",
 			EVALUATION_MINUS: 		"disagree",
 			EVALUATION_MINUSMINUS: 	"strongly disagree",
 			
 			/* about */
 			INFO: "Info",
 			ABOUT: "About",
-			DIAGNOSIS: "Diagnosis",
-			BROWSER_INFO: "Show browser information",
+			ARSNOVA_MANUAL: "Manual",
 			ARSNOVA_FAQ: "FAQ | Helpdesk",
-			ARSNOVA_RELOAD: "Reload ARSnova",
+			
 			OPINION: "Your opinion matters",
 			WIDGET_IS_LOADING: 'Widget is loading...',
 			IMPRESSUM: "Imprint",
@@ -313,6 +312,11 @@ switch (lang) {
 			NOT_RELEASED_YET: "The instructor has not yet released the correct answer.",
 			STUDENTS_USE_CASES: "Student's Use Cases",
 			TEACHERS_USE_CASES: "Teacher's Use Cases",
+
+			/* diagnosis */
+			DIAGNOSIS: "Diagnosis",
+			BROWSER_INFO: "Show browser information",
+			ARSNOVA_RELOAD: "Reload ARSnova",
 
 			/* credits */
 			HMWK: "HMWK",
@@ -391,7 +395,7 @@ switch (lang) {
 			LOAD_MASK_ACTIVATION: "Aktiviere die Freigabe...",
 			
 			/* mySessionsPanel */
-			HOME: "Session",
+			HOME: "Start",
 			SESSION: "Session",
 			CREATE_NEW_SESSION: "Neue Session anlegen",
 			NEW_SESSIONS: "Neue Session",
@@ -426,7 +430,7 @@ switch (lang) {
 			QUESTION_INSTRUCTION: 'Sie stellen diese Frage anonym.<br>Der Dozent entscheidet, wann sie beantwortet wird.',
 			QUESTION_TEXT: "Frage",
 			QUESTION_TEXT_PLACEHOLDER: 'max. 2500 Zeichen',
-			QUESTION_SUBJECT: "Betreff",
+			QUESTION_SUBJECT: "Thema",
 			QUESTION_SUBJECT_PLACEHOLDER: "max. 140 Zeichen",
 			QUESTION_SAVED: 'Ihre Frage wurde gespeichert',
 			NOTIFICATION: "Hinweis",
@@ -441,7 +445,7 @@ switch (lang) {
 			QUESTIONTEXT_PlACEHOLDER: "Frage eingeben",
 			QUESTIONS: "Fragen",
 			QUESTION_DETAILS: "Details",
-			QUESTION_DATE: "Details",
+			QUESTION_DATE: "Datum",
 			DELETE: "Löschen",
 			EDIT: "Bearbeiten",
 			CANCEL: "Abbrechen",
@@ -451,7 +455,7 @@ switch (lang) {
 			NO_UNLOCKED_QUESTIONS: "Es gibt vorbereitete Fragen, diese sind aber noch nicht freigeschaltet.",
 			LOADING_NEW_QUESTIONS: "Lade neue Fragen",
 			NO_DATE: "Kein Datum",
-			NO_SUBJECT: "Kein Betreff",
+			NO_SUBJECT: "Kein Thema",
 			SESSION_CLOSE_NOTICE: 'Um mehrfaches Abstimmen zu verhindern, hat Ihr Dozent die Session gesperrt. Loggen Sie sich bitte erst am Ende der Vorlesung aus!',
 			NOTICE_READ: "Ich hab's verstanden",
 			STATUS: "Status",
@@ -491,7 +495,7 @@ switch (lang) {
 			QUESTIONS_TO_STUDENTS: "Fragen ans Publikum",
 			QUESTIONS_FROM_STUDENTS: "Zwischenfragen",
 			PREPARATION_QUESTIONS: "Vorbereitungsfragen",
-			LECTURE_QUESTIONS: "Vorlesungsfragen",
+			LECTURE_QUESTIONS: "Hörsaalfragen",
 			FLASHCARD_SHORT: "LK",
 			FLASHCARDS: "Lernkarten",
 			FLASHCARD: "Lernkarte",
@@ -505,7 +509,7 @@ switch (lang) {
 			LEARN_WITH_SELECTION: "Mit Auswahl lernen",
 			UNANSWERED_QUESTIONS: "Offene Fragen",
 			PREPARATION: "Vorbereitung",
-			LECTURE: "Vorlesung",
+			LECTURE: "Hörsaal",
 			RESET_ALL_ANSWERS: "Alle Antworten zurücksetzen",
 			SHOW_FLASHCARD_ANSWER: "Antwort anzeigen",
 			HIDE_FLASHCARD_ANSWER: "Antwort ausblenden",
@@ -519,8 +523,8 @@ switch (lang) {
 			ARE_YOU_SURE: "Sind Sie sicher?",
 			DELETE_SESSION_NOTICE: "Es werden alle Fragen und Antworten der Session gelöscht.",
 			DELETE_SESSION: "Session<br>löschen",
-			CATEGORY: "Kategorie",
-			CATEGORY_PLACEHOLDER: "Kategorie eingeben",
+			CATEGORY: "Thema",
+			CATEGORY_PLACEHOLDER: "Thema eingeben",
 			ALL_SHORT: 'Alle',
 			ONLY_THM_SHORT: 'Nur Uni',
 			ALL_LONG: 'Alle (auch Gäste)',
@@ -590,17 +594,15 @@ switch (lang) {
 			SCHOOL_NONE: "Enthaltung",
 			EVALUATION_PLUSPLUS: 	"trifft voll zu",
 			EVALUATION_PLUS: 		"trifft eher zu",
-			EVALUATION_NEUTRAL: 	"weiß nicht",
+			EVALUATION_NEUTRAL: 	"weder noch",
 			EVALUATION_MINUS: 		"trifft eher nicht zu",
 			EVALUATION_MINUSMINUS: 	"trifft nicht zu",
 			
 			/* about */
 			INFO: "Info",
 			ABOUT: "Über",
-			DIAGNOSIS: "Diagnose",
-			BROWSER_INFO: "Browser Informationen anzeigen",
+			ARSNOVA_MANUAL: "Anleitung",
 			ARSNOVA_FAQ: "FAQ | Helpdesk",
-			ARSNOVA_RELOAD: "ARSnova neu laden",
 			OPINION: "Deine Meinung ist gefragt",
 			WIDGET_IS_LOADING: 'Widget wird geladen...',
 			IMPRESSUM: "Impressum",
@@ -611,6 +613,11 @@ switch (lang) {
 			NOT_RELEASED_YET: "Der Dozent hat die richtige Antwort noch nicht freigegeben.",
 			STUDENTS_USE_CASES: "Für Studenten",
 			TEACHERS_USE_CASES: "Für Dozenten",
+
+			/* diagnosis */
+			DIAGNOSIS: "Diagnose",
+			BROWSER_INFO: "Browser Informationen anzeigen",
+			ARSNOVA_RELOAD: "ARSnova neu laden",
 
 			/* credits */
 			HMWK: "HMWK",
