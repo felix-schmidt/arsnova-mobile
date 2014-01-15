@@ -18,7 +18,7 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	extend: 'Ext.Container',
-	
+
 	config: {
 		minAnswers: 2,
 		maxAnswers: 8,
@@ -33,10 +33,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 	constructor: function() {
 		this.callParent(arguments);
-		
+
 		this.answerComponents = [];
 		this.correctComponents = [];
-		
+
 		this.selectAnswerCount = Ext.create('Ext.field.Spinner', {
 			label	: Messages.COUNT,
 			minValue: this.getMinAnswers(),
@@ -53,35 +53,45 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 				}
 			}
 		});
-		
+
 		var answerFieldset = Ext.create('Ext.form.FieldSet', {
 			title: Messages.ANSWERS,
 			items: [this.selectAnswerCount]
 		});
-		
+
 		var answerOptions = Ext.create('Ext.form.FormPanel', {
 			scrollable: null,
 			submitOnAction: false,
-			
+
 			items: [answerFieldset]
 		});
-		
+
 		var correctAnswerFieldset = Ext.create('Ext.form.FieldSet', {
 			xtype: 'fieldset',
 			title: Messages.CORRECT_ANSWER
 		});
-		
+		/*var canvas = Ext.create('Ext.form.FieldSet', {
+			html: " <head> <title>Planquadrate Canvas Prototype</title> <link rel='stylesheet' href='app/css/style.css' type='text/css' /><script src='app/js/planquadrat.js'></script></head><body><canvas id='theCanvas'></canvas></body>",
+			xtype: "panel"
+		});
+		 */
+
+		var canvas = Ext.create('Ext.form.FieldSet', {
+			html: " <head> <title>Planquadrate Canvas Prototype</title> <link rel='stylesheet' href='app/css/style.css'/><script src='app/js/planquadrat.js'></script></head><body><canvas id='theCanvas'></canvas></body>",
+           
+		});
+
 		var correctAnswer = Ext.create('Ext.form.FormPanel', {
 			scrollable: null,
 			submitOnAction: false,
 			items: [correctAnswerFieldset]
 		});
-		
+
 		var answerOptionEntryId = Ext.id();
 		var answerCorrectOptionEntryId = Ext.id();
 		var theComponentId;
 		var labelGenerator = this.getEnumeration();
-		
+
 		for (var i=0; i < this.getMaxAnswers(); i++) {
 			theComponentId = answerOptionEntryId + "-" + i;
 			this.answerComponents[i] = Ext.create('Ext.field.Text', {
@@ -103,10 +113,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 			});
 			correctAnswerFieldset.add(this.correctComponents[i]);
 		}
-		
-		this.add([answerOptions, correctAnswer]);
+
+		this.add([answerOptions, correctAnswer, canvas]);
 	},
-	
+
 	getEnumeration: function() {
 		switch (this.getWording().enumeration.toLowerCase()) {
 			case 'alphabet':
@@ -121,7 +131,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 				};
 		}
 	},
-	
+
 	getValues: function() {
 		var values = [], obj;
 		for (var i=0; i < this.selectAnswerCount.getValue(); i++) {
@@ -137,7 +147,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		}
 		return values;
 	},
-	
+
 	hasCorrectOptions: function() {
 		var hasCorrectOptions = false;
 		for (var i=0; i < this.selectAnswerCount.getValue(); i++) {
@@ -145,7 +155,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		}
 		return hasCorrectOptions;
 	},
-	
+
 	initWithQuestion: function(question) {
 		var possibleAnswers = question.possibleAnswers;
 		if (possibleAnswers.length < this.getMinAnswers() || possibleAnswers.length > this.getMaxAnswers()) {
@@ -154,25 +164,25 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		this.initSpinnerField(possibleAnswers.length);
 		this.initAnswerComponents(possibleAnswers);
 	},
-	
+
 	initSpinnerField: function(startValue) {
 		this.setStart(startValue);
 		this.selectAnswerCount.setValue(startValue);
 		this.selectAnswerCount.fireEvent('spin', this.selectAnswerCount, this.getStart());
 	},
-	
+
 	initAnswerComponents: function(possibleAnswers) {
 		possibleAnswers.forEach(function(answer, index) {
 			this.answerComponents[index].setValue(answer.text);
 			this.correctComponents[index].setValue(answer.correct);
 		}, this);
 	},
-	
+
 	getQuestionValues: function() {
 		var result = {};
-		
+
 		result.possibleAnswers = this.getValues();
-		
+
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
