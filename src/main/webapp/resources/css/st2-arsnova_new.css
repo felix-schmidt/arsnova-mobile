@@ -1453,3 +1453,9 @@ ol.standardList li {
 .joinSessionInput {
 	text-align: center;
 }
+
+#theCanvas {
+    width: 80%;
+	position: relative;
+}
+
