@@ -15,18 +15,25 @@ planquadrat.input.onMouseClick = function(evt) {
 	var x = evt.clientX - planquadrat.scene.canvas.offsetLeft;
     var y = evt.clientY - planquadrat.scene.canvas.offsetTop;
 	planquadrat.raster.selectTile(x, y);
-};
+}
+
+/*planquadrat.input.onMouseMove = function(evt) {
+	var rect = planquadrat.scene.canvas.getBoundingClientRect();
+	planquadrat.input.mousePos.x = evt.clientX - rect.left;
+	planquadrat.input.mousePos.y = evt.clientY - rect.left;
+}*/
 
 planquadrat.input.init = function() {
+	/*planquadrat.scene.canvas.addEventListener('mousemove', planquadrat.input.onMouseMove, false);*/
 	planquadrat.scene.canvas.addEventListener('click', planquadrat.input.onMouseClick, false);
-};
+}
 
 /*******************************************************************************
  *	planquadrat.scene
  ******************************************************************************/
 planquadrat.scene = planquadrat.scene || {};
 
-planquadrat.scene.canvasId = "theCanvas";
+planquadrat.scene.canvasId = "gsCanvas";
 planquadrat.scene.width = 800;
 planquadrat.scene.height = 600;
 planquadrat.scene.canvas = undefined;
@@ -64,13 +71,13 @@ planquadrat.raster = planquadrat.raster || {};
 
 planquadrat.raster.columns = 4;
 planquadrat.raster.rows = 4;
-planquadrat.raster.color = '#ff0000';
+planquadrat.raster.color = '#3671B5';
 planquadrat.raster.selectedTiles = [];
 
 planquadrat.raster.selectTile = function(x, y) {
 	var selectedTile = {x:0,y:0};
 
-	selectedTile.x = Math.floor(x / (planquadrat.scene.width / planquadrat.raster.columns));
+	selectedTile.x = Math.floor(x / (planquadrat.scene.width / planquadrat.raster.columns))
 	selectedTile.y = Math.floor(y / (planquadrat.scene.height / planquadrat.raster.rows));
 
 	var found = false;
@@ -86,7 +93,7 @@ planquadrat.raster.selectTile = function(x, y) {
 		planquadrat.raster.selectedTiles.push(selectedTile);
 	}
 	planquadrat.scene.redraw();
-};
+}
 
 planquadrat.raster.draw = function(columns, rows, color) {
 	planquadrat.raster.drawRaster();
@@ -97,6 +104,20 @@ planquadrat.raster.drawRaster = function(columns, rows, color) {
 	if(typeof columns !== "undefined") {planquadrat.raster.columns = columns;}
 	if(typeof rows !== "undefined") {planquadrat.raster.rows = rows;}
 	if(typeof color !== "undefined") {planquadrat.raster.color = color;}
+
+	   planquadrat.scene.context.beginPath();
+	    for(var i = 0 /*-1*/; i < (planquadrat.scene.width / planquadrat.raster.columns) /*+ 1*/; i++) {
+			planquadrat.scene.context.moveTo((planquadrat.scene.width / planquadrat.raster.columns) * i, 0);
+			planquadrat.scene.context.lineTo((planquadrat.scene.width / planquadrat.raster.columns) * i, planquadrat.scene.height);
+		}
+		for(var i = 0 /*-1*/; i < (planquadrat.scene.height / planquadrat.raster.rows) /*+ 1*/; i++) {
+			planquadrat.scene.context.moveTo(0, (planquadrat.scene.height / planquadrat.raster.rows) * i);
+			planquadrat.scene.context.lineTo(planquadrat.scene.width, (planquadrat.scene.height / planquadrat.raster.rows) * i);
+		}
+		planquadrat.scene.context.lineWidth = 6;
+		planquadrat.scene.context.strokeStyle = '#ffffff';
+	    planquadrat.scene.context.stroke();
+
 	planquadrat.scene.context.beginPath();
 	for(var i = 0 /*-1*/; i < (planquadrat.scene.width / planquadrat.raster.columns) /*+ 1*/; i++) {
 		planquadrat.scene.context.moveTo((planquadrat.scene.width / planquadrat.raster.columns) * i, 0);
@@ -109,6 +130,8 @@ planquadrat.raster.drawRaster = function(columns, rows, color) {
 	planquadrat.scene.context.lineWidth = 3;
 	planquadrat.scene.context.strokeStyle = planquadrat.raster.color;
     planquadrat.scene.context.stroke();
+
+
 };
 
 planquadrat.raster.drawTiles = function(columns, rows, color) {
@@ -117,10 +140,18 @@ planquadrat.raster.drawTiles = function(columns, rows, color) {
 		var x = (planquadrat.scene.width / planquadrat.raster.columns) * planquadrat.raster.selectedTiles[i].x;
 		var y = (planquadrat.scene.height / planquadrat.raster.rows) * planquadrat.raster.selectedTiles[i].y;
 
-		planquadrat.scene.context.fillStyle = 'rgba(0,255,0, 0.5)';
+		planquadrat.scene.context.fillStyle = 'rgba(0,255,0, 0.3)';
 		planquadrat.scene.context.fillRect(x,y,(planquadrat.scene.width / planquadrat.raster.columns),(planquadrat.scene.height / planquadrat.raster.rows));
 
-		(planquadrat.scene.width / planquadrat.raster.columns) * planquadrat.raster.selectedTiles[i].x;
+		/*
+		planquadrat.scene.context.moveTo(x, y);
+		planquadrat.scene.context.lineTo(x + (planquadrat.scene.width / planquadrat.raster.columns), y + (planquadrat.scene.height / planquadrat.raster.rows));
+
+		planquadrat.scene.context.moveTo(x + (planquadrat.scene.width / planquadrat.raster.columns), y);
+		planquadrat.scene.context.lineTo(x, y + (planquadrat.scene.height / planquadrat.raster.rows));
+		*/
+
+		(planquadrat.scene.width / planquadrat.raster.columns) * planquadrat.raster.selectedTiles[i].x
 
 	}
 	planquadrat.scene.context.lineWidth = 3;
@@ -141,8 +172,8 @@ planquadrat.picture.loadPicture = function(imageUrl) {
 	planquadrat.picture.img.onload = function() {
 		planquadrat.picture.isLoaded = true;
 		planquadrat.scene.redraw();
-	};
-};
+	}
+}
 
 /*******************************************************************************
  *	planquadrat
@@ -151,12 +182,5 @@ planquadrat.init = function() {
 	planquadrat.scene.init();
 	planquadrat.input.init();
 	planquadrat.scene.draw();
-	planquadrat.picture.loadPicture("app/images/image.jpeg");
-};
 
- /*******************************************************************************
- *	window
- ******************************************************************************/
-window.onload = function() {
-	planquadrat.init();
 };

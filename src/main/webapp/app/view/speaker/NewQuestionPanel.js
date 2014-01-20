@@ -20,39 +20,39 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	extend: 'Ext.Panel',
-	
+
 	requires: ['ARSnova.view.speaker.form.ExpandingAnswerForm', 'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
 	           'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
 	           'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
 	           'ARSnova.view.speaker.form.NullQuestion', 'ARSnova.view.speaker.form.GridSquareQuestion'], // Team4
-	
+
 	config: {
 		title: 'NewQuestionPanel',
 		fullscreen: true,
 		scrollable: true,
 		scroll: 'vertical',
-		
+
 		variant: 'lecture',
 		abstention: true,
 		releasedFor: 'all'
 	},
-	
+
 	/* toolbar items */
 	toolbar		: null,
 	backButton	: null,
 	saveButton	: null,
-	
+
 	/* items */
 	text: null,
 	subject: null,
 	duration: null,
-	
+
 	/* for estudy */
 	userCourses: [],
-	
+
 	initialize: function(){
 		this.callParent(arguments);
-		
+
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.QUESTIONS,
 			ui		: 'back',
@@ -65,7 +65,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				});
 			}
 		});
-		
+
 		this.saveButton = Ext.create('Ext.Button', {
 			text	: Messages.SAVE,
 			ui		: 'confirm',
@@ -78,22 +78,22 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			},
 			scope: this
 		});
-		
+
 		this.subject = Ext.create('Ext.field.Text', {
 			name: 'subject',
 			placeHolder: Messages.CATEGORY_PLACEHOLDER
 		});
-		
+
 		this.textarea = Ext.create('Ext.plugins.ResizableTextArea', {
 			name	  	: 'text',
 	    	placeHolder	: Messages.QUESTIONTEXT_PlACEHOLDER,
 	    	maxHeight	: 140
 		});
-		
+
 		this.mainPart = Ext.create('Ext.form.FormPanel', {
 			cls: 'newQuestion',
 			scrollable: null,
-			
+
 			items: [{
 				xtype: 'fieldset',
 				items: [this.subject]
@@ -102,7 +102,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				items: [this.textarea]
 			}]
 		});
-		
+
 		this.releaseItems = [{
 			text: window.innerWidth < 600 ? Messages.ALL_SHORT : Messages.ALL_LONG,
 			pressed: true,
@@ -117,7 +117,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				this.setReleasedFor('thm');
 			}
 		}];
-		
+
 		this.abstentionPart = Ext.create('Ext.form.FormPanel', {
 			scrollable: null,
 			cls: 'newQuestionOptions',
@@ -145,7 +145,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				}]
 			}]
 		});
-		
+
 		this.releasePart = Ext.create('Ext.form.FormPanel', {
 			scrollable: null,
 			cls: 'newQuestionOptions',
@@ -173,7 +173,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	        		    					},
 	        		    					success: function(response, opts){
 	        		    						var obj = Ext.decode(response.responseText).courselist;
-	        		    						
+
 	        		    						/* Build new options array */
 	        		    						for ( var i = 0; i < obj.count; i++){
 	        		    							var course = obj.course[i];
@@ -209,7 +209,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	        	}]
 			}]
     	});
-		
+
 		if (
 		  localStorage.getItem('courseId') != null
 		  && localStorage.getItem('courseId').length > 0
@@ -223,13 +223,13 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				]
 			});
 		}
-		
+
 		this.yesNoQuestion = Ext.create('ARSnova.view.speaker.form.YesNoQuestion', {
 			cls: 'newQuestionOptions',
 			hidden: true,
 			scrollable: null
 		});
-		
+
 		this.multipleChoiceQuestion = Ext.create('ARSnova.view.speaker.form.ExpandingAnswerForm', {
 			hidden: true
 		});
@@ -237,22 +237,22 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		this.voteQuestion = Ext.create('ARSnova.view.speaker.form.VoteQuestion', {
 			hidden: true
 		});
-		
+
 		this.schoolQuestion = Ext.create('ARSnova.view.speaker.form.SchoolQuestion', {
 			hidden: true
 		});
-		
+
 		this.abcdQuestion = Ext.create('ARSnova.view.speaker.form.IndexedExpandingAnswerForm', {
 			hidden: true
 		});
-		
+
 		this.freetextQuestion = Ext.create('Ext.form.FormPanel', {
 			hidden: true,
 			scrollable: null,
 			submitOnAction: false,
 			items: []
 		});
-		
+
 		this.flashcardQuestion = Ext.create('ARSnova.view.speaker.form.FlashcardQuestion', {
 			hidden: true
 		});
@@ -261,7 +261,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			id: 'gs',
 			hidden: false
 		});
-		
+
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
 	        allowDepress: false,
 	        items: [
@@ -273,7 +273,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	                { text: Messages.SCHOOL },
 	                { text: Messages.FLASHCARD_SHORT },
 	                { text: Messages.GRID_SQUARE }, // Team4
-	                
+
 	        ],
 	        listeners: {
 				scope: this,
@@ -282,9 +282,9 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						var screenWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
 						return (screenWidth > 320 || this.backButton.isHidden()) ? longv : shortv;
 					}, this);
-					
+
 					var title = '';
-					
+
 					switch (button.getText()) {
 						case Messages.EVALUATION:
 							if (pressed) {
@@ -313,6 +313,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						case Messages.GRID_SQUARE: //Team4
 							if (pressed) {
 								this.gridsquareQuestion.show();
+								//planquadrat.init(); //Team4
 								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
 							} else {
 								this.gridsquareQuestion.hide();
@@ -360,7 +361,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	        	}
 	        }
 	    });
-		
+
 		this.toolbar = Ext.create('Ext.Toolbar', {
 			title: Messages.NEW_QUESTION_TITLE,
 			docked: 'top',
@@ -371,7 +372,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		        this.saveButton
 			]
 		});
-		
+
 		this.saveButton = Ext.create('Ext.Button', {
 			ui: 'confirm',
 			cls: 'saveQuestionButton',
@@ -386,7 +387,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			},
 			scope: this
 		});
-		
+
 		this.saveAndContinueButton = Ext.create('Ext.Button', {
 			ui: 'confirm',
 			cls: 'saveQuestionButton',
@@ -424,7 +425,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			},
 			scope: this
 		});
-		
+
 		this.add([this.toolbar,
 			Ext.create('Ext.Toolbar', {
 				cls: 'noBackground noBorder',
@@ -439,7 +440,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				]
 			}),
 			this.mainPart,
-			
+
 			/* only one of the question types will be shown at the same time */
 			this.voteQuestion,
 			this.multipleChoiceQuestion,
@@ -449,39 +450,39 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			this.freetextQuestion,
 			this.flashcardQuestion,
 			this.gridsquareQuestion, // Team4
-			
+
 			this.abstentionPart,
 			this.releasePart,
-			
+
 			this.saveButton,
 			this.saveAndContinueButton
 		]);
-		
+
 		this.on('activate', this.onActivate);
 	},
-	
+
 	onActivate: function() {
 		this.questionOptions.setPressedButtons([0]);
 	},
-	
+
 	saveHandler: function(){
     	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
     	var values = {};
-		
+
 		/* get text, subject of question from mainPart */
 		var mainPartValues = panel.mainPart.getValues();
 		values.text = mainPartValues.text;
 		values.subject = mainPartValues.subject;
 		values.abstention = !panel.abstentionPart.isHidden() && panel.getAbstention();
 		values.questionVariant = panel.getVariant();
-		
+
 		/* check if release question button is clicked */
 		var releasePart = panel.releasePart;
-		
+
 		if (localStorage.getItem('courseId') != null && localStorage.getItem('courseId').length > 0) {
 			values.releasedFor = 'courses';
-		} 
-		
+		}
+
 		switch (panel.getReleasedFor()) {
 			case 'all':
 				values.releasedFor = 'all';
@@ -505,47 +506,47 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 					values.releasedFor = 'courses';
 					values.courses = tmpArray;
 				}
-				break;	
+				break;
 			default:
 				break;
 		}
-    	
+
     	/* fetch the values */
     	switch (panel.questionOptions.getPressedButtons()[0]._text) {
 			case Messages.EVALUATION:
 				values.questionType = "vote";
-				
+
 				Ext.apply(values, panel.voteQuestion.getQuestionValues());
 				break;
 			case Messages.SCHOOL:
 				values.questionType = "school";
-				
+
 				Ext.apply(values, panel.schoolQuestion.getQuestionValues());
 				break;
-				
+
 			/**
 			 *  Don't delete this! It's a prototype handle for the new TextCheckfields.
 			 *
 			 *
 			 	case Messages.MC:
 				values.questionType = "mc";
-				
+
 				var formPanel = panel.down("#mc");
 				var tmpValues = formPanel.getFieldsAsArray();
-				
+
 				var obj;
 				noChecked = true;
 				values.possibleAnswers = [];
-				
+
 				for(var i = 0, field; field = tmpValues[i], i < tmpValues.length; i++) {
 					if(!field.isHidden() && field.config.hasOwnProperty('checked')) {
 						obj = {
 							text: field.getValue()
 						};
-						
+
 						if(field.isChecked()) { obj.correct = 1; }
 						values.possibleAnswers.push(obj);
-						
+
 						// noChecked will be set to false if at least one field is checked
 						noChecked = noChecked && !field.isChecked();
 					}
@@ -558,40 +559,40 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			*/
 			case Messages.MC:
 				values.questionType = "mc";
-				
+
 				Ext.apply(values, panel.multipleChoiceQuestion.getQuestionValues());
 				break;
 			case Messages.GRID_SQUARE: // Team4
 				values.questionType = "gs";
-				
+
 				Ext.apply(values, panel.gridsquareQuestion.getQuestionValues());
 				break;
 			case Messages.YESNO:
 				values.questionType = "yesno";
-				
+
 				Ext.apply(values, panel.yesNoQuestion.getQuestionValues());
 				break;
 			case Messages.ABCD:
 				values.questionType = "abcd";
-				
+
 				Ext.apply(values, panel.abcdQuestion.getQuestionValues());
 				break;
-			
+
 			case Messages.FREETEXT:
 				values.questionType = "freetext";
 				values.possibleAnswers = [];
 				break;
-			
+
 			case Messages.FLASHCARD_SHORT:
 				values.questionType = "flashcard";
-				
+
 				Ext.apply(values, panel.flashcardQuestion.getQuestionValues());
 				break;
-			
+
 			default:
 				break;
 		}
-		
+
 		var promise = panel.dispatch(values);
 		promise.then(function() {
 			panel.subject.reset();
@@ -599,7 +600,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		});
 		return promise;
 	},
-	
+
 	dispatch: function(values) {
 		var promise = new RSVP.Promise();
 		ARSnova.app.getController('Questions').add({
