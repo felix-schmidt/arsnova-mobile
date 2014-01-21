@@ -9,7 +9,7 @@ body {
 	text-align:center;
 }
 
-#theCanvas {
+#gsCanvas {
     width:80%;
 	position:relative;
 }
