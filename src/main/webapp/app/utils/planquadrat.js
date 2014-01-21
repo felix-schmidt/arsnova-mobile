@@ -12,8 +12,8 @@ planquadrat.input = planquadrat.input || {};
 /*planquadrat.input.mousePos = {x:0,y:0};*/
 
 planquadrat.input.onMouseClick = function(evt) {
-	var x = evt.clientX - planquadrat.scene.canvas.offsetLeft;
-    var y = evt.clientY - planquadrat.scene.canvas.offsetTop;
+	var x = evt.clientX - planquadrat.scene.canvas.getBoundingClientRect().left;
+    var y = evt.clientY - planquadrat.scene.canvas.getBoundingClientRect().top;
 	planquadrat.raster.selectTile(x, y);
 }
 
