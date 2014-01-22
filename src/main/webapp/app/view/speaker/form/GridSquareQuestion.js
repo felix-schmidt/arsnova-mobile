@@ -1,12 +1,8 @@
 Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  extend: 'Ext.Container',
 
-
-
  constructor: function() {
   this.callParent(arguments);
-
-
 
   var gsCanvas = Ext.create('Ext.form.FieldSet', {
    html: "<div align='center'><canvas width='800' height='600' id='gsCanvas'></canvas></div>",
@@ -16,8 +12,6 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	placeHolder: 'Url eingeben!',
 	name: 'url',
 	id: 'imgurl',
-
-
    },
    {
 	   xtype : 'button',
@@ -31,7 +25,6 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
     	  planquadrat.picture.loadPicture(Ext.getCmp('imgurl').getValue());
     	  planquadrat.init();
     }},
-
    {
     	xtype: 'fieldset',
     	id: 'sliderset',
@@ -39,10 +32,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
     	items: [{
 	 xtype: 'sliderfield',
 	 id: 'slider',
-     value: 3,
+     value: 4,
      increment: 1,
      disabled: true,
-     minValue: 1,
+     minValue: 2,
      maxValue: 6,
      listeners : {
          change: function(slider, thumb, newVal, oldVal){
@@ -52,14 +45,9 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
         	 planquadrat.init();
          }}
    }]}
-
-
-
    ],
 
-
-
-  })
+  });
  this.add([gsCanvas]);
  }}
 );
