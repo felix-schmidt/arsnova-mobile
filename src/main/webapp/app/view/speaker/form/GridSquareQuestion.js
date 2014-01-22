@@ -20,32 +20,39 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
    },
    {
-	 xtype : 'slider',
-	 renderTo: 'custom-slider',
-     value: 3,
-     increment: 1,
-     minValue: 1,
-     maxValue: 6,
-     id: 'slider',
-     listeners : {
-         change: function(slider, thumb, newVal, oldVal){
-        	 planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
-        	 planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-        	 planquadrat.init();
-         }}
-   },
-
-   {
 	   xtype : 'button',
        itemId : 'upload',
        text : 'Upload Picture',
        handler : function(){
-
+    	  Ext.getCmp('slider').enable();
     	  planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
       	  planquadrat.raster.rows = Ext.getCmp('slider').getValue();
     	  planquadrat.picture.loadPicture(Ext.getCmp('imgurl').getValue());
     	  planquadrat.init();
-    }}
+    }},
+
+   {
+    	xtype: 'fieldset',
+    	id: 'sliderset',
+    	title: 'Rastergröße:',
+    	items: [{
+	 xtype: 'sliderfield',
+	 id: 'slider',
+     value: 3,
+     increment: 1,
+     disabled: true,
+     minValue: 1,
+     maxValue: 6,
+     listeners : {
+         change: function(slider, thumb, newVal, oldVal){
+        	 Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
+        	 planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
+        	 planquadrat.raster.rows = Ext.getCmp('slider').getValue();
+        	 planquadrat.init();
+         }}
+   }]}
+
+
 
    ],
 
@@ -53,10 +60,5 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
   })
  this.add([gsCanvas]);
-  //this.added( console.log('addedr listener'));
- //setTimeout(function (){planquadrat.init();}, 10000);
-
-
- //planquadrat.init();
  }}
 );

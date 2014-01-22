@@ -69,8 +69,8 @@ planquadrat.scene.draw = function() {
  ******************************************************************************/
 planquadrat.raster = planquadrat.raster || {};
 
-planquadrat.raster.columns = 4;
-planquadrat.raster.rows = 4;
+planquadrat.raster.columns = 1;
+planquadrat.raster.rows = 1;
 planquadrat.raster.color = '#3671B5';
 planquadrat.raster.selectedTiles = [];
 

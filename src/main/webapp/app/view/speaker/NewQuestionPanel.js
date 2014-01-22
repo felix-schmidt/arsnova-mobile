@@ -313,7 +313,8 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						case Messages.GRID_SQUARE: //Team4
 							if (pressed) {
 								this.gridsquareQuestion.show();
-								//planquadrat.init(); //Team4
+						      	 planquadrat.picture.loadPicture('app/images/default.jpg'); //Team4
+						      	 planquadrat.init(); //Team4
 								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
 							} else {
 								this.gridsquareQuestion.hide();
