@@ -24,6 +24,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
        itemId : 'upload',
        text : 'Upload Picture',
        handler : function(){
+      	  Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
     	  Ext.getCmp('slider').enable();
     	  planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
       	  planquadrat.raster.rows = Ext.getCmp('slider').getValue();
