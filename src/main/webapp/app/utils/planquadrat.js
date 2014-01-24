@@ -34,8 +34,10 @@ planquadrat.input.init = function() {
 planquadrat.scene = planquadrat.scene || {};
 
 planquadrat.scene.canvasId = "gsCanvas";
-planquadrat.scene.width = 800;
-planquadrat.scene.height = 600;
+breite = 80;  // in Prozent
+hoehe = 60;  //in Prozent
+planquadrat.scene.width = parseInt((Fensterweite() * breite) / 100);
+planquadrat.scene.height =  parseInt((Fensterhoehe() * hoehe) / 100);
 planquadrat.scene.canvas = undefined;
 planquadrat.scene.context = undefined;
 
@@ -105,18 +107,18 @@ planquadrat.raster.drawRaster = function(columns, rows, color) {
 	if(typeof rows !== "undefined") {planquadrat.raster.rows = rows;}
 	if(typeof color !== "undefined") {planquadrat.raster.color = color;}
 
-	   planquadrat.scene.context.beginPath();
-	    for(var i = 0 /*-1*/; i < (planquadrat.scene.width / planquadrat.raster.columns) /*+ 1*/; i++) {
-			planquadrat.scene.context.moveTo((planquadrat.scene.width / planquadrat.raster.columns) * i, 0);
-			planquadrat.scene.context.lineTo((planquadrat.scene.width / planquadrat.raster.columns) * i, planquadrat.scene.height);
-		}
-		for(var i = 0 /*-1*/; i < (planquadrat.scene.height / planquadrat.raster.rows) /*+ 1*/; i++) {
-			planquadrat.scene.context.moveTo(0, (planquadrat.scene.height / planquadrat.raster.rows) * i);
-			planquadrat.scene.context.lineTo(planquadrat.scene.width, (planquadrat.scene.height / planquadrat.raster.rows) * i);
-		}
-		planquadrat.scene.context.lineWidth = 6;
-		planquadrat.scene.context.strokeStyle = '#ffffff';
-	    planquadrat.scene.context.stroke();
+	planquadrat.scene.context.beginPath();
+    for(var i = 0 /*-1*/; i < (planquadrat.scene.width / planquadrat.raster.columns) /*+ 1*/; i++) {
+		planquadrat.scene.context.moveTo((planquadrat.scene.width / planquadrat.raster.columns) * i, 0);
+		planquadrat.scene.context.lineTo((planquadrat.scene.width / planquadrat.raster.columns) * i, planquadrat.scene.height);
+	}
+	for(var i = 0 /*-1*/; i < (planquadrat.scene.height / planquadrat.raster.rows) /*+ 1*/; i++) {
+		planquadrat.scene.context.moveTo(0, (planquadrat.scene.height / planquadrat.raster.rows) * i);
+		planquadrat.scene.context.lineTo(planquadrat.scene.width, (planquadrat.scene.height / planquadrat.raster.rows) * i);
+	}
+	planquadrat.scene.context.lineWidth = 6;
+	planquadrat.scene.context.strokeStyle = '#ffffff';
+    planquadrat.scene.context.stroke();
 
 	planquadrat.scene.context.beginPath();
 	for(var i = 0 /*-1*/; i < (planquadrat.scene.width / planquadrat.raster.columns) /*+ 1*/; i++) {
@@ -184,3 +186,23 @@ planquadrat.init = function() {
 	planquadrat.scene.draw();
 
 };
+
+function Fensterweite () {
+	  if (window.innerWidth) {
+	    return window.innerWidth;
+	  } else if (document.body && document.body.offsetWidth) {
+	    return document.body.offsetWidth;
+	  } else {
+	    return 0;
+	  }
+	}
+
+	function Fensterhoehe () {
+	  if (window.innerHeight) {
+	    return window.innerHeight;
+	  } else if (document.body && document.body.offsetHeight) {
+	    return document.body.offsetHeight;
+	  } else {
+	    return 0;
+	  }
+	}

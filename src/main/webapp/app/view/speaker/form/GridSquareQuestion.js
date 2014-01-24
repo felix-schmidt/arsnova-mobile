@@ -5,7 +5,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
   this.callParent(arguments);
 
   var gsCanvas = Ext.create('Ext.form.FieldSet', {
-   html: "<div align='center'><canvas width='800' height='600' id='gsCanvas'></canvas></div>",
+   html: "<div align='center'><canvas width='80%' height='60%' id='gsCanvas'></canvas></div>",
    items: [
 {
 	xtype: 'textfield',
