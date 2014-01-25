@@ -9,24 +9,15 @@ var planquadrat = planquadrat || {};
  ******************************************************************************/
 planquadrat.input = planquadrat.input || {};
 
-/*planquadrat.input.mousePos = {x:0,y:0};*/
-
 planquadrat.input.onMouseClick = function(evt) {
 	var x = evt.clientX - planquadrat.scene.canvas.getBoundingClientRect().left;
     var y = evt.clientY - planquadrat.scene.canvas.getBoundingClientRect().top;
 	planquadrat.raster.selectTile(x, y);
-}
-
-/*planquadrat.input.onMouseMove = function(evt) {
-	var rect = planquadrat.scene.canvas.getBoundingClientRect();
-	planquadrat.input.mousePos.x = evt.clientX - rect.left;
-	planquadrat.input.mousePos.y = evt.clientY - rect.left;
-}*/
+};
 
 planquadrat.input.init = function() {
-	/*planquadrat.scene.canvas.addEventListener('mousemove', planquadrat.input.onMouseMove, false);*/
 	planquadrat.scene.canvas.addEventListener('click', planquadrat.input.onMouseClick, false);
-}
+};
 
 /*******************************************************************************
  *	planquadrat.scene
@@ -79,7 +70,7 @@ planquadrat.raster.selectedTiles = [];
 planquadrat.raster.selectTile = function(x, y) {
 	var selectedTile = {x:0,y:0};
 
-	selectedTile.x = Math.floor(x / (planquadrat.scene.width / planquadrat.raster.columns))
+	selectedTile.x = Math.floor(x / (planquadrat.scene.width / planquadrat.raster.columns));
 	selectedTile.y = Math.floor(y / (planquadrat.scene.height / planquadrat.raster.rows));
 
 	var found = false;
@@ -95,7 +86,7 @@ planquadrat.raster.selectTile = function(x, y) {
 		planquadrat.raster.selectedTiles.push(selectedTile);
 	}
 	planquadrat.scene.redraw();
-}
+};
 
 planquadrat.raster.draw = function(columns, rows, color) {
 	planquadrat.raster.drawRaster();
@@ -153,7 +144,7 @@ planquadrat.raster.drawTiles = function(columns, rows, color) {
 		planquadrat.scene.context.lineTo(x, y + (planquadrat.scene.height / planquadrat.raster.rows));
 		*/
 
-		(planquadrat.scene.width / planquadrat.raster.columns) * planquadrat.raster.selectedTiles[i].x
+		(planquadrat.scene.width / planquadrat.raster.columns) * planquadrat.raster.selectedTiles[i].x;
 
 	}
 	planquadrat.scene.context.lineWidth = 3;
@@ -174,8 +165,8 @@ planquadrat.picture.loadPicture = function(imageUrl) {
 	planquadrat.picture.img.onload = function() {
 		planquadrat.picture.isLoaded = true;
 		planquadrat.scene.redraw();
-	}
-}
+	};
+};
 
 /*******************************************************************************
  *	planquadrat
