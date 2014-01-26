@@ -18,6 +18,7 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  +--------------------------------------------------------------------------*/
+
 Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	extend: 'Ext.Panel',
 	
@@ -42,6 +43,8 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	backButton	: null,
 	saveButton	: null,
 	
+	/*preview panel and buttons*/
+	previewPanel:null,
 	/* items */
 	text: null,
 	subject: null,
@@ -52,7 +55,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	
 	initialize: function(){
 		this.callParent(arguments);
-		
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.QUESTIONS,
 			ui		: 'back',
@@ -97,10 +99,35 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			items: [{
 				xtype: 'fieldset',
 				items: [this.subject]
-			},{
-				xtype: 'fieldset',
-				items: [this.textarea]
-			}]
+			},
+//			{
+//				xtype: 'fieldset',
+//				items: [this.textarea]
+//			}
+			]
+		});
+		
+		this.previewPanel=Ext.create('Ext.TabPanel', {
+		    ui: 'light',
+		    height: 300,
+		    width:  (window.innerWidth > 0) ? window.innerWidth : screen.width,
+		    scrollable: null,
+		   
+		    defaults: {
+		        styleHtmlContent: true,
+		    },
+
+		    items: [{
+		            title: 'Texteditor',
+		            items: [{
+						xtype: 'fieldset',
+						items: [this.textarea]
+					}]
+		        },{
+		            title: 'Preview',
+		            html: 'Preview Screen'
+		        }],
+		    scope: this
 		});
 		
 		this.releaseItems = [{
@@ -424,6 +451,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				]
 			}),
 			this.mainPart,
+			this.previewPanel,
 			
 			/* only one of the question types will be shown at the same time */
 			this.voteQuestion,
@@ -449,6 +477,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	},
 	
 	saveHandler: function(){
+		alert("Klasse NewQuestionPanel");
     	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
     	var values = {};
 		
