@@ -10,6 +10,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 {
 	xtype: 'textfield',
 	placeHolder: 'Url eingeben!',
+	value: 'app/images/blaupause.jpg',
 	name: 'url',
 	id: 'imgurl',
    },
@@ -37,8 +38,9 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
      disabled: true,
      minValue: 2,
      maxValue: 6,
+
      listeners : {
-         change: function(slider, thumb, newVal, oldVal){
+         drag: function(slider, thumb, newVal, oldVal){
         	 Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
         	 planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
         	 planquadrat.raster.rows = Ext.getCmp('slider').getValue();
@@ -50,16 +52,16 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
   });
  this.add([gsCanvas]);
  },
- 
+
  /* Default functions to save data */
  getValues: function() {
 		var values = [], obj;
-		
-		/* 
+
+		/*
 		 * Hier müssen alle möglichen Felder, egal ob angeklickt oder geklickt in ein Objekt
 		 * gelegt werden und mit obj.correct auf true oder false gelegt werden.
 		 */
-		
+
 		/* Old code
 		for (var i=0; i < this.selectAnswerCount.getValue(); i++) {
 			obj = {
@@ -73,23 +75,23 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 			values.push(obj);
 		}
 		*/
-		
+
 		return values;
  },
- 
+
  hasCorrectOptions: function() {
 		var hasCorrectOptions = false;
-		
+
 		// Behandlung fehlt
-		
+
 		return hasCorrectOptions;
  },
 
  getQuestionValues: function() {
 		var result = {};
-		
+
 		result.possibleAnswers = this.getValues();
-		
+
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
