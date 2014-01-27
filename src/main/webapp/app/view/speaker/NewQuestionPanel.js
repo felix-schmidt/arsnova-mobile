@@ -259,7 +259,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		// Team4
 		this.gridsquareQuestion = Ext.create('ARSnova.view.speaker.form.GridSquareQuestion', {
 			id: 'gs',
-			hidden: false
+			hidden: true
 		});
 
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
