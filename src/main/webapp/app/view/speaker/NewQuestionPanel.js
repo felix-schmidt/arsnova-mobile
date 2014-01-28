@@ -443,19 +443,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	saveHandler: function(){
     	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
     	var values = {};
-
-		/* get text, subject of question from mainPart */
-		var mainPartValues = panel.mainPart.getValues();
-		values.text = mainPartValues.text;
-		values.subject = mainPartValues.subject;
-		values.abstention = !panel.abstentionPart.isHidden() && panel.getAbstention();
-		values.questionVariant = panel.getVariant();
-
-		/* check if release question button is clicked */
-
-	saveHandler: function(){
-    	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
-    	var values = {};
 		
 		/* get text, subject of question from mainPart */
 		var mainPartValues = panel.mainPart.getValues();
