@@ -118,33 +118,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			}
 		}];
 
-		this.abstentionPart = Ext.create('Ext.form.FormPanel', {
-			scrollable: null,
-			cls: 'newQuestionOptions',
-			items: [{
-				xtype: 'fieldset',
-				title: Messages.ABSTENTION_POSSIBLE,
-				items: [{
-					xtype: 'segmentedbutton',
-					style: 'margin: auto',
-					cls: 'yesnoOptions',
-					items: [{
-						text: Messages.YES,
-						pressed: true,
-						scope: this,
-						handler: function() {
-							this.setAbstention(true);
-						}
-					}, {
-						text: Messages.NO,
-						scope: this,
-						handler: function() {
-							this.setAbstention(false);
-						}
-					}]
-				}]
-			}]
-		});
+		this.abstentionPart = Ext.create('ARSnova.view.speaker.form.AbstentionForm');
 
 		this.releasePart = Ext.create('Ext.form.FormPanel', {
 			scrollable: null,
@@ -477,6 +451,19 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		values.abstention = !panel.abstentionPart.isHidden() && panel.getAbstention();
 		values.questionVariant = panel.getVariant();
 
+		/* check if release question button is clicked */
+
+	saveHandler: function(){
+    	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
+    	var values = {};
+		
+		/* get text, subject of question from mainPart */
+		var mainPartValues = panel.mainPart.getValues();
+		values.text = mainPartValues.text;
+		values.subject = mainPartValues.subject;
+		values.abstention = !panel.abstentionPart.isHidden() && panel.abstentionPart.getAbstention();
+		values.questionVariant = panel.getVariant();
+		
 		/* check if release question button is clicked */
 		var releasePart = panel.releasePart;
 
