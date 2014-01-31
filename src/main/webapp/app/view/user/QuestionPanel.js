@@ -80,7 +80,9 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.QUESTION_GRADE) : this.toolbar.setTitle(Messages.QUESTION_GRADE_SHORT);
 				} else if(newCard.questionObj.questionType === 'flashcard') {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.FLASHCARD) : this.toolbar.setTitle(Messages.QUESTION_FLASHCARD);
-				}
+				} else if(newCard.questionObj.questionType === 'gs') {
+					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.QUESTION_GRID_SQUARE) : this.toolbar.setTitle(Messages.QUESTION_GRID_SQUARE_SHORT);
+				}				
 			}
 			
 			//update question counter in toolbar
