@@ -263,7 +263,12 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 			this.add(Ext.create('ARSnova.view.FreetextQuestion', {
 				questionObj: question
 			}));
+		} else if (question.questionType === 'gs') {
+				this.add(Ext.create('ARSnova.view.GridSquareQuestion', {
+					questionObj: question
+			}));
 		} else {
+
 			this.add(Ext.create('ARSnova.view.Question', {
 				questionObj: question
 			}));
