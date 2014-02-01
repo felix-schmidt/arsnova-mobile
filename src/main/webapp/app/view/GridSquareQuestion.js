@@ -39,26 +39,27 @@ Ext
 						this.questionObj = args.questionObj;
 						this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
 						var gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject); 
-						
-						/*this.on('preparestatisticsbutton', function(button) {
-							button.scope = this;
-							button.setHandler(function() {
-								var p = Ext.create('ARSnova.view.FreetextAnswerPanel', {
-									question: self.questionObj,
-									lastPanel: self
-								});
-								ARSnova.app.mainTabPanel.animateActiveItem(p, 'slide');
-							});
-						});*/
-						
+
 						this.gridsquare = Ext.create('Ext.form.FieldSet', {
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
 							   listeners: {
 						            painted: function() {
-						            	planquadrat.raster.columns = 4; // Rastergröße aus Datenbank laden
-								      	planquadrat.raster.rows = 4;	// Rastergröße aus Datenbank laden
-								    	planquadrat.picture.loadPicture("app/images/blaupause.jpg");	// Bild aus Datenbank laden
-								    	planquadrat.init(gridSquareID);
+						            	
+						            	var gridsize = 4;
+						            	
+						            	// Draw grid
+						            	planquadrat.raster.columns = gridsize; 
+								      	planquadrat.raster.rows = gridsize;
+								      	planquadrat.init(gridSquareID);
+								    	var canvas = document.getElementById(gridSquareID);
+								    	var ctx = canvas.getContext('2d');
+								    	var image = new Image();
+								    	
+								    	// Get base64
+								    	image.src = args.questionObj.image;
+								    	
+								    	// Draw image to canvas
+								    	ctx.drawImage(image, 0, 0);
 						            }
 						        }
 						});
@@ -116,11 +117,6 @@ Ext
 							 * but is not rendered as 'disabled'
 							 */
 							if(this.isDisabled()) this.disableQuestion();	
-							planquadrat.raster.columns = 4; // Rastergrï¿½ï¿½e aus Datenbank laden
-					      	planquadrat.raster.rows = 4;	// Rastergrï¿½ï¿½e aus Datenbank laden
-					    	planquadrat.picture.loadPicture("app/images/blaupause.jpg");	// Bild aus Datenbank laden
-					    	planquadrat.init();
-							if(this.isDisabled()) this.disableQuestion();
 						});
 					}
 				});
