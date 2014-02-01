@@ -107,6 +107,8 @@ Ext.define("ARSnova.controller.Questions", {
 			possibleAnswers: options.possibleAnswers,
 			noCorrect	: options.noCorrect,
 			abstention	: options.abstention,
+			image		: options.image,
+			imageScaled : options.imageScaled,
 			showStatistic: 1
 		});
     	question.set('_id', undefined);

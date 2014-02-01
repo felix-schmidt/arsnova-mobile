@@ -106,8 +106,8 @@ Ext
 							 * Bugfix, because panel is normally disabled (isDisabled == true),
 							 * but is not rendered as 'disabled'
 							 */
-							planquadrat.raster.columns = 4; // Rastergröße aus Datenbank laden
-					      	planquadrat.raster.rows = 4;	// Rastergröße aus Datenbank laden
+							planquadrat.raster.columns = 4; // Rastergrï¿½ï¿½e aus Datenbank laden
+					      	planquadrat.raster.rows = 4;	// Rastergrï¿½ï¿½e aus Datenbank laden
 					    	planquadrat.picture.loadPicture("app/images/blaupause.jpg");	// Bild aus Datenbank laden
 					    	planquadrat.init();
 							if(this.isDisabled()) this.disableQuestion();

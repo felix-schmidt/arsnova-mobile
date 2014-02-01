@@ -3,6 +3,8 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
  constructor: function() {
   this.callParent(arguments);
+  this.imageData = '';
+  this.imageDataScaled = '';
 
   var gsCanvas = Ext.create('Ext.form.FieldSet', {
    html: "<div align='center'><canvas width='80%' height='60%' id='gsCanvas'></canvas></div>",
@@ -57,25 +59,6 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  getValues: function() {
 		var values = [], obj;
 
-		/*
-		 * Hier müssen alle möglichen Felder, egal ob angeklickt oder geklickt in ein Objekt
-		 * gelegt werden und mit obj.correct auf true oder false gelegt werden.
-		 */
-
-		/* Old code
-		for (var i=0; i < this.selectAnswerCount.getValue(); i++) {
-			obj = {
-				text: this.answerComponents[i].getValue()
-			};
-			if (this.correctComponents[i].getValue()) {
-				obj.correct = true;
-			} else {
-				obj.correct = false;
-			}
-			values.push(obj);
-		}
-		*/
-
 		return values;
  },
 
@@ -90,7 +73,13 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  getQuestionValues: function() {
 		var result = {};
 
+		// Convert Canvas to Base64
+  	  	var canvas = document.getElementById("gsCanvas");
+  	  	var imageData = canvas.toDataURL();
+  	  	
 		result.possibleAnswers = this.getValues();
+		result.image = imageData;
+		result.imageScaled = imageData;
 
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;

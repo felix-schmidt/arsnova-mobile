@@ -26,7 +26,7 @@ Ext.define('FreetextAnswer', {
               'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
               'ARSnova.view.speaker.form.NullQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
               'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
-              'ARSnova.view.speaker.form.FlashcardQuestion'],
+              'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.GridSquareQuestion'],
  
     config: {
     	idProperty: "_id",
@@ -41,7 +41,9 @@ Ext.define('FreetextAnswer', {
     	          'piRound',
     	          'sessionId',
     	          'type',
-    	          '_rev'
+    	          '_rev',
+    	          'image',
+    	          'imageScaled'
     	        ]
     }
 });
