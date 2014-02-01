@@ -115,15 +115,12 @@ Ext
 							 * Bugfix, because panel is normally disabled (isDisabled == true),
 							 * but is not rendered as 'disabled'
 							 */
-<<<<<<< HEAD
 							if(this.isDisabled()) this.disableQuestion();	
-=======
 							planquadrat.raster.columns = 4; // Rastergr��e aus Datenbank laden
 					      	planquadrat.raster.rows = 4;	// Rastergr��e aus Datenbank laden
 					    	planquadrat.picture.loadPicture("app/images/blaupause.jpg");	// Bild aus Datenbank laden
 					    	planquadrat.init();
 							if(this.isDisabled()) this.disableQuestion();
->>>>>>> branch 'master' of git@scm.thm.de:arsnova/arsnova-mobile-team4.git
 						});
 					}
 				});
