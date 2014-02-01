@@ -24,7 +24,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
     	  planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
       	  planquadrat.raster.rows = Ext.getCmp('slider').getValue();
     	  planquadrat.picture.loadPicture(Ext.getCmp('imgurl').getValue());
-    	  planquadrat.init();
+    	  planquadrat.init("gsCanvas");
     }},
    {
     	xtype: 'fieldset',
@@ -44,7 +44,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
         	 Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
         	 planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
         	 planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-        	 planquadrat.init();
+        	 planquadrat.init("gsCanvas");
          }}
    }]}
    ],
