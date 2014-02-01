@@ -23,8 +23,7 @@ planquadrat.input.init = function() {
  *	planquadrat.scene
  ******************************************************************************/
 planquadrat.scene = planquadrat.scene || {};
-
-planquadrat.scene.canvasId = "gsCanvas";
+planquadrat.scene.canvasId = "gsCanvas";	
 breite = 80;  // in Prozent
 hoehe = 60;  //in Prozent
 planquadrat.scene.width = parseInt((Fensterweite() * breite) / 100);
@@ -32,7 +31,10 @@ planquadrat.scene.height =  parseInt((Fensterhoehe() * hoehe) / 100);
 planquadrat.scene.canvas = undefined;
 planquadrat.scene.context = undefined;
 
-planquadrat.scene.init = function() {
+planquadrat.scene.init = function(id) {
+	if (id != null) {
+		planquadrat.scene.canvasId = id;
+	}
 	planquadrat.scene.canvas = document.getElementById(planquadrat.scene.canvasId);
 	planquadrat.scene.canvas.width  = planquadrat.scene.width;
 	planquadrat.scene.canvas.height = planquadrat.scene.height;
@@ -171,14 +173,14 @@ planquadrat.picture.loadPicture = function(imageUrl) {
 /*******************************************************************************
  *	planquadrat
  ******************************************************************************/
-planquadrat.init = function() {
-	planquadrat.scene.init();
+planquadrat.init = function(id) {
+	planquadrat.scene.init(id);
 	planquadrat.input.init();
 	planquadrat.scene.draw();
 
 };
 
-function Fensterweite () {
+	function Fensterweite () {
 	  if (window.innerWidth) {
 	    return window.innerWidth;
 	  } else if (document.body && document.body.offsetWidth) {

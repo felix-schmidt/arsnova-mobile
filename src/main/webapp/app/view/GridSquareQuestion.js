@@ -38,6 +38,7 @@ Ext
 						var self = this;
 						this.questionObj = args.questionObj;
 						this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
+						var gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject); 
 						
 						/*this.on('preparestatisticsbutton', function(button) {
 							button.scope = this;
@@ -51,9 +52,17 @@ Ext
 						});*/
 						
 						this.gridsquare = Ext.create('Ext.form.FieldSet', {
-							   html: "<div align='center'><canvas width='80%' height='60%' id='gsCanvas'></canvas></div>",
+							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
+							   listeners: {
+						            painted: function() {
+						            	planquadrat.raster.columns = 4; // Rastergröße aus Datenbank laden
+								      	planquadrat.raster.rows = 4;	// Rastergröße aus Datenbank laden
+								    	planquadrat.picture.loadPicture("app/images/blaupause.jpg");	// Bild aus Datenbank laden
+								    	planquadrat.init(gridSquareID);
+						            }
+						        }
 						});
-
+						
 						this.questionTitle = Ext.create('Ext.Component', {
 							cls: 'roundedBox',
 							html:
@@ -106,11 +115,7 @@ Ext
 							 * Bugfix, because panel is normally disabled (isDisabled == true),
 							 * but is not rendered as 'disabled'
 							 */
-							planquadrat.raster.columns = 4; // Rastergröße aus Datenbank laden
-					      	planquadrat.raster.rows = 4;	// Rastergröße aus Datenbank laden
-					    	planquadrat.picture.loadPicture("app/images/blaupause.jpg");	// Bild aus Datenbank laden
-					    	planquadrat.init();
-							if(this.isDisabled()) this.disableQuestion();
+							if(this.isDisabled()) this.disableQuestion();	
 						});
 					}
 				});
