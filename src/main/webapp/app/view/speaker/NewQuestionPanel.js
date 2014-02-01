@@ -86,11 +86,11 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			placeHolder: Messages.CATEGORY_PLACEHOLDER
 		});
 		
-		this.textarea = Ext.create('Ext.plugins.ResizableTextArea', {
-			name	  	: 'text',
-	    	placeHolder	: Messages.QUESTIONTEXT_PlACEHOLDER,
-	    	maxHeight	: 140
-		});
+//		this.textarea = Ext.create('Ext.plugins.ResizableTextArea', {
+//			name	  	: 'text',
+//	    	placeHolder	: Messages.QUESTIONTEXT_PlACEHOLDER,
+//	    	maxHeight	: 140
+//		});
 		
 		this.mainPart = Ext.create('Ext.form.FormPanel', {
 			cls: 'newQuestion',
@@ -107,28 +107,30 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			]
 		});
 		
-		this.previewPanel=Ext.create('Ext.TabPanel', {
-		    ui: 'light',
-		    height: 300,
-		    width:  (window.innerWidth > 0) ? window.innerWidth : screen.width,
-		    scrollable: null,
-		   
-		    defaults: {
-		        styleHtmlContent: true,
-		    },
-
-		    items: [{
-		            title: 'Texteditor',
-		            items: [{
-						xtype: 'fieldset',
-						items: [this.textarea]
-					}]
-		        },{
-		            title: 'Preview',
-		            html: 'Preview Screen'
-		        }],
-		    scope: this
-		});
+//		this.previewPanel=Ext.create('Ext.TabPanel', {
+//		    ui: 'light',
+//		    height: 300,
+//		    width:  (window.innerWidth > 0) ? window.innerWidth : screen.width,
+//		    scrollable: null,
+//		   
+//		    defaults: {
+//		        styleHtmlContent: true,
+//		    },
+//
+//		    items: [{
+//		            title: 'Texteditor',
+//		            items: [{
+//						xtype: 'fieldset',
+//						items: [this.textarea]
+//					}]
+//		        },{
+//		            title: 'Preview',
+//		            html: 'Preview Screen'
+//		        }],
+//		    scope: this
+//		});
+		
+		this.previewPanel=Ext.create('ARSnova.view.speaker.MathJaxMarkdownEditor');
 		
 		this.releaseItems = [{
 			text: window.innerWidth < 600 ? Messages.ALL_SHORT : Messages.ALL_LONG,
@@ -477,7 +479,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	},
 	
 	saveHandler: function(){
-		alert("Klasse NewQuestionPanel");
+		//alert("Klasse NewQuestionPanel");
     	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
     	var values = {};
 		
