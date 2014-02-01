@@ -30,6 +30,8 @@ Ext.define('ARSnova.model.Question', {
 		         'abstention',
 		         'active',
 		         'duration',
+		      	 'image',
+		      	 'imageScaled',
 		         'noCorrect',
 		         'type',
 		         'number',
@@ -46,9 +48,7 @@ Ext.define('ARSnova.model.Question', {
 		         'subject',
 		      	 'text',
 		      	 'timestamp',
-		      	 'type',
-		      	 'image',
-		      	 'imageScaled'
+		      	 'type'
 		],
 		
 		transientFields: ['numAnswers'],

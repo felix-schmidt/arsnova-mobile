@@ -593,6 +593,8 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			courses		: values.courses,
 			noCorrect	: values.noCorrect,
 			abstention	: values.abstention,
+			image		: values.image,
+			imageScaled : values.imageScaled,
 			showStatistic: 1,
 			successFunc	: function(response, opts){
 				promise.resolve(response);
