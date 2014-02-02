@@ -36,6 +36,7 @@ Ext
 						this.callParent(args);
 						
 						var self = this;
+						var questionobj = args.questionObj;
 						this.questionObj = args.questionObj;
 						this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
 						var gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject); 
@@ -44,19 +45,17 @@ Ext
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
 							   listeners: {
 						            painted: function() {
-						            	
-						            	var gridsize = 4;
-						            	
 						            	// Draw grid
-						            	planquadrat.raster.columns = gridsize; 
-								      	planquadrat.raster.rows = gridsize;
+						            	planquadrat.raster.columns = questionobj.gridsize; 
+								      	planquadrat.raster.rows = questionobj.gridsize;;
 								      	planquadrat.init(gridSquareID);
+								      	
 								    	var canvas = document.getElementById(gridSquareID);
 								    	var ctx = canvas.getContext('2d');
 								    	var image = new Image();
 								    	
 								    	// Get base64
-								    	image.src = args.questionObj.image;
+								    	image.src = questionobj.image;
 								    	
 								    	// Draw image to canvas
 								    	ctx.drawImage(image, 0, 0);

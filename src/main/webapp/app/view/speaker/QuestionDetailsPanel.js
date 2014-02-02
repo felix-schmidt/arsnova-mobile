@@ -43,7 +43,8 @@ Ext.define('FreetextAnswer', {
     	          'type',
     	          '_rev',
     	          'image',
-    	          'imageScaled'
+    	          'imageScaled',
+    	          'gridsize'
     	        ]
     }
 });

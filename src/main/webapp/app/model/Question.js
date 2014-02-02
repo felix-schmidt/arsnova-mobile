@@ -32,6 +32,7 @@ Ext.define('ARSnova.model.Question', {
 		         'duration',
 		      	 'image',
 		      	 'imageScaled',
+		      	 'gridsize',
 		         'noCorrect',
 		         'type',
 		         'number',
