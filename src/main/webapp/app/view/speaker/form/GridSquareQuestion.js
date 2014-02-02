@@ -54,22 +54,49 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
   });
  this.add([gsCanvas]);
  },
+ 
+ /* For Speaker Edit View */
+ initWithQuestion: function(question) {
+		
+ },
 
- /* Default functions to save data */
+ /* Function to fill Result Object */
  getValues: function() {
 		var values = [], obj;
+		var size = Ext.getCmp('slider').getValue().toString();
+		var gridvaluecount = size * size;
+		var gridselectedvalues = planquadrat.raster.selectedTiles;
+		
+		/* Mapping selected fields to array */
+		for(var i=0; i < gridvaluecount; i++){
+			obj = {
+					text: 'Field' + (i+1)
+				};
+			
+			/* Set object to true/false */
+			if(true){
+				obj.correct = true;
+			}else{
+				obj.correct = false;
+			}
+			values.push(obj);
+		}
 
 		return values;
  },
 
  hasCorrectOptions: function() {
 		var hasCorrectOptions = false;
-
-		// Behandlung fehlt
+		var gridselectedvalues = planquadrat.raster.selectedTiles;
+		
+		if(gridselectedvalues.length > 0){
+			hasCorrectOptions = true;
+		}
 
 		return hasCorrectOptions;
  },
 
+ /* Function to save vaules to database */
  getQuestionValues: function() {
 		var result = {};
 

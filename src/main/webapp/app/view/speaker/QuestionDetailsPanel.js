@@ -770,6 +770,8 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			answerEditFormClass = 'ARSnova.view.speaker.form.VoteQuestion';
 		} else if (this.questionObj.questionType === 'flashcard') {
 			answerEditFormClass = 'ARSnova.view.speaker.form.FlashcardQuestion';
+		} else if (this.questionObj.questionType === 'gs') {
+			answerEditFormClass = 'ARSnova.view.speaker.form.GridSquareQuestion';
 		}
 		
 		this.answerEditForm = Ext.create(answerEditFormClass, {
@@ -875,6 +877,8 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 					return Messages.FREETEXT;
 				case "flashcard":
 					return Messages.FLASHCARD;
+				case "flashcard":
+					return 'GridSquare';
 				default:
 					return this.questionObj.questionType;
 			}
