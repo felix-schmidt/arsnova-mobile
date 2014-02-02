@@ -45,20 +45,16 @@ Ext
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
 							   listeners: {
 						            painted: function() {
-						            	// Draw grid
-						            	planquadrat.raster.columns = questionobj.gridsize; 
-								      	planquadrat.raster.rows = questionobj.gridsize;;
-								      	planquadrat.init(gridSquareID);
-								      	
-								    	var canvas = document.getElementById(gridSquareID);
-								    	var ctx = canvas.getContext('2d');
-								    	var image = new Image();
+						            	var image = new Image();
 								    	
 								    	// Get base64
 								    	image.src = questionobj.image;
 								    	
-								    	// Draw image to canvas
-								    	ctx.drawImage(image, 0, 0);
+						            	// Draw grid
+						            	planquadrat.raster.columns = questionobj.gridsize; 
+								      	planquadrat.raster.rows = questionobj.gridsize;
+								      	planquadrat.picture.loadPicture(image.src);
+								      	planquadrat.init(gridSquareID);
 						            }
 						        }
 						});
