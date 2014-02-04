@@ -38,6 +38,7 @@ Ext
 						var self = this;
 						var questionobj = args.questionObj;
 						this.questionObj = args.questionObj;
+						var test = this.questionObj._attachments;
 						this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
 						var gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject); 
 
@@ -45,6 +46,9 @@ Ext
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
 							   listeners: {
 						            painted: function() {
+						            	
+						            	var test = questionobj._attachment;
+						            	alert("test");
 						            	var image = new Image();
 								    	
 								    	// Get base64

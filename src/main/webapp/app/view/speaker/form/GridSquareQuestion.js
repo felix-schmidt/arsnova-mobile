@@ -105,8 +105,8 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
   	  	var imageData = canvas.toDataURL();
   	  	
 		result.possibleAnswers = this.getValues();
-		result.image = imageData;
-		result.imageScaled = imageData;
+		//result.image = imageData;
+		//result.imageScaled = imageData;
 		result.gridsize = Ext.getCmp('slider').getValue().toString();
 
 		if (!this.hasCorrectOptions()) {

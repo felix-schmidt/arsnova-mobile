@@ -27,6 +27,7 @@ Ext.define('ARSnova.model.Question', {
 		
 		fields: [
 		         '_rev',
+		         '_attachments',
 		         'abstention',
 		         'active',
 		         'duration',
