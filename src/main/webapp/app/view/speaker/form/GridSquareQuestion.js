@@ -54,10 +54,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
   });
  this.add([gsCanvas]);
  },
- 
+
  /* For Speaker Edit View */
  initWithQuestion: function(question) {
-		
+
  },
 
  /* Function to fill Result Object */
@@ -66,13 +66,13 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		var size = Ext.getCmp('slider').getValue().toString();
 		var gridvaluecount = size * size;
 		var gridselectedvalues = planquadrat.raster.selectedTiles;
-		
+
 		/* Mapping selected fields to array */
 		for(var i=0; i < gridvaluecount; i++){
 			obj = {
 					text: 'Field' + (i+1)
 				};
-			
+
 			/* Set object to true/false */
 			if(true){
 				obj.correct = true;
@@ -88,7 +88,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  hasCorrectOptions: function() {
 		var hasCorrectOptions = false;
 		var gridselectedvalues = planquadrat.raster.selectedTiles;
-		
+
 		if(gridselectedvalues.length > 0){
 			hasCorrectOptions = true;
 		}
@@ -103,10 +103,9 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		// Convert Canvas to Base64
   	  	var canvas = document.getElementById("gsCanvas");
   	  	var imageData = canvas.toDataURL();
-  	  	
+
 		result.possibleAnswers = this.getValues();
-		//result.image = imageData;
-		//result.imageScaled = imageData;
+		result.image = imageData;
 		result.gridsize = Ext.getCmp('slider').getValue().toString();
 
 		if (!this.hasCorrectOptions()) {
