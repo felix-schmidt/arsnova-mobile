@@ -286,9 +286,18 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 							break;
 						case Messages.GRID_SQUARE: //Team4
 							if (pressed) {
+								
+								
 								this.gridsquareQuestion.show();
-						      	 planquadrat.picture.loadPicture('app/images/default.jpg'); //Team4
-						      	 planquadrat.init(); //Team4
+								
+								// old
+								//planquadrat.picture.loadPicture('app/images/default.jpg'); //Team4
+								//planquadrat.init(); //Team4
+								// new
+								createGridSquare("gsCanvas", "gsCanvas", parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue(), 100);
+						      	getGridSquare("gsCanvas").loadImage('app/images/default.jpg');
+								
+								
 								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
 							} else {
 								this.gridsquareQuestion.hide();

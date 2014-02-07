@@ -23,10 +23,18 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
        handler : function(){
       	  Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
     	  Ext.getCmp('slider').enable();
-    	  planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
-      	  planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-    	  planquadrat.picture.loadPicture(Ext.getCmp('imgurl').getValue());
-    	  planquadrat.init("gsCanvas");
+    	  Ext.getCmp('sliderset2').setTitle('Bildgröße: ' + Ext.getCmp('slider2').getValue().toString() + ' % ');
+    	  Ext.getCmp('slider2').enable();
+    	  
+    	  
+    	  if(getGridSquare("gsCanvas") !== null) {
+    		  getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
+    		  getGridSquare("gsCanvas").loadImage(Ext.getCmp('imgurl').getValue());
+    	  }
+    	  //planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
+      	  //planquadrat.raster.rows = Ext.getCmp('slider').getValue();
+    	  //planquadrat.picture.loadPicture(Ext.getCmp('imgurl').getValue());
+    	  //planquadrat.init("gsCanvas");
     }},
    {
     	xtype: 'fieldset',
@@ -44,11 +52,44 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
      listeners : {
          drag: function(slider, thumb, newVal, oldVal){
         	 Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
-        	 planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
-        	 planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-        	 planquadrat.init("gsCanvas");
+        	 
+        	 
+        	 if(getGridSquare("gsCanvas") !== null) {
+	       		 getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
+	       	 }
+        	 
+        	 //planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
+        	 //planquadrat.raster.rows = Ext.getCmp('slider').getValue();
+        	 //planquadrat.init("gsCanvas");
          }}
-   }]}
+   }]},
+   {
+   	xtype: 'fieldset',
+   	id: 'sliderset2',
+   	title: 'Bildgröße:',
+   	items: [{
+	 xtype: 'sliderfield',
+	 id: 'slider2',
+    value: 100,
+    increment: 1,
+    disabled: true,
+    minValue: 0,
+    maxValue: 100,
+
+    listeners : {
+        drag: function(slider, thumb, newVal, oldVal){
+       	 Ext.getCmp('sliderset2').setTitle('Bildgröße: ' + Ext.getCmp('slider2').getValue().toString() + ' % ');
+       	 
+       	 
+       	 if(getGridSquare("gsCanvas") !== null) {
+	       		 getGridSquare("gsCanvas").setScale(Ext.getCmp('slider2').getValue());
+	       	 }
+       	 
+       	 //planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
+       	 //planquadrat.raster.rows = Ext.getCmp('slider').getValue();
+       	 //planquadrat.init("gsCanvas");
+        }}
+  }]}
    ],
 
   });
@@ -62,27 +103,34 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
  /* Function to fill Result Object */
  getValues: function() {
-		var values = [], obj;
-		var size = Ext.getCmp('slider').getValue().toString();
-		var gridvaluecount = size * size;
-		var gridselectedvalues = planquadrat.raster.selectedTiles;
+		//var values = [], obj;
+		//var size = Ext.getCmp('slider').getValue().toString();
+		//var gridvaluecount = size * size;
+		//var gridselectedvalues = planquadrat.raster.selectedTiles;
 
 		/* Mapping selected fields to array */
-		for(var i=0; i < gridvaluecount; i++){
-			obj = {
-					text: 'Field' + (i+1)
-				};
-
-			/* Set object to true/false */
-			if(true){
-				obj.correct = true;
-			}else{
-				obj.correct = false;
-			}
-			values.push(obj);
-		}
-
-		return values;
+		//for(var i=0; i < gridvaluecount; i++){
+		//	obj = {
+		//			text: 'Field' + (i+1)
+		//		};
+		//
+		//	/* Set object to true/false */
+		//	if(true){
+		//		obj.correct = true;
+		//	}else{
+		//		obj.correct = false;
+		//	}
+		//	values.push(obj);
+		//}
+	 
+	 	//return values;
+	 
+	 if(getGridSquare("gsCanvas") !== null) {
+   		 return getGridSquare("gsCanvas").exportGrid();
+   	 }
+	 else {
+	 		return null;
+	 	}	
  },
 
  hasCorrectOptions: function() {
