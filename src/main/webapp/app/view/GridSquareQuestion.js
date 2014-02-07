@@ -54,10 +54,8 @@ Ext
 								    	image.src = questionobj.image;
 								    	
 						            	// Draw grid
-						            	planquadrat.raster.columns = questionobj.gridsize; 
-								      	planquadrat.raster.rows = questionobj.gridsize;
-								      	planquadrat.picture.loadPicture(image.src);
-								      	planquadrat.init(gridSquareID);
+								    	createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100);
+								    	getGridSquare(gridSquareID).loadImage(image.src);
 						            }
 						        }
 						});
