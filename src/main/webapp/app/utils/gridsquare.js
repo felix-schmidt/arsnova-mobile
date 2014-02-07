@@ -26,7 +26,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		width = _width;
 		height = _height;
 		canvas = document.getElementById(canvasId);
-		console.log(width)
+		console.log(width);
 		canvas.width = width;
 		canvas.height = height;
 		canvas.style.width  = '' + width + 'px';
@@ -97,7 +97,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		var selectedTile = {x:0,y:0};
 		var gridSize = grid.getSize();
 		
-		selectedTile.x = Math.floor(_x / (width / gridSize.col))
+		selectedTile.x = Math.floor(_x / (width / gridSize.col));
 		selectedTile.y = Math.floor(_y / (height / gridSize.row));
 		
 		var found = false;
@@ -117,7 +117,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	}
 	
 	function render() {
-		console.log("render");
+		//console.log("render");
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		renderPicture();
 		renderGrid();
@@ -195,7 +195,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	this.setGridSize = function(_x, _y) {
 		grid.setSize(_x, _y);
 		render();
-    }
+    };
 	
 	this.loadImage = function(url) {
 		var imageObj = new Image();
@@ -204,12 +204,12 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			render();
 		};
 		imageObj.src = url;
-	}
+	};
 	
 	this.setScale = function(_scale) {
 		picture.setScale(_scale);
 		render();
-	}
+	};
 	
 	this.exportGrid = function() {
 		result = [];
@@ -226,11 +226,11 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 					}
 				}
 				
-				result.push({field:field,correct:correct});
+				result.push({text:field,correct:correct});
 			}	
 		}
 		return result;
-	}
+	};
 	
 	this.setSize = function(_width, _height) {
 		this.width = _width;
@@ -239,10 +239,10 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		this.canvas.height = height;
 		this.canvas.style.width  = '' + width + 'px';
 		this.canvas.style.height = '' + height + 'px';
-	}
+	};
 	
 	init();
-}
+};
 
 /*******************************************************************************
  *	class gridsquare.picture
@@ -283,7 +283,7 @@ gridsquare.picture = function(_scale) {
 	};
 	
 	init();
-}
+};
 
 /*******************************************************************************
  *	class gridsquare.grid
@@ -307,18 +307,18 @@ gridsquare.grid = function(_columns, _rows) {
 	
 	this.getSize = function() {
 		return size;
-	}
+	};
 	
 	this.getSelected = function() {
 		return selected;
-	}
+	};
 	
 	this.setSelected = function(_selected) {
 		selected = _selected;
-	}
+	};
 	
 	init();
-}
+};
 
 // additional functions
 

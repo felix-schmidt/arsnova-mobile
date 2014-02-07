@@ -7,7 +7,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
   this.imageDataScaled = '';
 
   var gsCanvas = Ext.create('Ext.form.FieldSet', {
-   html: "<div align='center'><canvas width='80%' height='60%' id='gsCanvas'></canvas></div>",
+   html: "<div align='center'><canvas id='gsCanvas'></canvas></div>",
    items: [
 {
 	xtype: 'textfield',
@@ -26,15 +26,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
     	  Ext.getCmp('sliderset2').setTitle('Bildgröße: ' + Ext.getCmp('slider2').getValue().toString() + ' % ');
     	  Ext.getCmp('slider2').enable();
     	  
-    	  
     	  if(getGridSquare("gsCanvas") !== null) {
     		  getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
     		  getGridSquare("gsCanvas").loadImage(Ext.getCmp('imgurl').getValue());
     	  }
-    	  //planquadrat.raster.columns =Ext.getCmp('slider').getValue() ;
-      	  //planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-    	  //planquadrat.picture.loadPicture(Ext.getCmp('imgurl').getValue());
-    	  //planquadrat.init("gsCanvas");
     }},
    {
     	xtype: 'fieldset',
@@ -57,10 +52,6 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
         	 if(getGridSquare("gsCanvas") !== null) {
 	       		 getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
 	       	 }
-        	 
-        	 //planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
-        	 //planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-        	 //planquadrat.init("gsCanvas");
          }}
    }]},
    {
@@ -84,10 +75,6 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
        	 if(getGridSquare("gsCanvas") !== null) {
 	       		 getGridSquare("gsCanvas").setScale(Ext.getCmp('slider2').getValue());
 	       	 }
-       	 
-       	 //planquadrat.raster.columns = Ext.getCmp('slider').getValue() ;
-       	 //planquadrat.raster.rows = Ext.getCmp('slider').getValue();
-       	 //planquadrat.init("gsCanvas");
         }}
   }]}
    ],
@@ -103,39 +90,17 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
  /* Function to fill Result Object */
  getValues: function() {
-		//var values = [], obj;
-		//var size = Ext.getCmp('slider').getValue().toString();
-		//var gridvaluecount = size * size;
-		//var gridselectedvalues = planquadrat.raster.selectedTiles;
-
-		/* Mapping selected fields to array */
-		//for(var i=0; i < gridvaluecount; i++){
-		//	obj = {
-		//			text: 'Field' + (i+1)
-		//		};
-		//
-		//	/* Set object to true/false */
-		//	if(true){
-		//		obj.correct = true;
-		//	}else{
-		//		obj.correct = false;
-		//	}
-		//	values.push(obj);
-		//}
-	 
-	 	//return values;
-	 
 	 if(getGridSquare("gsCanvas") !== null) {
    		 return getGridSquare("gsCanvas").exportGrid();
    	 }
 	 else {
-	 		return null;
-	 	}	
+	 	return null;
+	}	
  },
 
  hasCorrectOptions: function() {
 		var hasCorrectOptions = false;
-		var gridselectedvalues = planquadrat.raster.selectedTiles;
+		var gridselectedvalues = this.getValues();
 
 		if(gridselectedvalues.length > 0){
 			hasCorrectOptions = true;
@@ -155,7 +120,14 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		result.possibleAnswers = this.getValues();
 		result.image = imageData;
 		result.gridsize = Ext.getCmp('slider').getValue().toString();
-
+		
+		// Destroy all objects after save
+		Ext.getCmp('imgurl').destroy;
+		Ext.getCmp('slider').destroy;
+		Ext.getCmp('slider2').destroy;
+		Ext.getCmp('sliderset').destroy;
+		Ext.getCmp('sliderset2').destroy;
+		
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
