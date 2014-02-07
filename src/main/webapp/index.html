@@ -26,6 +26,7 @@
 				<p>This application needs JavaScript to be enabled in your browser.</p>
 			</div>
 		</noscript>
+		
 		<script type="text/javascript" src="lib/moment.min.js"></script>
 		<script type="text/javascript" src="lib/moment.de.js"></script>
 		
@@ -39,7 +40,18 @@
 		
 		<script type="text/javascript" src="lib/rsvp.min.js"></script>
 		<script type="text/javascript" src="lib/socket.io/socket.io.min.js"></script>
-		<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		
+		 <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		
+		 <!--INLINEMATHJAX AKTIVIEREN -->
+		<script type="text/x-mathjax-config">
+	  		MathJax.Hub.Config({
+				showProcessingMessages: false,
+				tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+	  		});
+		</script>
+ 		<!-- HIER WIRD MARKDOWN EINGEBUNDEN -->
+		<script type="text/javascript" src="lib/markdown.js"></script>
 	 </body>
  </html>
  

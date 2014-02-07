@@ -20,7 +20,6 @@
  +--------------------------------------------------------------------------*/
 
 Ext.application({
-	
 	requires: ['ARSnova.BrowserSupport', 'ARSnova.proxy.RestProxy', 'ARSnova.WebSocket'],
 
 	startupImage: {
@@ -71,6 +70,7 @@ Ext.application({
     		['CustomMessageBox', 'MultiBadgeButton', 'MatrixButton', 'NumericKeypad', 'FreetextAnswerPanel', 'FreetextDetailAnswer'],
     		['FreetextQuestion', 'Question', 'QuestionStatusButton', 'SessionStatusButton', 'TextCheckfield'],
     		
+    		
     		/* app/view/about */
     		['about.TabPanel'],
     		
@@ -91,6 +91,7 @@ Ext.application({
     		/* app/view/speaker */
     		['speaker.AudienceQuestionPanel', 'speaker.InClass', 'speaker.NewQuestionPanel', 'speaker.QuestionDetailsPanel'],
     		['speaker.QuestionStatisticChart', 'speaker.ShowcaseQuestionPanel', 'speaker.TabPanel'],
+    		
     		
     		/* app/view/user */
     		['user.InClass', 'user.QuestionPanel', 'user.TabPanel']),
@@ -180,7 +181,7 @@ Ext.application({
 		if (appCache.status !== appCache.UNCACHED) {
 			appCache.update();
 		}*/
-		
+
 		window.addEventListener('load', function(e) {
 			window.applicationCache.addEventListener('updateready', function(e) {
 				if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {

@@ -485,7 +485,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		
 		/* get text, subject of question from mainPart */
 		var mainPartValues = panel.mainPart.getValues();
-		values.text = mainPartValues.text;
+		values.text = this.previewPanel.getText();//mainPartValues.text;
 		values.subject = mainPartValues.subject;
 		values.abstention = !panel.abstentionPart.isHidden() && panel.getAbstention();
 		values.questionVariant = panel.getVariant();
