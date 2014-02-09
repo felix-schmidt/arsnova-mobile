@@ -59,29 +59,31 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
       layout:"vbox",
       items: [
           {
-              xtype:"image",
-              height: 300,
-              width: 300,
-              style: {
-            	  "background-position": "0 0"
-              },
-              src: 'http://placehold.it/300x300'
-          },
-          {
           	xtype: 'fieldset',
-    		title: 'My Uploader:',
+    		title: 'Bild:',
+    		//fullscreen: true,
+    	    layout: 'hbox',
             items: [
+                {
+                	xtype: 'panel',
+                    flex: 2
+                },
                 {
                 	xtype:"fileinput",
             		accept:"image/jpeg|image/png",	
             		name: 'photo',
             		id: 'imgurl',
+            		flex: 2
+                },
+                {
+                	xtype: 'panel',
+                    flex: 1
                 }
             ]
           },
           {
               xtype:"button",
-              text: "Upload Picture",
+              text: "Upload Bild",
               ui: 'confirm',
               handler: function(){
                   var input = Ext.Viewport.down("fileinput").input;
