@@ -232,6 +232,40 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		return result;
 	};
 	
+	this.exportAnswerText = function() {
+		var result = "";
+		var firstValue = true;
+		var gridSize = grid.getSize();
+		for(var r = 0; r < gridSize.row; r++) {
+			for(var c = 0; c < gridSize.col; c++) {
+				var field = String.fromCharCode(97 + r)+ "" + c;
+				var correct = false;
+				
+				var selectedGridTiles = grid.getSelected();
+				for(var i = 0; i < selectedGridTiles.length; i++) {
+					if(selectedGridTiles[i].x === c && selectedGridTiles[i].y === r) {
+						correct = true;
+					}
+				}
+				
+				if(firstValue) {
+					firstValue = false;
+				}
+				else {
+					result += ","
+				}
+				if(correct) {
+					result += "1"
+				}
+				else {
+					result += "0"
+				}
+						
+			}	
+		}
+		return result;
+	};
+	
 	this.setSize = function(_width, _height) {
 		this.width = _width;
 		this.height = _height;
