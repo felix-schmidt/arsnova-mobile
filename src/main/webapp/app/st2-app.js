@@ -18,9 +18,12 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  +--------------------------------------------------------------------------*/
+Ext.Loader.setPath({
+            'Ext.ux': 'app/utils'
+        });
 
 Ext.application({
-	
+
 	requires: ['ARSnova.BrowserSupport', 'ARSnova.proxy.RestProxy', 'ARSnova.WebSocket'],
 
 	startupImage: {
@@ -38,7 +41,7 @@ Ext.application({
 		72: 'resources/images/ARSnova_Grafiken/01_AppIcon_72x72px.png',
 		114: 'resources/images/ARSnova_Grafiken/01_AppIcon_114x114px.png'
 	},
-	
+
     name: "ARSnova",
     /* const */
     WEBAPP			: 'webapp',
@@ -46,64 +49,64 @@ Ext.application({
     APP_URL			: window.location.origin + window.location.pathname,
     WEBSERVICE_URL	: "app/webservices/",
     PRESENTER_URL	: "/presenter/",
-    
+
 	LOGIN_GUEST		: "0",
 	LOGIN_THM		: "1",
 	LOGIN_OPENID	: "2",
 	LOGIN_TWITTER	: "3",
 	LOGIN_FACEBOOK	: "4",
 	LOGIN_GOOGLE	: "5",
-	
+
 	USER_ROLE_STUDENT: "0",
 	USER_ROLE_SPEAKER: "1",
-    
+
     isIconPrecomposed: true,
     icon: 'resources/images/ARSnova_Grafiken/01_AppIcon_114x114px.png',
 
     models: [].concat(
     		['Answer', 'Feedback', 'LoggedIn', 'Question', 'Session', 'Statistic', 'Course'],
     		['Auth', 'FeedbackQuestion']),
-    
+
     views: [].concat(
-    		
+
     		/* app/view */
-    		['Caption', 'LoginPanel', 'GridSquareQuestion', 'MainTabPanel', 'TabPanel', 'RolePanel', 'MathJaxField', 'CustomMask'], 
+    		['Caption', 'LoginPanel', 'GridSquareQuestion', 'MainTabPanel', 'TabPanel', 'RolePanel', 'MathJaxField', 'CustomMask'],
     		['CustomMessageBox', 'MultiBadgeButton', 'MatrixButton', 'NumericKeypad', 'FreetextAnswerPanel', 'FreetextDetailAnswer'],
     		['FreetextQuestion', 'Question', 'QuestionStatusButton', 'SessionStatusButton', 'TextCheckfield'],
-    		
+
     		/* app/view/about */
     		['about.TabPanel'],
-    		
+
     		/* app/view/diagnosis */
     		['diagnosis.DiagnosisPanel'],
     		['diagnosis.StatisticsPanel'],
     		['diagnosis.TabPanel'],
-    		
+
     		/* app/view/feedback */
     		['feedback.AskPanel', 'feedback.StatisticPanel', 'feedback.TabPanel', 'feedback.VotePanel'],
-    		
+
     		/* app/view/feedbackQuestions */
     		['feedbackQuestions.DetailsPanel', 'feedbackQuestions.QuestionsPanel', 'feedbackQuestions.TabPanel'],
-    		
-    		/* app/view/home */  
+
+    		/* app/view/home */
     		['home.HomePanel', 'home.MySessionsPanel', 'home.NewSessionPanel', 'home.TabPanel'],
-    		
+
     		/* app/view/speaker */
     		['speaker.AudienceQuestionPanel', 'speaker.InClass', 'speaker.NewQuestionPanel', 'speaker.QuestionDetailsPanel'],
     		['speaker.QuestionStatisticChart', 'speaker.ShowcaseQuestionPanel', 'speaker.TabPanel'],
-    		
+
     		/* app/view/user */
     		['user.InClass', 'user.QuestionPanel', 'user.TabPanel']),
-	
-    controllers: ['Auth', 'Feedback', 'Lang', 'Questions', 'FlashcardQuestions', 'PreparationQuestions', 'Sessions'],
-    
+
+    controllers: ['Auth', 'Feedback', 'Lang', 'Questions', 'FlashcardQuestions', 'PreparationQuestions', 'Sessions','GridSquareQuestion'],
+
     /* items */
     mainTabPanel: null,
     tabPanel	: null,
     loginPanel	: null,
     taskManager	: null,
     previousActiveItem: null,
-    
+
     /* infos */
     loginMode		: null,  /* ARSnova.app.LOGIN_GUEST, ... */
     appStatus		: null,	 /* ARSnova.app.WEBAPP || ARSnova.app.NATIVE */
@@ -112,7 +115,7 @@ Ext.application({
     userRole		: null,  /* ARSnova.app.USER_ROLE_STUDENT || ARSnova.app.USER_ROLE_SPEAKER */
     isNative		: function () { return this.appStatus === this.NATIVE; },
     isWebApp		: function () { return this.appStatus === this.WEBAPP; },
-    
+
     /* models */
     answerModel 	: null,
     feedbackModel	: null,
@@ -121,14 +124,14 @@ Ext.application({
     sessionModel 	: null,
     statisticModel 	: null,
     courseModel     : null,
-    
+
     /* proxy */
 	restProxy		: null,
-	
+
     /* other*/
     cardSwitchDuration: 500,
     socket: null,
-    
+
     /* tasks */
 	/**
 	 * update every x seconds the user timestamp
@@ -143,7 +146,7 @@ Ext.application({
 		},
 		interval: 60000 //60 seconds
 	},
-	
+
 	/**
 	 * update every x seconds the owner of a session is logged in
 	 */
@@ -156,7 +159,7 @@ Ext.application({
 		},
 		interval: 180000 //180 seconds
 	},
-	
+
     /**
      * initialize models
      */
@@ -170,7 +173,7 @@ Ext.application({
     	this.statisticModel 	= Ext.create('ARSnova.model.Statistic');
     	this.courseModel		= Ext.create('ARSnova.model.Course');
     },
-    
+
     /**
      * This is called automatically when the page loads. Here we set up the main component on the page
      */
@@ -180,7 +183,7 @@ Ext.application({
 		if (appCache.status !== appCache.UNCACHED) {
 			appCache.update();
 		}*/
-		
+
 		window.addEventListener('load', function(e) {
 			window.applicationCache.addEventListener('updateready', function(e) {
 				if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
@@ -194,25 +197,25 @@ Ext.application({
 				}
 			}, false);
 		}, false);
-		
+
 		this.checkLocalStorage();
 		this.checkBrowser();
-		
+
 		taskManager = new Ext.util.TaskRunner();
-		
+
 		this.initSocket();
 		this.initModels();
-		this.restProxy = Ext.create('ARSnova.proxy.RestProxy'); 
+		this.restProxy = Ext.create('ARSnova.proxy.RestProxy');
 		this.mainTabPanel = Ext.create('ARSnova.view.MainTabPanel');
-		
+
 		/* check previous login */
 		ARSnova.app.getController('Auth').checkLogin();
 	},
-	
+
 	initSocket: function() {
 		this.socket = Ext.create('ARSnova.WebSocket');
 	},
-	
+
 	/**
 	 * after user has logged in
 	 * start some tasks and show the correct homepage to user
@@ -220,10 +223,10 @@ Ext.application({
 	afterLogin: function(){
 		taskManager.start(ARSnova.app.loggedInTask);
 		ARSnova.app.loggedInTask.run(); // fire immediately
-		
+
 		/* show diagnosis tab panel */
 		ARSnova.app.mainTabPanel.tabPanel.diagnosisPanel.tab.show();
-		
+
 		ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.homeTabPanel, 'slide');
 		var hTP = ARSnova.app.mainTabPanel.tabPanel.homeTabPanel;
 		switch (ARSnova.app.userRole) {
@@ -237,14 +240,14 @@ Ext.application({
 			default:
 				break;
 		}
-		
+
 		if (localStorage.getItem("keyword") !== null && localStorage.getItem("keyword") !== "") {
 			return ARSnova.app.getController('Sessions').login({
 				keyword: localStorage.getItem("keyword")
 			});
 		}
     },
-    
+
     /**
      * returns true if user is logged in a session
      */
@@ -254,13 +257,13 @@ Ext.application({
     	else
     		return true;
     },
-    
+
 	checkPreviousLogin: function(){
 		var isLocalStorageUninitialized = localStorage.getItem('role') == null
 									   || localStorage.getItem('loginMode') == null
 									   || localStorage.getItem('login') == null;
 		if (isLocalStorageUninitialized) return false;
-		
+
 		ARSnova.app.loggedIn = true;
 		ARSnova.app.loginMode = localStorage.getItem('loginMode');
 		ARSnova.app.userRole = localStorage.getItem('role');
@@ -281,7 +284,7 @@ Ext.application({
 				break;
 		}
 	},
-	
+
 	/**
 	 * Wrapper for an invidivudal LoadMask
 	 */
@@ -299,14 +302,14 @@ Ext.application({
 		Ext.defer(hideLoadMask, (duration || 5000) - minimumDuration);
 		return hideLoadMask;
 	},
-    
+
     /**
      * clear local storage
      */
     cleanLocalStorage: function(){
     	localStorage.clear();
     },
-    
+
     /**
      * check if string is valid json
      */
@@ -318,35 +321,35 @@ Ext.application({
         }
         return true;
     },
-	
+
 	/**
-	 * make localStorage ready 
+	 * make localStorage ready
 	 */
 	checkLocalStorage: function(){
 		if (localStorage.getItem('lastVisitedSessions') == null){
 			localStorage.setItem('lastVisitedSessions', "[]");
 		}
-		
+
 		if (localStorage.getItem('questionIds') == null){
 			localStorage.setItem('questionIds', "[]");
 		}
-		
+
 		if (localStorage.getItem('loggedIn') == null){
 			localStorage.setItem('loggedIn', "[]");
 		}
-		
+
 		if (localStorage.getItem('user has voted')) {
 			localStorage.removeItem('user has voted');
 		}
-		
+
 		if (localStorage.getItem('session')) {
 			localStorage.removeItem('session');
 		}
-		
+
 		localStorage.setItem('sessionId', "");
 		return true;
 	},
-	
+
 	checkBrowser: function() {
 		var support = Ext.create('ARSnova.BrowserSupport');
 		support.isBrowserSupported(function updateRequired(browserName, requiredVersion) {
@@ -366,7 +369,7 @@ Ext.application({
 		if(tmp.length * 2 < sessionID.length) tmp.push(sessionID[tmp.length * 2]);
 		return tmp.join(" ");
 	},
-	
+
 	removeVisitedSession: function(sessionId){
 		var sessions = Ext.decode(localStorage.getItem('lastVisitedSessions'));
 		for ( var i = 0; i < sessions.length; i++){
