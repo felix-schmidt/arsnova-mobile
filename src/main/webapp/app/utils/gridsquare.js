@@ -241,6 +241,17 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		this.canvas.style.height = '' + height + 'px';
 	};
 	
+	this.exportPicture = function() {
+		var tmpCanvas = document.createElement('canvas');
+		tmpCanvas.width = width;
+		tmpCanvas.height = height;
+		
+		var tmpContext = tmpCanvas.getContext('2d');
+		tmpContext.drawImage(image, 0, 0);
+		
+		return tmpCanvas.toDataURL();
+	}
+	
 	init();
 };
 
@@ -376,4 +387,11 @@ function Fensterweite () {
 	    return 0;
 	  }
 	}
+	
+/*******************************************************************************
+ *	gridsquare todo
+ ******************************************************************************/
+//	-keep image ratio
+//	-lock picture moving and scaling in student view
+//	-remove console output
 	
