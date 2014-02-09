@@ -281,7 +281,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		tmpCanvas.height = height;
 		
 		var tmpContext = tmpCanvas.getContext('2d');
-		tmpContext.drawImage(image, 0, 0);
+		tmpContext.drawImage(picture.getImage(), 0, 0);
 		
 		return tmpCanvas.toDataURL();
 	}
