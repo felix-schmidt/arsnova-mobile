@@ -37,9 +37,12 @@ Ext
 						
 						var self = this;
 						var questionobj = args.questionObj;
+						
 						this.questionObj = args.questionObj;
 						this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
+						
 						var gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject); 
+						this.gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject);
 
 						this.gridsquare = Ext.create('Ext.form.FieldSet', {
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
@@ -138,7 +141,7 @@ Ext
 					selectAbstentionAnswer: function() {},
 					
 					isEmptyAnswer: function() {
-						if(getGridSquare("gsCanvas").exportGrid() != null){
+						if(getGridSquare(this.gridSquareID).exportGrid() != null){
 							return false;
 						}
 						else{
@@ -171,16 +174,18 @@ Ext
 					
 					storeAnswer: function () {
 						var self = this;
+						alert('test');
 						
 						ARSnova.app.answerModel.getUserAnswer(this.questionObj._id, {
 							empty: function() {
+								var answerGridSquareID = Ext.util.Format.htmlEncode(self.questionObj.subject);
+								
 								var answer = Ext.create('ARSnova.model.Answer', {
 									type	 		: "skill_question_answer",
 									sessionId		: localStorage.getItem("sessionId"),
 									questionId		: self.questionObj._id,
-									// Paramter setzen
-									answerSubject	: self.answerSubject.getValue(),
-									answerText		: self.answerText.getValue(),
+									// Answer
+									answerText		: getGridSquare(answerGridSquareID).exportAnswerText(),
 									timestamp		: Date.now(),
 									user			: localStorage.getItem("login")
 								});
@@ -189,10 +194,11 @@ Ext
 							},
 							success: function(response) {
 								var theAnswer = Ext.decode(response.responseText);
+								var answerGridSquareID = Ext.util.Format.htmlEncode(self.questionObj.subject); 
 								
 								var answer = Ext.create('ARSnova.model.Answer', theAnswer);
-								answer.set('answerSubject', self.answerSubject.getValue());
-								answer.set('answerText', self.answerText.getValue());
+								// Anwser
+								answer.set('answerText', getGridSquare(answerGridSquareID).exportAnswerText());
 								answer.set('timestamp', Date.now());
 								answer.set('abstention', false);
 								

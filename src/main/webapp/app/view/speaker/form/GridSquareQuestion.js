@@ -193,12 +193,8 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  getQuestionValues: function() {
 		var result = {};
 
-		// Convert Canvas to Base64
-  	  	var canvas = document.getElementById("gsCanvas");
-  	  	var imageData = canvas.toDataURL();
-
 		result.possibleAnswers = this.getValues();
-		result.image = imageData;
+		result.image = getGridSquare("gsCanvas").exportPicture();
 		result.gridsize = Ext.getCmp('slider').getValue().toString();
 		
 		// Destroy all objects after save
