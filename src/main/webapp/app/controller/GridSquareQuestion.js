@@ -2,7 +2,6 @@ Ext.define('ARSnova.controller.GridSquareQuestion', {
     extend: 'Ext.app.Controller',
 
     requires: [
-//        'Ext.device.Notification',
         'Ext.Img'
     ],
 
@@ -28,24 +27,10 @@ Ext.define('ARSnova.controller.GridSquareQuestion', {
 
     onFileUploadSuccess: function() {
         console.log('Success');
-
-//        Ext.device.Notification.show({
-//            title: 'All right',
-//            message: 'File uploaded successfully',
-//            buttons: Ext.MessageBox.OK,
-//            callback: Ext.emptyFn
-//        });
     },
 
     onFileUploadFailure: function(message) {
         console.log('Failure');
-
-//        Ext.device.Notification.show({
-//            title: 'Uploading error',
-//            message: message,
-//            buttons: Ext.MessageBox.OK,
-//            callback: Ext.emptyFn
-//        });
     },
 
     onFileLoadSuccess: function(dataurl, e) {

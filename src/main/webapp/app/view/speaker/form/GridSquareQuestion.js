@@ -16,19 +16,21 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  /* constructor */
  constructor: function() {
 
+	 this.callParent(arguments);
+	 this.imageGs = Ext.create('Ext.form.FieldSet', {
+		 id: 'imageGs',
+		 html : '<img src="" id="imageGs" style="display:none;">'
+	 });
 
-  this.callParent(arguments);
-  this.imageData = '';
-  this.imageDataScaled = '';
-
-  var imageGs = Ext.create('Ext.form.FieldSet', {
-		html : '<img src="" id="imageGs" style="display:none;">',
-		});
-  var gsCanvas = Ext.create('Ext.form.FieldSet', {
-	  html: "<div align='center'><canvas id='gsCanvas'></canvas></div>",
-	  items: [
-	//Fileup configuration for "Load local file" mode
-	   {
+	 this.gsGridCanvas = Ext.create('Ext.form.FieldSet', {
+		 id: "gsGridCanvas",
+		 hidden: false,
+		 html: "<div align='center'><canvas id='gsCanvas'></canvas></div>",
+	 });
+	 
+	 this.fileUpload = Ext.create('Ext.form.FieldSet', {
+		 id: 'fileUpload',
+		 items: [{
 		   itemId: 'fileLoadBtn',
 	       xtype: 'fileupload',
 	       autoUpload: true,
@@ -43,12 +45,15 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 	           uploading: {
 	               text: 'Loading',
-	               loading: true// Enable loading spinner on button
+	               loading: true
 	           }
 	       }
-	   },
-
-          {
+	   }]
+	 });
+	 
+	 this.gsSliderSize = Ext.create('Ext.form.FieldSet', {
+		 id: 'gsSliderSize',
+		 items: [{
       		xtype: 'fieldset',
       		id: 'sliderset',
       		title: 'Rastergröße:',
@@ -65,15 +70,18 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
       		         drag: function(slider, thumb, newVal, oldVal){
       		        	 Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
 
-
       		        	 if(getGridSquare("gsCanvas") !== null) {
       			       		 getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
       			       	 }
       		         }
       		     }
       		}]
-         },
-         {
+         }]
+	 });
+	 
+	 this.gsSliderScale = Ext.create('Ext.form.FieldSet', {
+		 id: 'gsSliderScale',
+		 items: [{
      		xtype: 'fieldset',
      		id: 'sliderset2',
      		title: 'Bildgröße:',
@@ -99,12 +107,18 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
         }
       ]
   });
- this.add([imageGs, gsCanvas]);
+	 
+ this.add([this.imageGs]);
+ this.add([this.fileUpload]);
+ this.add([this.gsSliderSize]);
+ this.add([this.gsSliderScale]);
+ this.add([this.gsGridCanvas]);
+ 
  }, /* constructor End */
-
+ 
  /* For Speaker Edit View */
  initWithQuestion: function(question) {
-
+	 console.log('test');
  },
 
  /* Function to fill Result Object */
@@ -128,7 +142,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		return hasCorrectOptions;
  },
 
- /* Function to save vaules to database */
+ /* Function to save values to database */
  getQuestionValues: function() {
 		var result = {};
 
@@ -136,16 +150,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		result.image = getGridSquare("gsCanvas").exportPicture();
 		result.gridsize = Ext.getCmp('slider').getValue().toString();
 
-		// Destroy all objects after save
-		//Ext.getCmp('imgurl').destroy;
-		Ext.getCmp('slider').destroy;
-		Ext.getCmp('slider2').destroy;
-		Ext.getCmp('sliderset').destroy;
-		Ext.getCmp('sliderset2').destroy;
-
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
+		
 		return result;
  }
 });

@@ -772,6 +772,12 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			answerEditFormClass = 'ARSnova.view.speaker.form.FlashcardQuestion';
 		} else if (this.questionObj.questionType === 'gs') {
 			answerEditFormClass = 'ARSnova.view.speaker.form.GridSquareQuestion';
+			
+//			var canvasid = "gsCanvasEdit";
+//			console.log(document.getElementById(canvasid));
+//			createGridSquare(canvasid, canvasid, 100, 100, 4, 4, 100);
+//	      	getGridSquare(canvasid).loadImage(this.questionObj.image);
+			
 		}
 		
 		this.answerEditForm = Ext.create(answerEditFormClass, {
