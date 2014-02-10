@@ -173,7 +173,7 @@ Ext.define('Ext.ux.FileUp', {
                     name: 'userfile',
                     tabindex: -1,
                     hidden: false,
-                   // style: 'opacity:0;position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;z-index:16777270;'
+                    style: 'opacity:0;position:absolute;top:0px;left:0px;bottom:0px;width:100%;z-index:16777270;'
                 }
             ]
         }

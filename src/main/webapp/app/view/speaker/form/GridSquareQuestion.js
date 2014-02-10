@@ -35,7 +35,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	       loadAsDataUrl: true,
 	       states: {
 	           browse: {
-	               text: 'Browse and load'
+	               text: 'Select image'
 	           },
 	           ready: {
 	               text: 'Load'
