@@ -35,11 +35,11 @@ Ext.define('ARSnova.controller.GridSquareQuestion', {
 
     onFileLoadSuccess: function(dataurl, e) {
         console.log('File loaded');
-        
+
         var image = this.getLoadedImage();
         document.getElementById("imageGs").src = dataurl;
         var img = document.getElementById("imageGs").src;
-    	
+
         Ext.getCmp('sliderGrid').enable();
         Ext.getCmp('sliderScale').enable();
 

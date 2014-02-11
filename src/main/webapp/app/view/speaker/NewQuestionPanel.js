@@ -233,7 +233,8 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		// Team4
 		this.gridsquareQuestion = Ext.create('ARSnova.view.speaker.form.GridSquareQuestion', {
 			id: 'gs',
-			hidden: true
+			hidden: true,
+			canvasId: "gsCanvas"
 		});
 
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
@@ -289,7 +290,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 								this.gridsquareQuestion.show();
 								createGridSquare("gsCanvas", "gsCanvas", parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), Ext.getCmp('sliderGrid').getValue(), Ext.getCmp('sliderGrid').getValue(), 100);
 						      	getGridSquare("gsCanvas").loadImage('app/images/default.jpg');
-								
+
 								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
 							} else {
 								this.gridsquareQuestion.hide();
@@ -444,14 +445,14 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	saveHandler: function(){
     	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
     	var values = {};
-		
+
 		/* get text, subject of question from mainPart */
 		var mainPartValues = panel.mainPart.getValues();
 		values.text = mainPartValues.text;
 		values.subject = mainPartValues.subject;
 		values.abstention = !panel.abstentionPart.isHidden() && panel.abstentionPart.getAbstention();
 		values.questionVariant = panel.getVariant();
-		
+
 		/* check if release question button is clicked */
 		var releasePart = panel.releasePart;
 
