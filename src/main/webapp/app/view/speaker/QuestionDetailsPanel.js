@@ -805,6 +805,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			createGridSquare(canvasId, canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100);
 			getGridSquare(canvasId).loadImage(this.questionObj.image);
 			// ToDo: Felder im Grid markieren
+
 		}
 	},
 

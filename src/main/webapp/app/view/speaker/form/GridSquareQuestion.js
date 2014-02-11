@@ -19,7 +19,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 	 this.callParent(arguments);
 
-
+	 this.canvasId = args.canvasId;
 	 this.imageGs = Ext.create('Ext.form.FieldSet', {
 		 id: 'imageGs',
 		 html : '<img src="" id="imageGs" style="display:none;">'
@@ -134,8 +134,8 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
  /* Function to fill Result Object */
  getValues: function() {
-	 if(getGridSquare(args.canvasId) !== null) {
-   		 return getGridSquare(args.canvasId).exportGrid();
+	 if(getGridSquare(this.canvasId) !== null) {
+   		 return getGridSquare(this.canvasId).exportGrid();
    	 }
 	 else {
 	 	return null;
@@ -159,13 +159,13 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		var result = {};
 
 		result.possibleAnswers = this.getValues();
-		result.image = getGridSquare(args.canvasId).exportPicture();
+		result.image = getGridSquare(this.canvasId).exportPicture();
 		result.gridsize = Ext.getCmp('sliderGrid').getValue().toString();
 
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
-
+//		this.destroy();
 		return result;
  }
 });
