@@ -30,7 +30,7 @@ Ext.define('ARSnova.model.Question', {
 		         'abstention',
 		         'active',
 		         'duration',
-		         'iamge',
+		         'image',
 		      	 'gridsize',
 		         'noCorrect',
 		         'type',

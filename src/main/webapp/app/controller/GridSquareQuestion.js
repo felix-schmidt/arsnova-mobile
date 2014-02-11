@@ -35,19 +35,16 @@ Ext.define('ARSnova.controller.GridSquareQuestion', {
 
     onFileLoadSuccess: function(dataurl, e) {
         console.log('File loaded');
-
-        var me = this;
-        var image = me.getLoadedImage();
-       // image.setSrc(dataurl);
+        
+        var image = this.getLoadedImage();
         document.getElementById("imageGs").src = dataurl;
         var img = document.getElementById("imageGs").src;
-    	Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
-    	Ext.getCmp('slider').enable();
-  	  	Ext.getCmp('sliderset2').setTitle('Bildgröße: ' + Ext.getCmp('slider2').getValue().toString() + ' % ');
-  	  	Ext.getCmp('slider2').enable();
+    	
+        Ext.getCmp('sliderGrid').enable();
+        Ext.getCmp('sliderScale').enable();
 
 	  	  if(getGridSquare("gsCanvas") !== null) {
-	  		  getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
+	  		  getGridSquare("gsCanvas").setGridSize(Ext.getCmp('sliderGrid').getValue(), Ext.getCmp('sliderGrid').getValue());
 	  		  getGridSquare("gsCanvas").loadImage(img);
 	  	  }
     },

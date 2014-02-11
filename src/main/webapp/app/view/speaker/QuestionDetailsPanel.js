@@ -771,18 +771,13 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		} else if (this.questionObj.questionType === 'flashcard') {
 			answerEditFormClass = 'ARSnova.view.speaker.form.FlashcardQuestion';
 		} else if (this.questionObj.questionType === 'gs') {
-			answerEditFormClass = 'ARSnova.view.speaker.form.GridSquareQuestion';
-			
-//			var canvasid = "gsCanvasEdit";
-//			console.log(document.getElementById(canvasid));
-//			createGridSquare(canvasid, canvasid, 100, 100, 4, 4, 100);
-//	      	getGridSquare(canvasid).loadImage(this.questionObj.image);
-			
+			answerEditFormClass = 'ARSnova.view.speaker.form.GridSquareQuestion';			
 		}
 		
 		this.answerEditForm = Ext.create(answerEditFormClass, {
 			hidden: true
 		});
+		
 		this.answerEditForm.initWithQuestion(Ext.clone(this.questionObj));
 		
 		this.possibleAnswers = {};
@@ -800,6 +795,14 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		
 		this.on('activate', this.onActivate);
 		this.on('deactivate', this.onDeactivate);
+		
+		if(this.questionObj.questionType === 'gs'){
+			var canvasId = this.questionObj._id;
+			this.answerEditForm.gsGridCanvas.setHtml("<div align='center'><canvas id='"+canvasId+"'></canvas></div>");
+			createGridSquare(canvasId, canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100);
+			getGridSquare(canvasId).loadImage(this.questionObj.image);
+			// ToDo: Felder im Grid markieren
+		}
 	},
 	
 	prevNewCard: null,

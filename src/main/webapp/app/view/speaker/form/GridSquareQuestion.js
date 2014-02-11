@@ -25,7 +25,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	 this.gsGridCanvas = Ext.create('Ext.form.FieldSet', {
 		 id: "gsGridCanvas",
 		 hidden: false,
-		 html: "<div align='center'><canvas id='gsCanvas'></canvas></div>",
+		 html: "<br><br><div align='center'><canvas id='gsCanvas'></canvas></div>",
 	 });
 	 
 	 this.fileUpload = Ext.create('Ext.form.FieldSet', {
@@ -42,7 +42,6 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	           ready: {
 	               text: 'Load'
 	           },
-
 	           uploading: {
 	               text: 'Loading',
 	               loading: true
@@ -51,43 +50,43 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	   }]
 	 });
 	 
-	 this.gsSliderSize = Ext.create('Ext.form.FieldSet', {
-		 id: 'gsSliderSize',
-		 items: [{
-      		xtype: 'fieldset',
-      		id: 'sliderset',
-      		title: 'Rastergröße:',
-      		items: [{
-      			 xtype: 'sliderfield',
-      			 id: 'slider',
+	 this.gsSliderSizeTitle = Ext.create('Ext.Label', {
+		 id: 'sliderGridTitle',
+		 html: "<b>Rastergröße:</b>"
+	 });
+	 
+	 this.gsSliderSize = Ext.create('Ext.field.Slider', {
+      			 id: 'sliderGrid',
       		     value: 4,
       		     increment: 1,
       		     disabled: true,
       		     minValue: 2,
       		     maxValue: 6,
-
       		     listeners : {
-      		         drag: function(slider, thumb, newVal, oldVal){
-      		        	 Ext.getCmp('sliderset').setTitle('Rastergröße: ' + Ext.getCmp('slider').getValue().toString() + ' x ' + Ext.getCmp('slider').getValue().toString());
+      		    	 drag: function(slider, thumb, newVal, oldVal){
+      		        	 Ext.getCmp('sliderGridTitle').setHtml('<b>Rastergröße: '+ Ext.getCmp('sliderGrid').getValue().toString() + ' x ' + Ext.getCmp('sliderGrid').getValue().toString() +'</b>');
 
       		        	 if(getGridSquare("gsCanvas") !== null) {
-      			       		 getGridSquare("gsCanvas").setGridSize(Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue());
+      			       		 getGridSquare("gsCanvas").setGridSize(Ext.getCmp('sliderGrid').getValue(), Ext.getCmp('sliderGrid').getValue());
       			       	 }
-      		         }
+      		         },
+      				change: function(slider, thumb, newVal, oldVal){
+      		        	 Ext.getCmp('sliderGridTitle').setHtml('<b>Rastergröße: '+ Ext.getCmp('sliderGrid').getValue().toString() + ' x ' + Ext.getCmp('sliderGrid').getValue().toString() +'</b>');
+
+      		        	 if(getGridSquare("gsCanvas") !== null) {
+      			       		 getGridSquare("gsCanvas").setGridSize(Ext.getCmp('sliderGrid').getValue(), Ext.getCmp('sliderGrid').getValue());
+      			       	 }
+      		         },
       		     }
-      		}]
-         }]
 	 });
 	 
-	 this.gsSliderScale = Ext.create('Ext.form.FieldSet', {
-		 id: 'gsSliderScale',
-		 items: [{
-     		xtype: 'fieldset',
-     		id: 'sliderset2',
-     		title: 'Bildgröße:',
-     		items: [{
-     			xtype: 'sliderfield',
-     			id: 'slider2',
+	 this.gsSliderScaleTitle = Ext.create('Ext.Label', {
+     		id: 'sliderScaleTitle',
+     		html: '<br><br><b>Bildgröße:</b>',
+	 });
+	 
+	 this.gsSliderScale = Ext.create('Ext.field.Slider', {
+     			id: 'sliderScale',
      			value: 100,
      			increment: 1,
      			disabled: true,
@@ -96,21 +95,27 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
      			listeners : {
      				drag: function(slider, thumb, newVal, oldVal){
-     				 Ext.getCmp('sliderset2').setTitle('Bildgröße: ' + Ext.getCmp('slider2').getValue().toString() + ' % ');
+     				 Ext.getCmp('sliderScaleTitle').setHtml('<br><br><b>Bildgröße:' + Ext.getCmp('sliderScale').getValue().toString() + ' % </b>');
 
      				 	if(getGridSquare("gsCanvas") !== null) {
-     				 		getGridSquare("gsCanvas").setScale(Ext.getCmp('slider2').getValue());
+     				 		getGridSquare("gsCanvas").setScale(Ext.getCmp('sliderScale').getValue());
      				 	}
-     				}
+     				},
+     				change: function(slider, thumb, newVal, oldVal){
+        				 Ext.getCmp('sliderScaleTitle').setHtml('<br><br><b>Bildgröße:' + Ext.getCmp('sliderScale').getValue().toString() + ' % </b>');
+
+      				 	if(getGridSquare("gsCanvas") !== null) {
+      				 		getGridSquare("gsCanvas").setScale(Ext.getCmp('sliderScale').getValue());
+      				 	}
+      				}
      			}
-     		}]
-        }
-      ]
-  });
+	 });
 	 
  this.add([this.imageGs]);
  this.add([this.fileUpload]);
+ this.add([this.gsSliderSizeTitle]);
  this.add([this.gsSliderSize]);
+ this.add([this.gsSliderScaleTitle]);
  this.add([this.gsSliderScale]);
  this.add([this.gsGridCanvas]);
  
@@ -118,7 +123,9 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  
  /* For Speaker Edit View */
  initWithQuestion: function(question) {
-	 console.log('test');
+     Ext.getCmp('sliderGrid').enable();
+     Ext.getCmp('sliderScale').enable();
+     Ext.getCmp('sliderGrid').setValue(question.gridsize);
  },
 
  /* Function to fill Result Object */
@@ -148,7 +155,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 		result.possibleAnswers = this.getValues();
 		result.image = getGridSquare("gsCanvas").exportPicture();
-		result.gridsize = Ext.getCmp('slider').getValue().toString();
+		result.gridsize = Ext.getCmp('sliderGrid').getValue().toString();
 
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;

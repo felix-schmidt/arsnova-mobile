@@ -287,7 +287,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						case Messages.GRID_SQUARE: //Team4
 							if (pressed) {
 								this.gridsquareQuestion.show();
-								createGridSquare("gsCanvas", "gsCanvas", parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), Ext.getCmp('slider').getValue(), Ext.getCmp('slider').getValue(), 100);
+								createGridSquare("gsCanvas", "gsCanvas", parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), Ext.getCmp('sliderGrid').getValue(), Ext.getCmp('sliderGrid').getValue(), 100);
 						      	getGridSquare("gsCanvas").loadImage('app/images/default.jpg');
 								
 								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
