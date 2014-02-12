@@ -41,8 +41,8 @@ Ext
 						this.questionObj = args.questionObj;
 						this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
 						
-						var gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject); 
-						this.gridSquareID = Ext.util.Format.htmlEncode(this.questionObj.subject);
+						var gridSquareID = "gsCanvas-" + Ext.id();
+						this.gridSquareID = gridSquareID;
 
 						this.gridsquare = Ext.create('Ext.form.FieldSet', {
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
@@ -174,8 +174,7 @@ Ext
 					
 					storeAnswer: function () {
 						var self = this;
-						alert('test');
-						
+
 						ARSnova.app.answerModel.getUserAnswer(this.questionObj._id, {
 							empty: function() {
 								var answerGridSquareID = Ext.util.Format.htmlEncode(self.questionObj.subject);
@@ -185,7 +184,7 @@ Ext
 									sessionId		: localStorage.getItem("sessionId"),
 									questionId		: self.questionObj._id,
 									// Answer
-									answerText		: getGridSquare(answerGridSquareID).exportAnswerText(),
+									answerText		: getGridSquare(self.gridSquareID).exportAnswerText(),
 									timestamp		: Date.now(),
 									user			: localStorage.getItem("login")
 								});
@@ -193,12 +192,11 @@ Ext
 								self.saveAnswer(answer);
 							},
 							success: function(response) {
-								var theAnswer = Ext.decode(response.responseText);
-								var answerGridSquareID = Ext.util.Format.htmlEncode(self.questionObj.subject); 
-								
+								var theAnswer = Ext.decode(response.responseText); 
 								var answer = Ext.create('ARSnova.model.Answer', theAnswer);
+
 								// Anwser
-								answer.set('answerText', getGridSquare(answerGridSquareID).exportAnswerText());
+								answer.set('answerText', getGridSquare(self.gridSquareID).exportAnswerText());
 								answer.set('timestamp', Date.now());
 								answer.set('abstention', false);
 								
