@@ -98,7 +98,7 @@ Ext.application({
     		/* app/view/user */
     		['user.InClass', 'user.QuestionPanel', 'user.TabPanel']),
 
-    controllers: ['Auth', 'Feedback', 'Lang', 'Questions', 'FlashcardQuestions', 'PreparationQuestions', 'Sessions','GridSquareQuestion'],
+    controllers: ['Auth', 'Feedback', 'Lang', 'Questions', 'FlashcardQuestions', 'PreparationQuestions', 'Sessions'],
 
     /* items */
     mainTabPanel: null,
