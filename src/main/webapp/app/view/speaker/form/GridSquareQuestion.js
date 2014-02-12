@@ -16,12 +16,13 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
  /* constructor */
  constructor: function(args) {
-	 
+
 	 var me = this;
 
 	 this.callParent(arguments);
 
 	 this.canvasId = args.canvasId;
+
 
 	 this.gsGridCanvas = Ext.create('Ext.form.FieldSet', {
 		 id: "field-" + this.canvasId,
@@ -49,9 +50,9 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	           }
 	       },
 	       listeners : {
-	    	   loadsuccess: { 
+	    	   loadsuccess: {
 				 fn: function(dataurl, e){
-				 	
+
 				 	this.gsSliderSize.enable();
 				 	this.gsSliderScale.enable();
 
@@ -63,14 +64,14 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 				 scope: me
 	    	   },
 	    	   loadfailure: function(dataurl, e){
-				 console.log('File fail!');
+				 console.log('File not loaded!');
 	    	   }
 	       }
 	   }]
 	 });
 
 	 this.gsSliderSizeTitle = Ext.create('Ext.Label', {
-		 id: 'sliderGridTitle',
+		 id: 'sliderGridTitle' + this.canvasId,
 		 html: "<b>Rastergröße:</b>"
 	 });
 
@@ -82,25 +83,19 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
       		     minValue: 2,
       		     maxValue: 6,
       		     listeners : {
-      		    	 drag: function(slider, thumb, newVal, oldVal){
-      		    		 this.gsSliderSizeTitle.setHtml('<b>Rastergröße: '+ newVal + ' x ' + newVal +'</b>');
-
-      		        	 if(getGridSquare(this.canvasId) !== null) {
-      			       		 getGridSquare(this.canvasId).setGridSize(newVal, newVal);
-      			       	 }
-      		         },
-      				change: function(slider, thumb, newVal, oldVal){
-     		    		 this.gsSliderSizeTitle.setHtml('<b>Rastergröße: '+ newVal + ' x ' + newVal +'</b>');
-
-     		        	 if(getGridSquare(this.canvasId) !== null) {
-     			       		 getGridSquare(this.canvasId).setGridSize(newVal, newVal);
-     			       	 }
-      		         },
+      		    	 drag: {
+      		    		fn: this.updateSliderSize,
+      		    		scope: me
+      		     },
+      				change: {
+      		    		fn:  this.updateSliderSize,
+      		    		scope: me
+         		 },
       		     }
 	 });
 
 	 this.gsSliderScaleTitle = Ext.create('Ext.Label', {
-     		id: 'sliderScaleTitle',
+     		id: 'sliderScaleTitle' + this.canvasId,
      		html: '<br><br><b>Bildgröße:</b>',
 	 });
 
@@ -113,20 +108,14 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
      			maxValue: 100,
 
      			listeners : {
-     				drag: function(slider, thumb, newVal, oldVal){
-     					this.gsSliderScaleTitle.setHtml('<br><br><b>Bildgröße:' + newVal + ' % </b>');
-
-     				 	if(getGridSquare(this.canvasId) !== null) {
-     				 		getGridSquare(this.canvasId).setScale(newVal);
-     				 	}
-     				},
-     				change: function(slider, thumb, newVal, oldVal){
-     					this.gsSliderScaleTitle.setHtml('<br><br><b>Bildgröße:' + newVal + ' % </b>');
-
-     				 	if(getGridSquare(this.canvasId) !== null) {
-     				 		getGridSquare(this.canvasId).setScale(newVal);
-     				 	}
-      				}
+     				drag: {
+      		    		fn: this.updateSliderScale,
+      		    		scope: me
+            		},
+     				change: {
+      		    		fn: this.updateSliderScale,
+         				scope: me
+                		},
      			}
 	 });
 
@@ -141,9 +130,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
  /* For Speaker Edit View */
  initWithQuestion: function(question) {
-     Ext.getCmp('sliderGrid').enable();
-     Ext.getCmp('sliderScale').enable();
-     Ext.getCmp('sliderGrid').setValue(question.gridsize);
+
+	 this.gsSliderSize.enable();
+	 this.gsSliderScale.enable();
+	 this.gsSliderSize.setValue(question.gridsize);
  },
 
  /* Function to fill Result Object */
@@ -179,7 +169,36 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
-//		this.destroy();
+		this.initForm();
 		return result;
+ },
+
+ updateSliderScale: function(slider, thumb, newVal, oldVal){
+		this.gsSliderScaleTitle.setHtml('<br><br><b>Bildgröße:' + slider.getValue() + ' % </b>');
+
+	 	if(getGridSquare(this.canvasId) !== null) {
+	 		getGridSquare(this.canvasId).setScale(slider.getValue());
+	 	}
+},
+
+updateSliderSize: function(slider, thumb, newVal, oldVal){
+
+		 this.gsSliderSizeTitle.setHtml('<b>Rastergröße: '+ slider.getValue() + ' x ' + slider.getValue() +'</b>');
+
+ 	 if(getGridSquare(this.canvasId) !== null) {
+    		 getGridSquare(this.canvasId).setGridSize(slider.getValue(),slider.getValue());
+    	 }
+  },
+ initForm: function()
+ {
+	this.gsSliderSize.disable();
+	this.gsSliderSize.setValue("4");
+	this.gsSliderScale.disable();
+	this.gsSliderScale.setValue("100");
+	this.gsSliderSizeTitle.setHtml("<b>Rastergröße:</b>");
+	this.gsSliderScaleTitle.setHtml("<br><br><b>Bildgröße:</b>");
+	getGridSquare(this.canvasId).loadImage("/app/images/default.jpg");
+	getGridSquare(this.canvasId).setScale("100");
+	getGridSquare(this.canvasId).setGridSize("4","4");
  }
 });

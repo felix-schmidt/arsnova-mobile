@@ -237,6 +237,8 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			canvasId: "gsCanvas-" + Ext.id()
 		});
 
+
+
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
 	        allowDepress: false,
 	        items: [
@@ -288,12 +290,14 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						case Messages.GRID_SQUARE: //Team4
 							if (pressed) {
 								this.gridsquareQuestion.show();
+								//ToDo Init Slider, Gridsize, ImageScale, Slider disable...
 								createGridSquare(this.gridsquareQuestion.canvasId, this.gridsquareQuestion.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.gridsquareQuestion.gsSliderSize.getValue(), this.gridsquareQuestion.gsSliderSize.getValue(), 100);
 						      	getGridSquare(this.gridsquareQuestion.canvasId).loadImage('app/images/default.jpg');
 
 								title = label(Messages.QUESTION_GRID_SQUARE, Messages.QUESTION_GRID_SQUARE_SHORT);
 							} else {
 								this.gridsquareQuestion.hide();
+								this.gridsquareQuestion.initForm();
 							}
 							break;
 						case Messages.YESNO:

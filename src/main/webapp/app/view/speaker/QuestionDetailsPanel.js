@@ -775,7 +775,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		}
 
 		this.answerEditForm = Ext.create(answerEditFormClass, {
-			canvasId : this.questionObj._id,
+			canvasId : "gsCanvasEdit-" + Ext.id(),
 			hidden: true
 		});
 
@@ -799,11 +799,9 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 
 		if(this.questionObj.questionType === 'gs'){
 
-			var canvasId = this.questionObj._id;
-			this.answerEditForm.canvasId = canvasId;
-			this.answerEditForm.gsGridCanvas.setHtml("<div align='center'><canvas id='"+canvasId+"'></canvas></div>");
-			createGridSquare(canvasId, canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100);
-			getGridSquare(canvasId).loadImage(this.questionObj.image);
+			this.answerEditForm.gsGridCanvas.setHtml("<div align='center'><canvas id='"+this.answerEditForm.canvasId+"'></canvas></div>");
+			createGridSquare(this.answerEditForm.canvasId, this.answerEditForm.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100);
+			getGridSquare(this.answerEditForm.canvasId).loadImage(this.questionObj.image);
 			// ToDo: Felder im Grid markieren
 
 		}
