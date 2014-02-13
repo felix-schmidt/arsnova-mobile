@@ -978,7 +978,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 						}
 						panel.abstentions.setBadge([{badgeText: '0'}]);
 
-						if (panel.questionObj.questionType === "mc") {
+						if (panel.questionObj.questionType === "mc" || panel.questionObj.questionType === "gs") {
 							var mcAnswerCount = [];
 							var abstentionCount = 0;
 							for (var i = 0, el; el = answers[i]; i++) {
