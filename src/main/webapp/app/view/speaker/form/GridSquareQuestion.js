@@ -169,7 +169,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		if (!this.hasCorrectOptions()) {
 			result.noCorrect = 1;
 		}
-		this.initForm();
+
 		return result;
  },
 

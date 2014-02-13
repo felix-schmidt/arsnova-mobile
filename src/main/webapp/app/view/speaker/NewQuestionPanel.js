@@ -390,6 +390,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						listeners: {
 							hide: function() {
 								this.destroy();
+
 							},
 							show: function() {
 								Ext.defer(function(){
@@ -576,6 +577,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 
 		var promise = panel.dispatch(values);
 		promise.then(function() {
+			panel.gridsquareQuestion.initForm();
 			panel.subject.reset();
 			panel.textarea.reset();
 		});

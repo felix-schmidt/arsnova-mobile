@@ -888,7 +888,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 					return Messages.FREETEXT;
 				case "flashcard":
 					return Messages.FLASHCARD;
-				case "flashcard":
+				case "gs":
 					return 'GridSquare';
 				default:
 					return this.questionObj.questionType;
@@ -898,7 +898,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			 * only for older questions:
 			 * try to define the question type
 			 */
-			console.log(this.questionObj);
+
 			if(this.questionObj.possibleAnswers.length == 2)
 				return Messages.YESNO;
 			else if(this.questionObj.possibleAnswers[0].correct)
@@ -1037,6 +1037,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	resetFields: function(){
 		var fields = this.down('#contentFieldset').items.items;
 		fields.forEach(function(field) {
+
 			field.reset();
 			field.setDisabled(true);
 		});
