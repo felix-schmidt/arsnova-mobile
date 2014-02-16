@@ -20,7 +20,8 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	extend: 'Ext.Panel',
-
+	id: 'newQuestionGrid',
+	
 	requires: ['ARSnova.view.speaker.form.ExpandingAnswerForm', 'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
 	           'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
 	           'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
@@ -31,7 +32,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		fullscreen: true,
 		scrollable: true,
 		scroll: 'vertical',
-
 		variant: 'lecture',
 		abstention: true,
 		releasedFor: 'all'
