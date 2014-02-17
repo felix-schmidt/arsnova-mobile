@@ -26,7 +26,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		width = _width;
 		height = _height;
 		canvas = document.getElementById(canvasId);
-		console.log(width);
+		//console.log(width);
 		canvas.width = width;
 		canvas.height = height;
 		canvas.style.width  = '' + width + 'px';
@@ -145,7 +145,9 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		var image = picture.getImage();
 		var scale = picture.getScale() / 100;
 		var position = picture.getPosition();
-		context.drawImage(image, position.x, position.y, width * scale, height * scale);
+		// if canvas width is higher than canvas height then the aspect = h/w else w/h
+		var pictureAspect = image.height / image.width;
+		context.drawImage(image, position.x, position.y, width * scale, (width * pictureAspect) * scale);
 	}
 	
 	function renderGrid() {
@@ -298,7 +300,8 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		tmpCanvas.height = height;
 		
 		var tmpContext = tmpCanvas.getContext('2d');
-		tmpContext.drawImage(picture.getImage(), 0, 0);
+		//tmpContext.drawImage(picture.getImage(), 0, 0);
+		tmpContext.drawImage(picture.getImage(), 0, 0, tmpCanvas.width, tmpCanvas.height);
 		
 		return tmpCanvas.toDataURL();
 	}
