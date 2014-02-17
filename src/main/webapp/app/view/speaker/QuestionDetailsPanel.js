@@ -61,7 +61,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			directionLock: true
 		}
 	},
-
+	
 	/* toolbar items */
 	toolbar		: null,
 	backButton	: null,
@@ -88,7 +88,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 
 	constructor: function(args){
 		this.callParent(args);
-
+		
 		var me = this;
 		this.questionObj = args.question;
 

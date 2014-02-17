@@ -52,7 +52,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 
 	initialize: function(){
 		this.callParent(arguments);
-
+		
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.QUESTIONS,
 			ui		: 'back',
@@ -390,7 +390,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 						listeners: {
 							hide: function() {
 								this.destroy();
-
 							},
 							show: function() {
 								Ext.defer(function(){

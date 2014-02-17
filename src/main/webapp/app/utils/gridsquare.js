@@ -73,9 +73,16 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	}
 
 	function onMouseMove(evt) {
+		var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
+		var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');
+		
 		if(pictureDrag.dragged) {
-			Ext.getCmp('newQuestionPanelId').setScrollable( false );
-			Ext.getCmp('questionDetailsPanelId').setScrollable( false );
+			if (newQuestionPanel_Var) {
+				Ext.getCmp('newQuestionPanelId').setScrollable( false );
+			};
+			if (questionDetailsPanel_Var) {
+				Ext.getCmp('questionDetailsPanelId').setScrollable( false );	
+			};
 			var x = evt.clientX - canvas.getBoundingClientRect().left;
 			var y = evt.clientY - canvas.getBoundingClientRect().top;
 			// make position relative to the drag start position
@@ -94,8 +101,12 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			pictureDrag.dragged = true;
 		}
 		else {
-			Ext.getCmp('newQuestionPanelId').setScrollable( true ); 
-			Ext.getCmp('questionDetailsPanelId').setScrollable( true ); 
+			if (newQuestionPanel_Var) {
+				Ext.getCmp('newQuestionPanelId').setScrollable( true );
+			};
+			if (questionDetailsPanel_Var) {
+				Ext.getCmp('questionDetailsPanelId').setScrollable( true );	
+			};
 		}
 	}
 	
