@@ -53,8 +53,10 @@ Ext
 								    	// Get base64
 								    	image.src = questionobj.image;
 								    	
+								    	
 						            	// Draw grid
 								    	createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100);
+								    	getGridSquare(gridSquareID).enableSelect();
 								    	getGridSquare(gridSquareID).loadImage(image.src);
 						            }
 						        }
