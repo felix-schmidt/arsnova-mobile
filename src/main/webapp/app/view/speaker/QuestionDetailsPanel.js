@@ -803,6 +803,8 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			this.answerEditForm.gsGridCanvas.setHtml("<div align='center'><canvas id='"+this.answerEditForm.canvasId+"'></canvas></div>");
 			createGridSquare(this.answerEditForm.canvasId, this.answerEditForm.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100, Ext.getCmp('questionDetailsPanelId'));
 			getGridSquare(this.answerEditForm.canvasId).loadImage(this.questionObj.image);
+			getGridSquare(this.answerEditForm.canvasId).enableEdit();
+			getGridSquare(this.answerEditForm.canvasId).enableSelect();
 			// ToDo: Felder im Grid markieren
 
 		}
