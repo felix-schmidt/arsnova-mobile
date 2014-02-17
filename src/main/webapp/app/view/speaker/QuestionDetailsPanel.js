@@ -51,6 +51,7 @@ Ext.define('FreetextAnswer', {
 
 Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	extend: 'Ext.Panel',
+	id: 'questionDetailsPanelId',
 
 	config: {
 		title: 'QuestionDetailsPanel',

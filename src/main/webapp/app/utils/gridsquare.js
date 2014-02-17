@@ -74,7 +74,8 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 	function onMouseMove(evt) {
 		if(pictureDrag.dragged) {
-			Ext.getCmp('newQuestionGrid').setScrollable( false ); 
+			Ext.getCmp('newQuestionPanelId').setScrollable( false );
+			Ext.getCmp('questionDetailsPanelId').setScrollable( false );
 			var x = evt.clientX - canvas.getBoundingClientRect().left;
 			var y = evt.clientY - canvas.getBoundingClientRect().top;
 			// make position relative to the drag start position
@@ -93,7 +94,8 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			pictureDrag.dragged = true;
 		}
 		else {
-			Ext.getCmp('newQuestionGrid').setScrollable( true ); 
+			Ext.getCmp('newQuestionPanelId').setScrollable( true ); 
+			Ext.getCmp('questionDetailsPanelId').setScrollable( true ); 
 		}
 	}
 	
