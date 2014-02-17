@@ -8,7 +8,7 @@ var gridsquare = gridsquare || {};
 /*******************************************************************************
  *	class gridsquare.gridsquare
  ******************************************************************************/
-gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale) {
+gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp) {
 	var canvasId;
 	var width;
 	var height;
@@ -16,6 +16,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	var context;
 	var editable;
 	var selectable;
+	var extCmp;
 	
 	var picture;
 	var grid;
@@ -37,6 +38,8 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		
 		editable = false;
 		selectable = false;
+		
+		extCmp = _extCmp;
 		
 		pictureDrag = {};
 		pictureDrag.startTimeMouseDown = 0;
@@ -81,16 +84,16 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 	function onMouseMove(evt) {
 		if(editable) {
-			var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
-			var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');
+			//var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
+			//var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');			
 			
 			if(pictureDrag.dragged) {
-				if (newQuestionPanel_Var) {
-					Ext.getCmp('newQuestionPanelId').setScrollable( false );
+				if (extCmp) {
+					extCmp.setScrollable( false );
 				};
-				if (questionDetailsPanel_Var) {
+				/*if (questionDetailsPanel_Var) {
 					Ext.getCmp('questionDetailsPanelId').setScrollable( false );	
-				};
+				};*/
 				var x = evt.clientX - canvas.getBoundingClientRect().left;
 				var y = evt.clientY - canvas.getBoundingClientRect().top;
 				// make position relative to the drag start position
@@ -109,12 +112,12 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				pictureDrag.dragged = true;
 			}
 			else {
-				if (newQuestionPanel_Var) {
-					Ext.getCmp('newQuestionPanelId').setScrollable( true );
+				if (extCmp) {
+					extCmp.setScrollable( true );
 				};
-				if (questionDetailsPanel_Var) {
+				/*if (questionDetailsPanel_Var) {
 					Ext.getCmp('questionDetailsPanelId').setScrollable( true );	
-				};
+				};*/
 			}
 		}
 	}
@@ -418,7 +421,7 @@ gridsquare.grid = function(_columns, _rows) {
 
 gridsquare.gridsquarestore = [];
 
-function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRows, _imageScale) {
+function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp) {
 	var found = false;
 	for(var i = 0; i < gridsquare.gridsquarestore.length; i++) {
 		if(gridsquare.gridsquarestore[i].id == _id) {
@@ -427,7 +430,7 @@ function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRo
 		}
 	}
 	if(!found) {
-		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale)});
+		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp)});
 	}
 }
 
