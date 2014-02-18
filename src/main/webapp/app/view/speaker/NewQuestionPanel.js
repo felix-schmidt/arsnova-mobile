@@ -20,8 +20,7 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	extend: 'Ext.Panel',
-	id: 'newQuestionPanelId',
-	
+
 	requires: ['ARSnova.view.speaker.form.ExpandingAnswerForm', 'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
 	           'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
 	           'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
@@ -52,7 +51,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 
 	initialize: function(){
 		this.callParent(arguments);
-		
+
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.QUESTIONS,
 			ui		: 'back',
@@ -291,7 +290,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 							if (pressed) {
 								this.gridsquareQuestion.show();
 								//ToDo Init Slider, Gridsize, ImageScale, Slider disable...
-								createGridSquare(this.gridsquareQuestion.canvasId, this.gridsquareQuestion.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.gridsquareQuestion.gsSliderSize.getValue(), this.gridsquareQuestion.gsSliderSize.getValue(), 100, Ext.getCmp('newQuestionPanelId'));
+								createGridSquare(this.gridsquareQuestion.canvasId, this.gridsquareQuestion.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.gridsquareQuestion.gsSliderSize.getValue(), this.gridsquareQuestion.gsSliderSize.getValue(), 100, this);
 						      	getGridSquare(this.gridsquareQuestion.canvasId).loadImage('app/images/default.jpg');
 						      	getGridSquare(this.gridsquareQuestion.canvasId).enableEdit();
 						      	getGridSquare(this.gridsquareQuestion.canvasId).enableSelect();

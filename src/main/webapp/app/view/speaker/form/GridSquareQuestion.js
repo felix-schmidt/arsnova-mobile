@@ -104,8 +104,8 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
      			value: 100,
      			increment: 1,
      			disabled: true,
-     			minValue: 0,
-     			maxValue: 100,
+     			minValue: 1,
+     			maxValue: 200,
 
      			listeners : {
      				drag: {

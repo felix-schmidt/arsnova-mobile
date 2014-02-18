@@ -17,12 +17,12 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	var editable;
 	var selectable;
 	var extCmp;
-	
+
 	var picture;
 	var grid;
-	
+
 	var pictureDrag;
-	
+
 	function init() {
 		// setup canvas
 		canvasId = _canvasId;
@@ -35,29 +35,29 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		canvas.style.width  = '' + width + 'px';
 		canvas.style.height = '' + height + 'px';
 		context = canvas.getContext("2d");
-		
+
 		editable = false;
 		selectable = false;
-		
+
 		extCmp = _extCmp;
-		
+
 		pictureDrag = {};
 		pictureDrag.startTimeMouseDown = 0;
 		pictureDrag.positionOfDrag = {x:0, y:0};
 		pictureDrag.positionOfPictureBeforeMove = {x:0, y:0};
 		pictureDrag.mouseDown = false;
 		pictureDrag.dragged = false;
-		
+
 		canvas.addEventListener('mousedown', onMouseDown, false);
 		canvas.addEventListener('mouseup', onMouseUp, false);
 		canvas.addEventListener('mousemove', onMouseMove, false);
-		
+
 		// setup picture
 		picture = new gridsquare.picture(_imageScale);
-		
+
 		// setup grid
 		grid = new gridsquare.grid(_gridColumns, _gridRows);
-		
+
 		// render
 		render();
 	}
@@ -76,7 +76,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				var x = evt.clientX - canvas.getBoundingClientRect().left;
 				var y = evt.clientY - canvas.getBoundingClientRect().top;
 				selectGridTile(x, y);
-			}	
+			}
 		}
 		pictureDrag.dragged  = false;
 		pictureDrag.mouseDown = false;
@@ -85,14 +85,14 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	function onMouseMove(evt) {
 		if(editable) {
 			//var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
-			//var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');			
-			
+			//var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');
+
 			if(pictureDrag.dragged) {
 				if (extCmp) {
 					extCmp.setScrollable( false );
 				};
 				/*if (questionDetailsPanel_Var) {
-					Ext.getCmp('questionDetailsPanelId').setScrollable( false );	
+					Ext.getCmp('questionDetailsPanelId').setScrollable( false );
 				};*/
 				var x = evt.clientX - canvas.getBoundingClientRect().left;
 				var y = evt.clientY - canvas.getBoundingClientRect().top;
@@ -116,19 +116,19 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 					extCmp.setScrollable( true );
 				};
 				/*if (questionDetailsPanel_Var) {
-					Ext.getCmp('questionDetailsPanelId').setScrollable( true );	
+					Ext.getCmp('questionDetailsPanelId').setScrollable( true );
 				};*/
 			}
 		}
 	}
-	
+
 	function selectGridTile(_x, _y) {
 		var selectedTile = {x:0,y:0};
 		var gridSize = grid.getSize();
-		
+
 		selectedTile.x = Math.floor(_x / (width / gridSize.col));
 		selectedTile.y = Math.floor(_y / (height / gridSize.row));
-		
+
 		var found = false;
 		var selectedTiles = grid.getSelected();
 		for(var i = 0; i < selectedTiles.length; i++) {
@@ -144,7 +144,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		grid.setSelected(selectedTiles);
 		render();
 	}
-	
+
 	function render() {
 		//console.log("render");
 		context.clearRect(0, 0, canvas.width, canvas.height);
@@ -152,7 +152,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		renderGrid();
 		renderSelectedGridTiles();
 	}
-	
+
 	function renderPicture() {
 		var image = picture.getImage();
 		var scale = picture.getScale() / 100;
@@ -161,10 +161,10 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		var pictureAspect = image.height / image.width;
 		context.drawImage(image, position.x, position.y, width * scale, (width * pictureAspect) * scale);
 	}
-	
+
 	function renderGrid() {
 		var gridSize = grid.getSize();
-		
+
 		// draw first line
 		context.beginPath();
 
@@ -173,7 +173,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			context.moveTo((width / gridSize.col) * i, 0);
 			context.lineTo((width / gridSize.col) * i, height);
 		}
-		
+
 		// draw horizontal lines
 		for(var i = 0 ; i < (height / gridSize.row) ; i++) {
 			context.moveTo(0, (height / gridSize.row) * i);
@@ -184,7 +184,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		context.lineWidth = 2;
 		context.strokeStyle = '#000000';
 		context.stroke();
-		
+
 		// draw second line
 		context.beginPath();
 
@@ -193,7 +193,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			context.moveTo((width / gridSize.col) * i, 0);
 			context.lineTo((width / gridSize.col) * i, height);
 		}
-		
+
 		// draw horizontal lines
 		for(var i = 0 ; i < (height / gridSize.row) ; i++) {
 			context.moveTo(0, (height / gridSize.row) * i);
@@ -205,31 +205,31 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		context.strokeStyle = '#ffffff';
 		context.stroke();
 	}
-	
+
 	function renderSelectedGridTiles() {
 		context.beginPath();
-		
+
 		var selectedGridTiles = grid.getSelected();
 		var gridSize = grid.getSize();
-		
-		for(var i = 0; i < selectedGridTiles.length; i++) {		
+
+		for(var i = 0; i < selectedGridTiles.length; i++) {
 			var x = (width / gridSize.col) * selectedGridTiles[i].x;
 			var y = (height / gridSize.row) * selectedGridTiles[i].y;
-						
+
 			context.rect(x, y, (width / gridSize.col), (height / gridSize.row));
 		}
-		
+
       context.fillStyle = 'rgba(0,225,0,0.5)';
       context.fill();
 	}
-	
+
 	this.setGridSize = function(_x, _y) {
 		if(editable) {
 		grid.setSize(_x, _y);
 		render();
 		}
     };
-	
+
 	this.loadImage = function(url) {
 		var imageObj = new Image();
 		imageObj.onload = function() {
@@ -238,14 +238,14 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		};
 		imageObj.src = url;
 	};
-	
+
 	this.setScale = function(_scale) {
 		if(editable) {
 		picture.setScale(_scale);
 		render();
 		}
 	};
-	
+
 	this.exportGrid = function() {
 		result = [];
 		var gridSize = grid.getSize();
@@ -253,20 +253,20 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			for(var c = 0; c < gridSize.col; c++) {
 				var field = String.fromCharCode(97 + r)+ "" + c;
 				var correct = false;
-				
+
 				var selectedGridTiles = grid.getSelected();
 				for(var i = 0; i < selectedGridTiles.length; i++) {
 					if(selectedGridTiles[i].x === c && selectedGridTiles[i].y === r) {
 						correct = true;
 					}
 				}
-				
+
 				result.push({text:field,correct:correct});
-			}	
+			}
 		}
 		return result;
 	};
-	
+
 	this.exportAnswerText = function() {
 		var result = "";
 		var firstValue = true;
@@ -275,14 +275,14 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			for(var c = 0; c < gridSize.col; c++) {
 				var field = String.fromCharCode(97 + r)+ "" + c;
 				var correct = false;
-				
+
 				var selectedGridTiles = grid.getSelected();
 				for(var i = 0; i < selectedGridTiles.length; i++) {
 					if(selectedGridTiles[i].x === c && selectedGridTiles[i].y === r) {
 						correct = true;
 					}
 				}
-				
+
 				if(firstValue) {
 					firstValue = false;
 				}
@@ -295,12 +295,12 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				else {
 					result += "0"
 				}
-						
-			}	
+
+			}
 		}
 		return result;
 	};
-	
+
 	this.setSize = function(_width, _height) {
 		this.width = _width;
 		this.height = _height;
@@ -309,35 +309,35 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		this.canvas.style.width  = '' + width + 'px';
 		this.canvas.style.height = '' + height + 'px';
 	};
-	
+
 	this.exportPicture = function() {
 		var tmpCanvas = document.createElement('canvas');
 		tmpCanvas.width = width;
 		tmpCanvas.height = height;
-		
+
 		var tmpContext = tmpCanvas.getContext('2d');
 		//tmpContext.drawImage(picture.getImage(), 0, 0);
 		tmpContext.drawImage(picture.getImage(), 0, 0, tmpCanvas.width, tmpCanvas.height);
-		
+
 		return tmpCanvas.toDataURL();
 	}
-	
+
 	this.enableEdit = function() {
 		editable = true;
 	}
-	
+
 	this.disableEdit = function() {
 		editable = false;
 	}
-	
+
 	this.enableSelect = function() {
 		selectable = true;
 	}
-	
+
 	this.disableSelect = function() {
 		selectable = false;
 	}
-	
+
 	init();
 };
 
@@ -354,31 +354,31 @@ gridsquare.picture = function(_scale) {
 		position = {x:0,y:0};
 		image = new Image();
 	}
-	
+
 	this.setScale = function(_scale) {
 		scale = _scale;
 	};
-	
+
 	this.getScale = function() {
 		return scale;
 	};
-	
+
 	this.setPosition = function(_position) {
 		position = _position;
 	};
-	
+
 	this.getPosition = function() {
 		return position;
 	};
-	
+
 	this.setImage = function(_image) {
 		image = _image;
 	};
-	
+
 	this.getImage = function() {
 		return image;
 	};
-	
+
 	init();
 };
 
@@ -388,12 +388,12 @@ gridsquare.picture = function(_scale) {
 gridsquare.grid = function(_columns, _rows) {
 	var size;
 	var selected;
-	
+
 	function init() {
 		size = {col:_columns,row:_rows};
 		selected = [];
 	}
-	
+
 	this.setSize = function(_col, _row) {
 		if(_col > 0 && _row > 0) {
 			size.col = _col;
@@ -401,19 +401,19 @@ gridsquare.grid = function(_columns, _rows) {
 		}
 		selected = [];
 	};
-	
+
 	this.getSize = function() {
 		return size;
 	};
-	
+
 	this.getSelected = function() {
 		return selected;
 	};
-	
+
 	this.setSelected = function(_selected) {
 		selected = _selected;
 	};
-	
+
 	init();
 };
 
@@ -473,11 +473,11 @@ function Fensterweite () {
 	    return 0;
 	  }
 	}
-	
+
 /*******************************************************************************
  *	gridsquare todo
  ******************************************************************************/
 //  -grid ratio
 //	-lock picture moving and scaling in student view
 //	-remove console output
-	
+

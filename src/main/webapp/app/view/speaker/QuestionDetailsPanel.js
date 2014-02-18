@@ -51,7 +51,6 @@ Ext.define('FreetextAnswer', {
 
 Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	extend: 'Ext.Panel',
-	id: 'questionDetailsPanelId',
 
 	config: {
 		title: 'QuestionDetailsPanel',
@@ -61,7 +60,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			directionLock: true
 		}
 	},
-	
+
 	/* toolbar items */
 	toolbar		: null,
 	backButton	: null,
@@ -88,7 +87,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 
 	constructor: function(args){
 		this.callParent(args);
-		
+
 		var me = this;
 		this.questionObj = args.question;
 
@@ -801,7 +800,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		if(this.questionObj.questionType === 'gs'){
 
 			this.answerEditForm.gsGridCanvas.setHtml("<div align='center'><canvas id='"+this.answerEditForm.canvasId+"'></canvas></div>");
-			createGridSquare(this.answerEditForm.canvasId, this.answerEditForm.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100, Ext.getCmp('questionDetailsPanelId'));
+			createGridSquare(this.answerEditForm.canvasId, this.answerEditForm.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100, this);
 			getGridSquare(this.answerEditForm.canvasId).loadImage(this.questionObj.image);
 			getGridSquare(this.answerEditForm.canvasId).enableEdit();
 			getGridSquare(this.answerEditForm.canvasId).enableSelect();
