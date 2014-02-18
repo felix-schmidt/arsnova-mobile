@@ -200,7 +200,6 @@ updateSliderSize: function(slider, thumb, newVal, oldVal){
 	getGridSquare(this.canvasId).loadImage("/app/images/default.jpg");
 	getGridSquare(this.canvasId).setScale("100");
 	getGridSquare(this.canvasId).setGridSize("4","4");
-	getGridSquare(this.canvasId).picture
 
  }
 });
