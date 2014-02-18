@@ -236,6 +236,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			picture.setImage(imageObj);
 			render();
 		};
+		picture.setPosition({x:0,y:0});
 		imageObj.src = url;
 	};
 
