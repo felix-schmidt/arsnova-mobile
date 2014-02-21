@@ -8,12 +8,15 @@ var gridsquare = gridsquare || {};
 /*******************************************************************************
  *	class gridsquare.gridsquare
  ******************************************************************************/
-gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale) {
+gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp) {
 	var canvasId;
 	var width;
 	var height;
 	var canvas;
 	var context;
+	var editable;
+	var selectable;
+	var extCmp;
 
 	var picture;
 	var grid;
@@ -32,6 +35,11 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		canvas.style.width  = '' + width + 'px';
 		canvas.style.height = '' + height + 'px';
 		context = canvas.getContext("2d");
+
+		editable = false;
+		selectable = false;
+
+		extCmp = _extCmp;
 
 		pictureDrag = {};
 		pictureDrag.startTimeMouseDown = 0;
@@ -55,58 +63,62 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	}
 
 	function onMouseDown(evt) {
-		pictureDrag.dragged = false;
-		pictureDrag.mouseDown = true;
-		pictureDrag.startTimeMouseDown = new Date().getTime();
-		pictureDrag.positionOfDrag.x = evt.clientX - canvas.getBoundingClientRect().left;
-		pictureDrag.positionOfDrag.y = evt.clientY - canvas.getBoundingClientRect().top;
+			pictureDrag.dragged = false;
+			pictureDrag.mouseDown = true;
+			pictureDrag.startTimeMouseDown = new Date().getTime();
+			pictureDrag.positionOfDrag.x = evt.clientX - canvas.getBoundingClientRect().left;
+			pictureDrag.positionOfDrag.y = evt.clientY - canvas.getBoundingClientRect().top;
 	}
 
 	function onMouseUp(evt) {
 		if(!pictureDrag.dragged) {
-			var x = evt.clientX - canvas.getBoundingClientRect().left;
-			var y = evt.clientY - canvas.getBoundingClientRect().top;
-			selectGridTile(x, y);
+			if(selectable){
+				var x = evt.clientX - canvas.getBoundingClientRect().left;
+				var y = evt.clientY - canvas.getBoundingClientRect().top;
+				selectGridTile(x, y);
+			}
 		}
 		pictureDrag.dragged  = false;
 		pictureDrag.mouseDown = false;
 	}
 
 	function onMouseMove(evt) {
-		var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
-		var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');
+		if(editable) {
+			//var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
+			//var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');
 
-		if(pictureDrag.dragged) {
-			if (newQuestionPanel_Var) {
-				Ext.getCmp('newQuestionPanelId').setScrollable( false );
-			};
-			if (questionDetailsPanel_Var) {
-				Ext.getCmp('questionDetailsPanelId').setScrollable( false );
-			};
-			var x = evt.clientX - canvas.getBoundingClientRect().left;
-			var y = evt.clientY - canvas.getBoundingClientRect().top;
-			// make position relative to the drag start position
-			x = x - pictureDrag.positionOfDrag.x;
-			y = y - pictureDrag.positionOfDrag.y;
-			// set new picture position
-			var position = {x:(pictureDrag.positionOfPictureBeforeMove.x + x), y:(pictureDrag.positionOfPictureBeforeMove.y + y)};
-			picture.setPosition(position);
-			//render
-			render();
-		}
-		else if(pictureDrag.mouseDown && ((new Date().getTime() - pictureDrag.startTimeMouseDown) > 250)) {
-			var picturePosition = picture.getPosition();
-			pictureDrag.positionOfPictureBeforeMove.x = picturePosition.x;
-			pictureDrag.positionOfPictureBeforeMove.y = picturePosition.y;
-			pictureDrag.dragged = true;
-		}
-		else {
-			if (newQuestionPanel_Var) {
-				Ext.getCmp('newQuestionPanelId').setScrollable( true );
-			};
-			if (questionDetailsPanel_Var) {
-				Ext.getCmp('questionDetailsPanelId').setScrollable( true );
-			};
+			if(pictureDrag.dragged) {
+				if (extCmp) {
+					extCmp.setScrollable( false );
+				};
+				/*if (questionDetailsPanel_Var) {
+					Ext.getCmp('questionDetailsPanelId').setScrollable( false );
+				};*/
+				var x = evt.clientX - canvas.getBoundingClientRect().left;
+				var y = evt.clientY - canvas.getBoundingClientRect().top;
+				// make position relative to the drag start position
+				x = x - pictureDrag.positionOfDrag.x;
+				y = y - pictureDrag.positionOfDrag.y;
+				// set new picture position
+				var position = {x:(pictureDrag.positionOfPictureBeforeMove.x + x), y:(pictureDrag.positionOfPictureBeforeMove.y + y)};
+				picture.setPosition(position);
+				//render
+				render();
+			}
+			else if(pictureDrag.mouseDown && ((new Date().getTime() - pictureDrag.startTimeMouseDown) > 250)) {
+				var picturePosition = picture.getPosition();
+				pictureDrag.positionOfPictureBeforeMove.x = picturePosition.x;
+				pictureDrag.positionOfPictureBeforeMove.y = picturePosition.y;
+				pictureDrag.dragged = true;
+			}
+			else {
+				if (extCmp) {
+					extCmp.setScrollable( true );
+				};
+				/*if (questionDetailsPanel_Var) {
+					Ext.getCmp('questionDetailsPanelId').setScrollable( true );
+				};*/
+			}
 		}
 	}
 
@@ -212,8 +224,10 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	}
 
 	this.setGridSize = function(_x, _y) {
+		if(editable) {
 		grid.setSize(_x, _y);
 		render();
+		}
     };
 
 	this.loadImage = function(url) {
@@ -222,12 +236,15 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			picture.setImage(imageObj);
 			render();
 		};
+		picture.setPosition({x:0,y:0});
 		imageObj.src = url;
 	};
 
 	this.setScale = function(_scale) {
+		if(editable) {
 		picture.setScale(_scale);
 		render();
+		}
 	};
 
 	this.exportGrid = function() {
@@ -304,6 +321,22 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		tmpContext.drawImage(picture.getImage(), 0, 0, tmpCanvas.width, tmpCanvas.height);
 
 		return tmpCanvas.toDataURL();
+	}
+
+	this.enableEdit = function() {
+		editable = true;
+	}
+
+	this.disableEdit = function() {
+		editable = false;
+	}
+
+	this.enableSelect = function() {
+		selectable = true;
+	}
+
+	this.disableSelect = function() {
+		selectable = false;
 	}
 
 	init();
@@ -389,7 +422,7 @@ gridsquare.grid = function(_columns, _rows) {
 
 gridsquare.gridsquarestore = [];
 
-function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRows, _imageScale) {
+function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp) {
 	var found = false;
 	for(var i = 0; i < gridsquare.gridsquarestore.length; i++) {
 		if(gridsquare.gridsquarestore[i].id == _id) {
@@ -398,7 +431,7 @@ function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRo
 		}
 	}
 	if(!found) {
-		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale)});
+		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp)});
 	}
 }
 
@@ -445,11 +478,7 @@ function Fensterweite () {
 /*******************************************************************************
  *	gridsquare todo
  ******************************************************************************/
-//	-keep image ratio
+//  -grid ratio
 //	-lock picture moving and scaling in student view
 //	-remove console output
-//	-snapshot ohne grid
-//	-(evtl. Bild nicht über seine Grenzen verschieben)
-//	-setzen der Antwortkacheln sowohl Student, Dozent
-
 
