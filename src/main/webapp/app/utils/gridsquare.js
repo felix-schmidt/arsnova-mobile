@@ -8,7 +8,7 @@ var gridsquare = gridsquare || {};
 /*******************************************************************************
  *	class gridsquare.gridsquare
  ******************************************************************************/
-gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp) {
+gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp, _answerList) {
 	var canvasId;
 	var width;
 	var height;
@@ -17,6 +17,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	var editable;
 	var selectable;
 	var extCmp;
+	var answerList;
 
 	var picture;
 	var grid;
@@ -28,8 +29,8 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		canvasId = _canvasId;
 		width = _width;
 		height = _height;
+		answerList = _answerList;
 		canvas = document.getElementById(canvasId);
-		//console.log(width);
 		canvas.width = width;
 		canvas.height = height;
 		canvas.style.width  = '' + width + 'px';
@@ -38,8 +39,6 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 		editable = false;
 		selectable = false;
-
-		extCmp = _extCmp;
 
 		pictureDrag = {};
 		pictureDrag.startTimeMouseDown = 0;
@@ -72,10 +71,21 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 	function onMouseUp(evt) {
 		if(!pictureDrag.dragged) {
+			var x = evt.clientX - canvas.getBoundingClientRect().left;
+			var y = evt.clientY - canvas.getBoundingClientRect().top;
+			
+			var gridSize = grid.getSize();
+			newx = Math.floor(x / (width / gridSize.col));
+			newy = Math.floor(y / (height / gridSize.row));
+
+			newy = newy * gridSize.row;
+			var field = newy + newx;
+			
 			if(selectable){
-				var x = evt.clientX - canvas.getBoundingClientRect().left;
-				var y = evt.clientY - canvas.getBoundingClientRect().top;
 				selectGridTile(x, y);
+				
+				// ToDo: Select AnswerList
+				console.log(answerList.getStore());
 			}
 		}
 		pictureDrag.dragged  = false;
@@ -422,7 +432,7 @@ gridsquare.grid = function(_columns, _rows) {
 
 gridsquare.gridsquarestore = [];
 
-function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp) {
+function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp, _answerList) {
 	var found = false;
 	for(var i = 0; i < gridsquare.gridsquarestore.length; i++) {
 		if(gridsquare.gridsquarestore[i].id == _id) {
@@ -431,7 +441,7 @@ function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRo
 		}
 	}
 	if(!found) {
-		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp)});
+		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp, _answerList)});
 	}
 }
 
@@ -481,4 +491,4 @@ function Fensterweite () {
 //  -grid ratio
 //	-lock picture moving and scaling in student view
 //	-remove console output
-
+// - add select and deselect item in answerList

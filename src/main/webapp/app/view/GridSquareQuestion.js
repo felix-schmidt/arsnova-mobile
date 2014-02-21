@@ -47,22 +47,22 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 		answerStore.add(this.questionObj.possibleAnswers);
 		
 		this.gridsquare = Ext.create('Ext.form.FieldSet', {
-
 	          html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
-
 	          listeners: {
-	        	  painted: function() {
-	        		  var image = new Image();
-	        		  // Get base64
-	        		  image.src = questionobj.image;
+	        	  painted: {
+	 				 fn: function(){
+	 					var image = new Image();
+		        		  // Get base64
+		        		  image.src = questionobj.image;
 
-	        		  // Draw grid
-
-	        		  createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100, this);
-	        		  getGridSquare(gridSquareID).enableSelect();
-	        		  getGridSquare(gridSquareID).loadImage(image.src);
-	                  }
-	              }
+		        		  // Draw grid
+		        		  createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100, this, this.answerList);
+		        		  getGridSquare(gridSquareID).enableSelect();
+		        		  getGridSquare(gridSquareID).loadImage(image.src);
+	 				 },
+	 				 scope: self
+	 	    	 }
+	          }
 	      });
 		
 		this.on('preparestatisticsbutton', function(button) {
@@ -281,11 +281,8 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 			}]
 		};
 		
-		
 		this.add([this.questionTitle]);
-		
 		this.answerList.setHidden(false);
-		
 		this.add([this.gridsquare]);
 		
 		this.add([this.answerList].concat(
