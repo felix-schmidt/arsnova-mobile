@@ -23,7 +23,6 @@ Ext
 				'ARSnova.view.GridSquareQuestion',
 				{
 					extend : 'Ext.Panel',
-					id: 'gridSquareQuestionId',
 
 					config : {
 						viewOnly : false,
@@ -57,9 +56,8 @@ Ext
 								    	// Get base64
 								    	image.src = questionobj.image;
 								    	
-								    	
 						            	// Draw grid
-								    	createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100, Ext.getCmp('gridSquareQuestionId'));
+								    	createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100, this);
 								    	getGridSquare(gridSquareID).enableSelect();
 								    	getGridSquare(gridSquareID).loadImage(image.src);
 						            }
