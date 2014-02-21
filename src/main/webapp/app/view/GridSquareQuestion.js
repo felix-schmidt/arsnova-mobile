@@ -192,6 +192,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 		
 		this.answerList = Ext.create('Ext.dataview.List', {
 			store: answerStore,
+			allowDeselect: true,
 			cls: 'roundedBox',
 			variableHeights: true,	
 			scrollable: { disabled: true },
@@ -282,7 +283,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 		};
 		
 		this.add([this.questionTitle]);
-		this.answerList.setHidden(false);
+		this.answerList.setHidden(true);
 		this.add([this.gridsquare]);
 		
 		this.add([this.answerList].concat(

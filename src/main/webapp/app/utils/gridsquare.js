@@ -83,9 +83,13 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			
 			if(selectable){
 				selectGridTile(x, y);
-				
-				// ToDo: Select AnswerList
-				console.log(answerList.getStore());
+				// Select in AnswerList
+				if(answerList.isSelected(field)){
+					answerList.deselect(field, true);
+				}
+				else{
+					answerList.select(field, true);
+				}
 			}
 		}
 		pictureDrag.dragged  = false;
@@ -94,25 +98,22 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 	function onMouseMove(evt) {
 		if(editable) {
-			//var newQuestionPanel_Var = Ext.getCmp('newQuestionPanelId');
-			//var questionDetailsPanel_Var = Ext.getCmp('questionDetailsPanelId');
 
 			if(pictureDrag.dragged) {
 				if (extCmp) {
 					extCmp.setScrollable( false );
 				};
-				/*if (questionDetailsPanel_Var) {
-					Ext.getCmp('questionDetailsPanelId').setScrollable( false );
-				};*/
 				var x = evt.clientX - canvas.getBoundingClientRect().left;
 				var y = evt.clientY - canvas.getBoundingClientRect().top;
+				
 				// make position relative to the drag start position
 				x = x - pictureDrag.positionOfDrag.x;
 				y = y - pictureDrag.positionOfDrag.y;
+				
 				// set new picture position
 				var position = {x:(pictureDrag.positionOfPictureBeforeMove.x + x), y:(pictureDrag.positionOfPictureBeforeMove.y + y)};
 				picture.setPosition(position);
-				//render
+
 				render();
 			}
 			else if(pictureDrag.mouseDown && ((new Date().getTime() - pictureDrag.startTimeMouseDown) > 250)) {
@@ -125,9 +126,6 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				if (extCmp) {
 					extCmp.setScrollable( true );
 				};
-				/*if (questionDetailsPanel_Var) {
-					Ext.getCmp('questionDetailsPanelId').setScrollable( true );
-				};*/
 			}
 		}
 	}
@@ -327,7 +325,6 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		tmpCanvas.height = height;
 
 		var tmpContext = tmpCanvas.getContext('2d');
-		//tmpContext.drawImage(picture.getImage(), 0, 0);
 		tmpContext.drawImage(picture.getImage(), 0, 0, tmpCanvas.width, tmpCanvas.height);
 
 		return tmpCanvas.toDataURL();
@@ -491,4 +488,3 @@ function Fensterweite () {
 //  -grid ratio
 //	-lock picture moving and scaling in student view
 //	-remove console output
-// - add select and deselect item in answerList
