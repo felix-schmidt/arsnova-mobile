@@ -59,6 +59,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 		        		  createGridSquare(gridSquareID, gridSquareID, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), questionobj.gridsize, questionobj.gridsize, 100, this, this.answerList);
 		        		  getGridSquare(gridSquareID).enableSelect();
 		        		  getGridSquare(gridSquareID).loadImage(image.src);
+		        		  getGridSquare(gridSquareID).disableLecturer();
 	 				 },
 	 				 scope: self
 	 	    	 }

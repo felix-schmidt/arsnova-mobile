@@ -15,6 +15,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	var canvas;
 	var context;
 	var editable;
+	var isLecturer;
 	var selectable;
 	var extCmp;
 	var answerList;
@@ -39,6 +40,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 		editable = false;
 		selectable = false;
+		isLecturer = true;
 
 		pictureDrag = {};
 		pictureDrag.startTimeMouseDown = 0;
@@ -84,11 +86,13 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 			if(selectable){
 				selectGridTile(x, y);
 				// Select in AnswerList
-				if(answerList.isSelected(field)){
-					answerList.deselect(field, true);
-				}
-				else{
-					answerList.select(field, true);
+				if(!isLecturer){
+					if(answerList.isSelected(field)){
+						answerList.deselect(field, true);
+					}
+					else{
+						answerList.select(field, true);
+					}
 				}
 			}
 		}
@@ -344,6 +348,10 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 	this.disableSelect = function() {
 		selectable = false;
+	}
+	
+	this.disableLecturer = function(){
+		isLecturer = false;
 	}
 
 	init();
