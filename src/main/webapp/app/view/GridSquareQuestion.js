@@ -44,6 +44,9 @@ Ext
 						
 						var gridSquareID = "gsCanvas-" + Ext.id();
 						this.gridSquareID = gridSquareID;
+						
+						var answerStore = Ext.create('Ext.data.Store', {model: 'ARSnova.model.Answer'});
+						answerStore.add(this.questionObj.possibleAnswers);
 
 						this.gridsquare = Ext.create('Ext.form.FieldSet', {
 							   html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
@@ -61,6 +64,56 @@ Ext
 								    	getGridSquare(gridSquareID).loadImage(image.src);
 						            }
 						        }
+						});
+						
+						this.answerList = Ext.create('Ext.List', {
+							store: answerStore,
+							
+							cls: 'roundedBox',
+							variableHeights: true,	
+							scrollable: { disabled: true },
+							
+							itemTpl: new Ext.XTemplate(
+								'{text:htmlEncode}',
+								'<tpl if="correct === true && this.isQuestionAnswered(values)">',
+									'&nbsp;<span style="padding: 0 0.2em 0 0.2em" class="x-list-item-correct">&#10003; </span>',
+								'</tpl>',
+								{
+									isQuestionAnswered: function(values) {
+										return values.questionAnswered === true;
+									}
+								}
+							),
+							
+							listeners: {
+								scope: this,
+								selectionchange: function(list, records, eOpts) {
+									if (list.getSelectionCount() > 0) {
+										this.gsSaveButton.enable();
+									} else {
+										this.gsSaveButton.disable();
+									}
+								},
+								/**
+								 * The following events are used to get the computed height of all list items and 
+								 * finally to set this value to the list DataView. In order to ensure correct rendering
+								 * it is also necessary to get the properties "padding-top" and "padding-bottom" and 
+								 * add them to the height of the list DataView.
+								 */
+						        painted: function (list, eOpts) {
+						        	this.answerList.fireEvent("resizeList", list);
+						        },
+						        resizeList: function(list) {
+						        	var listItemsDom = list.select(".x-list .x-inner .x-inner").elements[0];
+						        	
+						        	this.answerList.setHeight(
+						        		parseInt(window.getComputedStyle(listItemsDom, "").getPropertyValue("height"))	+ 
+						        		parseInt(window.getComputedStyle(list.dom, "").getPropertyValue("padding-top"))	+
+						        		parseInt(window.getComputedStyle(list.dom, "").getPropertyValue("padding-bottom"))
+						        	);
+						        }
+							},
+							mode: this.questionObj.questionType === "gs" ? 'MULTI' : 'SINGLE'
 						});
 						
 						this.questionTitle = Ext.create('Ext.Component', {
@@ -118,6 +171,18 @@ Ext
 							if(this.isDisabled()) this.disableQuestion();	
 						});
 						
+						this.on('preparestatisticsbutton', function(button) {
+							button.scope = this;
+							button.setHandler(function() {
+								var panel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel || ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
+								panel.questionStatisticChart = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
+									question	: self.questionObj,
+									lastPanel	: self
+								});
+								ARSnova.app.mainTabPanel.animateActiveItem(panel.questionStatisticChart, 'slide');
+							});
+						});
+						
 					},
 				
 					saveHandler: function(button, event) {
@@ -138,6 +203,53 @@ Ext
 							if (button === "yes") {
 								this.storeAbstention();
 							}
+						}, this);
+					},
+					
+					saveGsQuestionHandler: function() {
+						Ext.Msg.confirm('', Messages.SUBMIT_ANSWER, function(button) {
+							if (button !== 'yes') {
+								return;
+							}
+							
+							var selectedIndexes = [];
+							this.answerList.getSelection().forEach(function(node) {
+								selectedIndexes.push(this.answerList.getStore().indexOf(node));
+							}, this);
+							this.markCorrectAnswers();
+							
+							var answerValues = [];
+							for (var i=0; i < this.answerList.getStore().getCount(); i++) {
+								answerValues.push(selectedIndexes.indexOf(i) !== -1 ? "1" : "0");
+							}
+							
+							self.getUserAnswer().then(function(answer) {
+								answer.set('answerText', answerValues.join(","));
+								saveAnswer(answer);
+							});
+						}, this);
+					},
+					
+					markCorrectAnswers: function() {
+						if (this.questionObj.showAnswer) {
+							// Mark all possible answers as 'answered'. This will highlight all correct answers.
+							this.answerList.getStore().each(function(item) {
+								item.set("questionAnswered", true);
+							});
+						}
+					},
+					
+					gsAbstentionHandler: function() {
+						Ext.Msg.confirm('', Messages.SUBMIT_ANSWER, function(button) {
+							if (button !== 'yes') {
+								return;
+							}
+							
+							self.getUserAnswer().then(function(answer) {
+								answer.set('abstention', true);
+								self.answerList.deselectAll();
+								saveAnswer(answer);
+							});
 						}, this);
 					},
 					
