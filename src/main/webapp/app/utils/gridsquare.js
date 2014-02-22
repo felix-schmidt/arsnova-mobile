@@ -31,6 +31,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		width = _width;
 		height = _height;
 		answerList = _answerList;
+		extCmp = _extCmp;
 		canvas = document.getElementById(canvasId);
 		canvas.width = width;
 		canvas.height = height;
@@ -102,7 +103,6 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 
 	function onMouseMove(evt) {
 		if(editable) {
-
 			if(pictureDrag.dragged) {
 				if (extCmp) {
 					extCmp.setScrollable( false );
