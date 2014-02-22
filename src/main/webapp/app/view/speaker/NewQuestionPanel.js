@@ -382,6 +382,21 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			items: [
 		        this.backButton,
 		        {xtype:'spacer'},
+		        {xtype: 'togglefield',
+		        name: 'awesome',
+		        value: 1,
+		        label: Messages.EDIT,
+		        labelWidth: '40%',
+		        listeners: {
+		        	  change: function(slider, thumb, newValue, oldValue) {
+		                  if (this.isDisabled() == false && newValue==1) {   // isEnabled
+		                      alert('change Togglefield Event triggered');   // do something
+		                  }
+		                  else {
+		                      this.enable();                                 // enable togglefield  
+		                  }
+		              }
+		        },},
 		        this.saveButton
 			]
 		});
