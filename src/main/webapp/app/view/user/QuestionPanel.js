@@ -317,6 +317,30 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					questionPanel.disableQuestion();
 				}
 			}
+			
+			if (questionObj.questionType === 'gs') {
+				if (!questionObj.isAbstentionAnswer) {
+					var answers = questionObj.userAnswered.split(",");
+					// sanity check: is it a correct answer array?
+					if (questionObj.possibleAnswers.length !== answers.length) {
+						return;
+					}
+					var selectedIndexes = answers.map(function(isSelected, index) {
+						return isSelected === "1" ? list.getStore().getAt(index) : -1;
+					}).filter(function(index) {
+						return index !== -1;
+					});
+					list.select(selectedIndexes, true);
+				}
+				questionPanel.disableQuestion();
+			} else {
+				var index = data.find('text', questionObj.userAnswered);
+				if (index !== -1) {
+					list.select(data.getAt(index));
+					questionPanel.disableQuestion();
+				}
+			}
+			
 			if (questionObj.showAnswer) {
 				list.getStore().each(function(item) {
 					item.set('questionAnswered', true);
