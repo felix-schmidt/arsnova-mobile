@@ -39,7 +39,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	       loadAsDataUrl: true,
 	       states: {
 	           browse: {
-	               text: 'Select image'
+	               text: Messages.SELECT_IMAGE
 	           },
 	           ready: {
 	               text: 'Load'
@@ -72,7 +72,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 	 this.gsSliderSizeTitle = Ext.create('Ext.Label', {
 		 id: 'sliderGridTitle' + this.canvasId,
-		 html: "<b>Rastergröße:</b>"
+		 html: "<b>"+ Messages.CHANGE_GRIDSIZE + "</b>"
 	 });
 
 	 this.gsSliderSize = Ext.create('Ext.field.Slider', {
@@ -96,7 +96,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 	 this.gsSliderScaleTitle = Ext.create('Ext.Label', {
      		id: 'sliderScaleTitle' + this.canvasId,
-     		html: '<br><br><b>Bildgröße:</b>',
+     		html: "<br><br><b>"+ Messages.CHANGE_SIZE+"</b>",
 	 });
 
 	 this.gsSliderScale = Ext.create('Ext.field.Slider', {
@@ -174,7 +174,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
  },
 
  updateSliderScale: function(slider, thumb, newVal, oldVal){
-		this.gsSliderScaleTitle.setHtml('<br><br><b>Bildgröße:' + slider.getValue() + ' % </b>');
+		this.gsSliderScaleTitle.setHtml('<br><br><b>'+Messages.CHANGE_SIZE +' '+ slider.getValue() + ' % </b>');
 
 	 	if(getGridSquare(this.canvasId) !== null) {
 	 		getGridSquare(this.canvasId).setScale(slider.getValue());
@@ -183,7 +183,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 
 updateSliderSize: function(slider, thumb, newVal, oldVal){
 
-		 this.gsSliderSizeTitle.setHtml('<b>Rastergröße: '+ slider.getValue() + ' x ' + slider.getValue() +'</b>');
+		 this.gsSliderSizeTitle.setHtml('<b>' + Messages.CHANGE_GRIDSIZE+' '+ slider.getValue() + ' x ' + slider.getValue() +'</b>');
 
  	 if(getGridSquare(this.canvasId) !== null) {
     		 getGridSquare(this.canvasId).setGridSize(slider.getValue(),slider.getValue());
@@ -195,8 +195,8 @@ updateSliderSize: function(slider, thumb, newVal, oldVal){
 	this.gsSliderSize.setValue("4");
 	this.gsSliderScale.disable();
 	this.gsSliderScale.setValue("100");
-	this.gsSliderSizeTitle.setHtml("<b>Rastergröße:</b>");
-	this.gsSliderScaleTitle.setHtml("<br><br><b>Bildgröße:</b>");
+	this.gsSliderSizeTitle.setHtml("<b>"+Messages.CHANGE_GRIDSIZE+"</b>");
+	this.gsSliderScaleTitle.setHtml("<br><br><b>"+Messages.CHANGE_SIZE+"</b>");
 	getGridSquare(this.canvasId).loadImage("/app/images/default.jpg");
 	getGridSquare(this.canvasId).setScale("100");
 	getGridSquare(this.canvasId).setGridSize("4","4");
