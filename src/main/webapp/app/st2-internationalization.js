@@ -276,6 +276,8 @@ switch (lang) {
 			SELECT_IMAGE: "Select image", // Gridsquare
 			CHANGE_SIZE: "Image size:",
 			CHANGE_GRIDSIZE: "Grid size:",
+			LOAD_IMAGE: "Load",
+			UPLOADING_IMAGE: "Loading",
 			
 			
 			/* question types */
@@ -588,6 +590,10 @@ switch (lang) {
 			SELECT_IMAGE: "Bild auswählen", // Gridsquare
 			CHANGE_SIZE: "Bildgröße:",
 			CHANGE_GRIDSIZE: "Rastergröße:",
+			LOAD_IMAGE: "Laden",
+			UPLOADING_IMAGE: "Wird geladen",
+			
+			
 			
 			/* question types */
 			EVALUATION: "Likert",

@@ -42,10 +42,10 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	               text: Messages.SELECT_IMAGE
 	           },
 	           ready: {
-	               text: 'Load'
+	               text: Messages.LOAD_IMAGE
 	           },
 	           uploading: {
-	               text: 'Loading',
+	               text: Messages.UPLOADING_IMAGE,
 	               loading: true
 	           }
 	       },
