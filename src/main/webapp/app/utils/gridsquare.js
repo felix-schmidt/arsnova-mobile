@@ -375,9 +375,12 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		
 		var tmpContext = tmpCanvas.getContext('2d');
 		
+		var image = picture.getImage();
 		var scale = picture.getScale() / 100;
 		var position = picture.getPosition();
-		tmpContext.drawImage(picture.getImage(), position.x, position.y, width * scale, height * scale);
+		//tmpContext.drawImage(picture.getImage(), position.x, position.y, width * scale, height * scale);
+		var pictureAspect = image.height / image.width;
+		tmpContext.drawImage(image, position.x, position.y, width * scale, (width * pictureAspect) * scale);
 		
 		return tmpCanvas.toDataURL();
 	}
