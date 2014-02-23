@@ -284,7 +284,6 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	};
 	
 	this.importGrid = function(_grid) {
-		console.log(_grid);
 		
 		var selectedTile;
 		var gridSize = grid.getSize();
@@ -317,14 +316,9 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 					selectedTile = {x:0,y:0};
 					selectedTile.x = c;
 					selectedTile.y = r;
-					console.log("selectedGridTile: x: " + selectedTile.x + " y: " + selectedTile.y);
 					selectedTiles.push(selectedTile);
 				}
 			}
-		}
-		
-		for(var i = 0; i < selectedTiles.length; i++) {
-			console.log("selectedGridTile: x: " + selectedTiles[i].x + " y: " + selectedTiles[i].y);
 		}
 		
 		grid.setSelected(selectedTiles);
@@ -559,5 +553,3 @@ function Fensterweite () {
  *	gridsquare todo
  ******************************************************************************/
 //  -grid ratio
-//	-lock picture moving and scaling in student view
-//	-remove console output
