@@ -283,8 +283,26 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		return result;
 	};
 	
-	this.importGrid = function() {
-		// TODO
+	this.importGrid = function(_grid) {
+		console.log(_grid);
+		
+		var selectedTile;
+		var gridSize = grid.getSize();
+		var selectedTiles = [];
+		
+		for(var r = 0; r < gridSize.row; r++) {
+			for(var c = 0; c < gridSize.col; c++) {
+				if(_grid[ r * 5 + c ].correct === true) {
+					selectedTile = {x:0,y:0};
+					selectedTile.x = c;
+					selectedTile.y = r;
+					selectedTiles.push(selectedTile);
+				}
+			}
+		}
+	
+		grid.setSelected(selectedTiles);
+		render();
 	}
 
 	this.importAnswerText = function(answerText) {
