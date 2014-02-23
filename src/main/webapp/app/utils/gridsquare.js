@@ -356,9 +356,18 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		this.canvas.style.height = '' + height + 'px';
 	};
 	
-	this.exportPictureHinterRaster = function() {
-		// TODO
-		//Bild wie dargestellt nur ohne raster
+	this.exportTransformedPicture = function() {
+		var tmpCanvas = document.createElement('canvas');
+		tmpCanvas.width = width;
+		tmpCanvas.height = height;
+		
+		var tmpContext = tmpCanvas.getContext('2d');
+		
+		var scale = picture.getScale() / 100;
+		var position = picture.getPosition();
+		tmpContext.drawImage(picture.getImage(), position.x, position.y, width * scale, height * scale);
+		
+		return tmpCanvas.toDataURL();
 	}
 
 	this.exportPicture = function() {
