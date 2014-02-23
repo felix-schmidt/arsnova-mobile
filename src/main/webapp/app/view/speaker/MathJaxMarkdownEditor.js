@@ -25,7 +25,7 @@ Ext.define('ARSnova.view.speaker.MathJaxMarkdownEditor', {
 	xtype: 'editor',
 	
 	 requires: [
-	    		'view.speaker.MathjaxTextArea'
+	    		'ARSnova.view.speaker.MathjaxTextArea'
 	        ],
 	        
 	config: {
