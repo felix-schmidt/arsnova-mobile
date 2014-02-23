@@ -163,7 +163,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 		var result = {};
 
 		result.possibleAnswers = this.getValues();
-		result.image = getGridSquare(this.canvasId).exportPicture();
+		result.image = getGridSquare(this.canvasId).exportTransformedPicture();
 		result.gridsize = this.gsSliderSize.getValue().toString();
 
 		if (!this.hasCorrectOptions()) {
@@ -179,18 +179,18 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	 	if(getGridSquare(this.canvasId) !== null) {
 	 		getGridSquare(this.canvasId).setScale(slider.getValue());
 	 	}
-},
+ },
 
-updateSliderSize: function(slider, thumb, newVal, oldVal){
-
-		 this.gsSliderSizeTitle.setHtml('<b>' + Messages.CHANGE_GRIDSIZE+' '+ slider.getValue() + ' x ' + slider.getValue() +'</b>');
+ updateSliderSize: function(slider, thumb, newVal, oldVal){
+	 this.gsSliderSizeTitle.setHtml('<b>' + Messages.CHANGE_GRIDSIZE+' '+ slider.getValue() + ' x ' + slider.getValue() +'</b>');
 
  	 if(getGridSquare(this.canvasId) !== null) {
     		 getGridSquare(this.canvasId).setGridSize(slider.getValue(),slider.getValue());
-    	 }
+ 	 }
   },
- initForm: function()
- {
+  
+  initForm: function()
+  {
 	this.gsSliderSize.disable();
 	this.gsSliderSize.setValue("4");
 	this.gsSliderScale.disable();
