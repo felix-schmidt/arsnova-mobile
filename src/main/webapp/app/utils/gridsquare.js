@@ -291,7 +291,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		
 		for(var r = 0; r < gridSize.row; r++) {
 			for(var c = 0; c < gridSize.col; c++) {
-				if(_grid[ r * 5 + c ].correct === true) {
+				if(_grid[ r * gridSize.col + c ].correct === true) {
 					selectedTile = {x:0,y:0};
 					selectedTile.x = c;
 					selectedTile.y = r;
@@ -312,7 +312,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		
 		for(var r = 0; r < gridSize.row; r++) {
 			for(var c = 0; c < gridSize.col; c++) {
-				if(answerText[ r * 5 + c ] === "1") {
+				if(answerText[ r * gridSize.col + c ] === "1") {
 					selectedTile = {x:0,y:0};
 					selectedTile.x = c;
 					selectedTile.y = r;
