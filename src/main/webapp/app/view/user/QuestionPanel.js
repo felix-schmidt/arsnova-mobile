@@ -20,30 +20,30 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.user.QuestionPanel', {
 	extend: 'Ext.Carousel',
-	
+
 	config: {
 		fullscreen: true,
 		title	: Messages.QUESTIONS,
 		iconCls	: 'tabBarIconQuestion',
-		
+
 		questionLoader: null,
 		questionCountLoader: null
 	},
-	
+
 	/* toolbar items */
 	toolbar		: null,
 	backButton	: null,
 	chartPanel	: null,
 	questionCounter: 0,
-	
+
 	/* item index 0 and 1 are occupied by the carousel and toolbar. */
 	carouselOffset:	2,
-	
+
 	initialize: function() {
 		this.callParent(arguments);
-		
+
 		this.setLectureMode();
-		
+
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.BACK,
 			ui		: 'back',
@@ -54,17 +54,17 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 		    		direction	: 'right',
 		    		duration	: 700,
 		    		scope		: this,
-		    		listeners: { animationend: function() { 
+		    		listeners: { animationend: function() {
 		    			this.hide();
 		    		}, scope: this }
 		    	});
 			}
 		});
-		
+
 		this.on('activeitemchange', function(panel, newCard, oldCard) {
 			var backButtonHidden = this.backButton.isHidden();
 			var screenWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-			
+
 			if (newCard.questionObj) {
 				if(newCard.questionObj.questionType === 'abcd') {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.QUESTION_SINGLE_CHOICE) : this.toolbar.setTitle(Messages.QUESTION_SINGLE_CHOICE_SHORT);
@@ -82,21 +82,21 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.FLASHCARD) : this.toolbar.setTitle(Messages.QUESTION_FLASHCARD);
 				} else if(newCard.questionObj.questionType === 'gs') {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.QUESTION_GRID_SQUARE) : this.toolbar.setTitle(Messages.QUESTION_GRID_SQUARE_SHORT);
-				}				
+				}
 			}
-			
+
 			//update question counter in toolbar
 			var counterEl = panel.questionCounter;
 			var counter = counterEl.getHtml().split("/");
 
 			counter[0] = panel.activeIndex + 1;
 			counterEl.setHtml(counter.join("/"));
-			
+
 			newCard.fireEvent('preparestatisticsbutton', panel.statisticButton);
-			
+
 			//check for showStatistic flag
 			if(typeof newCard.questionObj !== 'undefined') {
-				if(	newCard.questionObj.showStatistic 
+				if(	newCard.questionObj.showStatistic
 					&& newCard.questionObj.showStatistic == 1
 					&& newCard.isDisabled())
 					panel.statisticButton.show();
@@ -104,18 +104,18 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					panel.statisticButton.hide();
 			}
 		});
-		
+
 		this.questionCounter = Ext.create('Ext.Container', {
 			cls: "x-toolbar-title alignRight counterText",
 			html: '0/0'
 		});
-		
+
 		this.statisticButton = Ext.create('Ext.Button', {
 			text	: ' ',
 			cls		: 'statisticIconSmall',
 			hidden	: true
 		});
-		
+
 		this.toolbar = Ext.create('Ext.Toolbar', {
 			title: Messages.QUESTION,
 			docked: 'top',
@@ -127,53 +127,53 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 		        this.questionCounter
 	        ]
 		});
-		
+
 		this.add([this.toolbar]);
-		
+
 		this.onBefore('activate', this.beforeActivate, this);
 		this.onAfter('activate', this.onActivate, this);
 		this.on('add', function(panel, component, index) {
 			component.doTypeset && component.doTypeset(panel);
 		});
 	},
-	
+
 	beforeActivate: function(){
 		this.removeAll(false);
 		this._indicator.show();
 		this.questionCounter.show();
 	},
-	
+
 	onActivate: function(){
 		this.getUnansweredSkillQuestions();
 	},
-	
+
 	setPreparationMode: function() {
 		this.setQuestionCountLoader(Ext.bind(ARSnova.app.questionModel.countPreparationQuestions, ARSnova.app.questionModel));
 		this.setQuestionLoader(Ext.bind(ARSnova.app.questionModel.getPreparationQuestionsForUser, ARSnova.app.questionModel));
 	},
-	
+
 	setLectureMode: function() {
 		this.setQuestionCountLoader(Ext.bind(ARSnova.app.questionModel.countLectureQuestions, ARSnova.app.questionModel));
 		this.setQuestionLoader(Ext.bind(ARSnova.app.questionModel.getLectureQuestionsForUser, ARSnova.app.questionModel));
 	},
-	
+
 	getUnansweredSkillQuestions: function(){
 		var self = this;
-		
+
 		var hideLoadMask = ARSnova.app.showLoadMask(Messages.LOAD_MASK_SEARCH_QUESTIONS);
 		this.getQuestionLoader()(localStorage.getItem("keyword"), {
 			success: function(questions){
 				var userQuestionsPanel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel;
 				var questionsArr = [];
 				var questionIds = [];
-				
+
 				if (questions.length == 0){
 					//no available questions found
-					
+
 					self.getQuestionCountLoader()(localStorage.getItem("keyword"), {
 						success: function(response){
 							var questionsInCourse = Ext.decode(response.responseText);
-							
+
 							if (questionsInCourse > 0) {
 								userQuestionsPanel.questionCounter.hide();
 								userQuestionsPanel.add({
@@ -200,7 +200,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 			    		}
 					});
 					return;
-					
+
 				} else {
 					//update question counter in toolbar
 					var counterEl = userQuestionsPanel.questionCounter;
@@ -209,16 +209,16 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					counter[1] = questions.length;
 					counterEl.setHtml(counter.join("/"));
 				}
-				
+
 				if (questions.length == 1){
 					userQuestionsPanel._indicator.hide();
 				}
-				
+
 				questions.forEach(function(question){
 					questionsArr[question._id] = question;
 					questionIds.push(question._id);
 				});
-				
+
 				ARSnova.app.answerModel.getAnswerByUserAndSession(localStorage.getItem("keyword"), {
 					success: function(response){
 						var answers = Ext.decode(response.responseText);
@@ -233,12 +233,12 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 						questionIds.forEach(function(questionId){
 							userQuestionsPanel.addQuestion(questionsArr[questionId]);
 						});
-						
+
 						// bugfix (workaround): after removing all items from carousel the active index
 						// is set to -1. To fix that you have manually  set the activeItem on the first
 						// question.
 						self.setActiveItem(0);
-						
+
 						userQuestionsPanel.checkAnswer();
 						userQuestionsPanel.showNextUnanswered();
 					},
@@ -254,8 +254,8 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 			}
 		});
 	},
-	
-	addQuestion: function(question){		
+
+	addQuestion: function(question){
 		/**
 		 * add question to questionPanel
 		 */
@@ -274,27 +274,27 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 			}));
 		}
 	},
-	
-	checkAnswer: function(){		
+
+	checkAnswer: function(){
 		this.getInnerItems().forEach(function(questionPanel) {
 			var questionObj = questionPanel.questionObj;
 			if (!questionObj.userAnswered && !questionObj.isAbstentionAnswer) return;
-			
+
 			if (questionObj.isAbstentionAnswer && "mc" !== questionObj.questionType) {
 				questionPanel.selectAbstentionAnswer();
 				questionPanel.disableQuestion();
 				return;
 			}
-			
+
 			if (questionObj.questionType === "freetext") {
 				questionPanel.setAnswerText(questionObj.answerSubject, questionObj.userAnswered);
 				questionPanel.disableQuestion();
 				return;
 			}
-			
+
 			var list = questionPanel.answerList;
 			var data = list ? list.getStore() : Ext.create('Ext.data.Store', {model:'ARSnova.model.Answer'});
-			
+
 			if (questionObj.questionType === 'mc') {
 				if (!questionObj.isAbstentionAnswer) {
 					var answers = questionObj.userAnswered.split(",");
@@ -317,7 +317,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					questionPanel.disableQuestion();
 				}
 			}
-			
+
 			if (questionObj.questionType === 'gs') {
 				if (!questionObj.isAbstentionAnswer) {
 					var answers = questionObj.userAnswered.split(",");
@@ -333,6 +333,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					list.select(selectedIndexes, true);
 				}
 				questionPanel.disableQuestion();
+				questionPanel.selectedTiles = questionObj.userAnswered;
 			} else {
 				var index = data.find('text', questionObj.userAnswered);
 				if (index !== -1) {
@@ -340,7 +341,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					questionPanel.disableQuestion();
 				}
 			}
-			
+
 			if (questionObj.showAnswer) {
 				list.getStore().each(function(item) {
 					item.set('questionAnswered', true);
@@ -348,7 +349,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 			}
 		}, this);
 	},
-	
+
 	/**
 	 * Checks if statistic button for the active question should be shown.
 	 * The button will only become visible if showStatistic is enabled in
@@ -359,15 +360,15 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 		var questionObj = questionView.questionObj;
 
 		questionView.fireEvent('preparestatisticsbutton', this.statisticButton);
-		if( questionObj.showStatistic 
+		if( questionObj.showStatistic
 			&& questionObj.showStatistic == 1
 			&& questionView.isDisabled()) {
 			this.statisticButton.show();
-		} 	
+		}
 		else
 			this.statisticButton.hide();
 	},
-	
+
 	/**
 	 * Check if last answered Question was last unanswered question in carousel.
 	 * If it was the last one, the application moves back to user.InClass panel.
@@ -375,16 +376,16 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 	checkIfLastAnswer: function(){
 		var questionPanels	= this.items.items;
 		var allAnswered = true;
-		
+
 		for (var i = this.carouselOffset, questionPanel; questionPanel = questionPanels[i]; i++) {
 			if(questionPanel.isDisabled()) {
 				continue;
 			}
-			
+
 			allAnswered = false;
 			break;
 		}
-		
+
 		if(allAnswered) {
 			ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.userTabPanel, {
 	    		type		: 'slide',
@@ -394,7 +395,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 	    	});
 		}
 	},
-	
+
 	/**
 	 * Determines the current index in the carousel and iterates the following items
 	 * to find the next unanswered question. If the last index of the carousel is reached
@@ -404,10 +405,10 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 		var questionPanels	= this.items.items;
 		var activeQuestion	= this.getActiveItem();
 		var lastQuestion	= questionPanels[questionPanels.length-1];
-		
+
 		if(!activeQuestion.isDisabled()) return;
 		this.checkStatisticRelease();
-		
+
 		var currentPosition = 0;
 		for (var i = 0, questionPanel; questionPanel = questionPanels[i]; i++) {
 			if (questionPanel == activeQuestion) {
@@ -415,26 +416,26 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 				break;
 			}
 		}
-		
+
 		var spin = false;
 		for (var i = currentPosition, questionPanel; questionPanel = questionPanels[i]; i++) {
 			if(spin && i == currentPosition) {
 				break;
 			}
-			
+
 			if(questionPanel.isDisabled()) {
 				if(questionPanel == lastQuestion) {
 					i = this.carouselOffset;
 					spin = true;
-				} 
+				}
 				else continue;
 			}
-			
+
 			this.setActiveItem(i - this.carouselOffset);
 			break;
 		}
 	},
-	
+
 	renew: function() {
 		this.removeAll();
 		this.getUnansweredSkillQuestions();

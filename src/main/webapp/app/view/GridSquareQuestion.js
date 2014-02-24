@@ -20,32 +20,32 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.GridSquareQuestion', {
 	extend: 'Ext.Panel',
-	
+
 	config: {
 		scrollable: {
 			direction: 'vertical',
 			directionLock: true
 		}
 	},
-	
+
 	abstentionInternalId: 'ARSnova_Abstention',
 	abstentionAnswer: null,
-	
+
 	constructor: function(args) {
 		this.callParent(args);
-		
+
 		var self = this; // for use inside callbacks
 		this.viewOnly = args.viewOnly;
 		this.questionObj = args.questionObj;
-		
+
 		var gridSquareID = "gsCanvas-" + Ext.id();
 		this.gridSquareID = gridSquareID;
-		
+
 		var questionobj = args.questionObj;
-		
+
 		var answerStore = Ext.create('Ext.data.Store', {model: 'ARSnova.model.Answer'});
 		answerStore.add(this.questionObj.possibleAnswers);
-		
+
 		this.gridsquare = Ext.create('Ext.form.FieldSet', {
 	          html: "<div align='center'><canvas width='80%' height='60%' id='"+gridSquareID+"'></canvas></div>",
 	          listeners: {
@@ -60,12 +60,13 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 		        		  getGridSquare(gridSquareID).enableSelect();
 		        		  getGridSquare(gridSquareID).loadImage(image.src);
 		        		  getGridSquare(gridSquareID).disableLecturer();
+		        		  if(this.selectedTiles) getGridSquare(gridSquareID).importAnswerText(this.selectedTiles);
 	 				 },
 	 				 scope: self
 	 	    	 }
 	          }
 	      });
-		
+
 		this.on('preparestatisticsbutton', function(button) {
 			button.scope = this;
 			button.setHandler(function() {
@@ -77,7 +78,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				ARSnova.app.mainTabPanel.animateActiveItem(panel.questionStatisticChart, 'slide');
 			});
 		});
-		
+
 		var saveAnswer = function(answer) {
 			answer.saveAnswer({
 				success: function() {
@@ -86,7 +87,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 						questionsArr.push(self.questionObj._id);
 					}
 					localStorage.setItem('questionIds', Ext.encode(questionsArr));
-					
+
 					self.disableQuestion();
 					ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.showNextUnanswered();
 					ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.checkIfLastAnswer();
@@ -97,7 +98,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				}
 			});
 		};
-		
+
 		this.markCorrectAnswers = function() {
 			if (this.questionObj.showAnswer) {
 				// Mark all possible answers as 'answered'. This will highlight all correct answers.
@@ -106,37 +107,37 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				});
 			}
 		};
-		
+
 		this.saveGsQuestionHandler = function() {
 			Ext.Msg.confirm('', Messages.SUBMIT_ANSWER, function(button) {
 				if (button !== 'yes') {
 					return;
 				}
-				
+
 				var selectedIndexes = [];
 				this.answerList.getSelection().forEach(function(node) {
 					selectedIndexes.push(this.answerList.getStore().indexOf(node));
 				}, this);
 				this.markCorrectAnswers();
-				
+
 				var answerValues = [];
 				for (var i=0; i < this.answerList.getStore().getCount(); i++) {
 					answerValues.push(selectedIndexes.indexOf(i) !== -1 ? "1" : "0");
 				}
-				
+
 				self.getUserAnswer().then(function(answer) {
 					answer.set('answerText', answerValues.join(","));
 					saveAnswer(answer);
 				});
 			}, this);
 		};
-		
+
 		this.gsAbstentionHandler = function() {
 			Ext.Msg.confirm('', Messages.SUBMIT_ANSWER, function(button) {
 				if (button !== 'yes') {
 					return;
 				}
-				
+
 				self.getUserAnswer().then(function(answer) {
 					answer.set('abstention', true);
 					self.answerList.deselectAll();
@@ -144,7 +145,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				});
 			}, this);
 		};
-		
+
 		var questionListener = this.viewOnly || this.questionObj.questionType === "gs" ? {} : {
 			'itemtap': function(list, index, target, record) {
 				var confirm = function(answer, handler) {
@@ -162,17 +163,17 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 					});
 				}
 				var answerObj = self.questionObj.possibleAnswers[index];
-				
+
 				/* for use in Ext.Msg.confirm */
 				answerObj.selModel = list;
 				answerObj.target = target;
 
 				var theAnswer = answerObj.id || answerObj.text;
-				
+
 				confirm(theAnswer, function(button) {
 					if (button == 'yes') {
 						self.markCorrectAnswers();
-						
+
 						self.getUserAnswer().then(function(answer) {
 							answer.set('answerText', answerObj.text);
 							saveAnswer(answer);
@@ -183,21 +184,21 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				});
 			}
 		};
-		
+
 		this.questionTitle = Ext.create('Ext.Panel', {
 			cls: 'roundedBox',
-			html: 
+			html:
 				'<p class="title">' + Ext.util.Format.htmlEncode(this.questionObj.subject) + '<p/>' +
 				'<p>' + Ext.util.Format.htmlEncode(this.questionObj.text) + '</p>'
 		});
-		
+
 		this.answerList = Ext.create('Ext.dataview.List', {
 			store: answerStore,
 			allowDeselect: true,
 			cls: 'roundedBox',
-			variableHeights: true,	
+			variableHeights: true,
 			scrollable: { disabled: true },
-			
+
 			itemTpl: new Ext.XTemplate(
 				'{text:htmlEncode}',
 				'<tpl if="correct === true && this.isQuestionAnswered(values)">',
@@ -209,7 +210,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 					}
 				}
 			),
-			
+
 			listeners: {
 				scope: this,
 				selectionchange: function(list, records, eOpts) {
@@ -220,9 +221,9 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 					}
 				},
 				/**
-				 * The following events are used to get the computed height of all list items and 
+				 * The following events are used to get the computed height of all list items and
 				 * finally to set this value to the list DataView. In order to ensure correct rendering
-				 * it is also necessary to get the properties "padding-top" and "padding-bottom" and 
+				 * it is also necessary to get the properties "padding-top" and "padding-bottom" and
 				 * add them to the height of the list DataView.
 				 */
 		        painted: function (list, eOpts) {
@@ -230,9 +231,9 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 		        },
 		        resizeList: function(list) {
 		        	var listItemsDom = list.select(".x-list .x-inner .x-inner").elements[0];
-		        	
+
 		        	this.answerList.setHeight(
-		        		parseInt(window.getComputedStyle(listItemsDom, "").getPropertyValue("height"))	+ 
+		        		parseInt(window.getComputedStyle(listItemsDom, "").getPropertyValue("height"))	+
 		        		parseInt(window.getComputedStyle(list.dom, "").getPropertyValue("padding-top"))	+
 		        		parseInt(window.getComputedStyle(list.dom, "").getPropertyValue("padding-bottom"))
 		        	);
@@ -251,7 +252,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				correct: false
 			})[0];
 		}
-		
+
 		this.gsSaveButton = Ext.create('Ext.Button', {
 			flex: 1,
 			ui: 'confirm',
@@ -261,7 +262,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 			scope: this,
 			disabled: true
 		});
-		
+
 		var gsContainer = {
 			xtype: 'container',
 			layout: {
@@ -282,15 +283,15 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 				scope: this
 			}]
 		};
-		
+
 		this.add([this.questionTitle]);
 		this.answerList.setHidden(true);
 		this.add([this.gridsquare]);
-		
+
 		this.add([this.answerList].concat(
 			this.questionObj.questionType === "gs" && !this.viewOnly ? gsContainer : {}
 		));
-		
+
 		this.on('activate', function(){
 			this.answerList.addListener('itemtap', questionListener.itemtap);
 			/*
@@ -300,25 +301,25 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 			if(this.isDisabled()) this.disableQuestion();
 		});
 	},
-	
+
 	disableQuestion: function() {
 		this.setDisabled(true);
 		this.mask(Ext.create('ARSnova.view.CustomMask'));
 	},
-	
+
 	selectAbstentionAnswer: function() {
 		var index = this.answerList.getStore().indexOf(this.abstentionAnswer);
 		if (index !== -1) {
 			this.answerList.select(this.abstentionAnswer);
 		}
 	},
-	
+
 	doTypeset: function(parent) {
 		if (typeof this.questionTitle.element !== "undefined") {
 			var panel = this;
 			MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.questionTitle.element.dom]);
 			MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.answerList.element.dom]);
-			
+
 			MathJax.Hub.Queue(
 				["Delay", MathJax.Callback, 700], function() {
 					panel.answerList.fireEvent("resizeList", panel.answerList.element);
@@ -329,7 +330,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 			Ext.defer(Ext.bind(this.doTypeset, this), 100);
 		}
 	},
-	
+
 	getUserAnswer: function() {
 		var self = this;
 		var promise = new RSVP.Promise();
@@ -347,7 +348,7 @@ Ext.define('ARSnova.view.GridSquareQuestion', {
 			},
 			success: function(response){
 				var theAnswer = Ext.decode(response.responseText);
-				
+
 				//update
 				var answer = Ext.create('ARSnova.model.Answer', theAnswer);
 				promise.resolve(answer);
