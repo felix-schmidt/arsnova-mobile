@@ -542,6 +542,8 @@ function Fensterweite () {
 	  }
 	}
 
+	//@deprecated
+	/*
 	function Fensterhoehe () {
 	  if (window.innerHeight) {
 	    return window.innerHeight;
@@ -551,6 +553,7 @@ function Fensterweite () {
 	    return 0;
 	  }
 	}
+	*/
 
 /*******************************************************************************
  *	gridsquare todo
