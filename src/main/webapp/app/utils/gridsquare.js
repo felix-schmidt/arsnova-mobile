@@ -174,7 +174,9 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		var position = picture.getPosition();
 		// if canvas width is higher than canvas height then the aspect = h/w else w/h
 		var pictureAspect = image.height / image.width;
-		context.drawImage(image, position.x, position.y, width * scale, height * scale);
+		if(image.height > 0 && image.width > 0) {
+			context.drawImage(image, position.x, position.y, width * scale, height * scale);
+		}
 	}
 
 	function renderGrid() {
@@ -248,6 +250,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	this.loadImage = function(url) {
 		var imageObj = new Image();
 		imageObj.onload = function() {
+			//setTimeout(function(){picture.setImage(imageObj)},3000);
 			picture.setImage(imageObj);
 			render();
 		};
@@ -508,7 +511,9 @@ function createGridSquare(_id, _canvasId, _width, _height, _gridColumns, _gridRo
 		}
 	}
 	if(!found) {
-		gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp, _answerList)});
+		var newGridSquare = new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp, _answerList);
+		gridsquare.gridsquarestore.push({id:_id,object:newGridSquare});
+		//gridsquare.gridsquarestore.push({id:_id,object:new gridsquare.gridsquare(_canvasId, _width, _height, _gridColumns, _gridRows, _imageScale, _extCmp, _answerList)});
 	}
 }
 
