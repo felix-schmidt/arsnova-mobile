@@ -79,14 +79,14 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		if(!pictureDrag.dragged) {
 			var x = evt.clientX - canvas.getBoundingClientRect().left;
 			var y = evt.clientY - canvas.getBoundingClientRect().top;
-			
+
 			var gridSize = grid.getSize();
 			newx = Math.floor(x / (width / gridSize.col));
 			newy = Math.floor(y / (height / gridSize.row));
 
 			newy = newy * gridSize.row;
 			var field = newy + newx;
-			
+
 			if(selectable){
 				selectGridTile(x, y);
 				// Select in AnswerList
@@ -112,11 +112,11 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				};
 				var x = evt.clientX - canvas.getBoundingClientRect().left;
 				var y = evt.clientY - canvas.getBoundingClientRect().top;
-				
+
 				// make position relative to the drag start position
 				x = x - pictureDrag.positionOfDrag.x;
 				y = y - pictureDrag.positionOfDrag.y;
-				
+
 				// set new picture position
 				var position = {x:(pictureDrag.positionOfPictureBeforeMove.x + x), y:(pictureDrag.positionOfPictureBeforeMove.y + y)};
 				picture.setPosition(position);
@@ -174,7 +174,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		var position = picture.getPosition();
 		// if canvas width is higher than canvas height then the aspect = h/w else w/h
 		var pictureAspect = image.height / image.width;
-		context.drawImage(image, position.x, position.y, width * scale, (width * pictureAspect) * scale);
+		context.drawImage(image, position.x, position.y, width * scale, height * scale);
 	}
 
 	function renderGrid() {
@@ -282,13 +282,13 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		}
 		return result;
 	};
-	
+
 	this.importGrid = function(_grid) {
-		
+
 		var selectedTile;
 		var gridSize = grid.getSize();
 		var selectedTiles = [];
-		
+
 		for(var r = 0; r < gridSize.row; r++) {
 			for(var c = 0; c < gridSize.col; c++) {
 				if(_grid[ r * gridSize.col + c ].correct === true) {
@@ -299,7 +299,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				}
 			}
 		}
-	
+
 		grid.setSelected(selectedTiles);
 		render();
 	}
@@ -309,7 +309,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		var gridSize = grid.getSize();
 		var selectedTiles = [];
 		answerText = answerText.split(",");
-		
+
 		for(var r = 0; r < gridSize.row; r++) {
 			for(var c = 0; c < gridSize.col; c++) {
 				if(answerText[ r * gridSize.col + c ] === "1") {
@@ -320,11 +320,11 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 				}
 			}
 		}
-		
+
 		grid.setSelected(selectedTiles);
 		render();
 	}
-	
+
 	this.exportAnswerText = function() {
 		var result = "";
 		var firstValue = true;
@@ -367,21 +367,21 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 		this.canvas.style.width  = '' + width + 'px';
 		this.canvas.style.height = '' + height + 'px';
 	};
-	
+
 	this.exportTransformedPicture = function() {
 		var tmpCanvas = document.createElement('canvas');
 		tmpCanvas.width = width;
 		tmpCanvas.height = height;
-		
+
 		var tmpContext = tmpCanvas.getContext('2d');
-		
+
 		var image = picture.getImage();
 		var scale = picture.getScale() / 100;
 		var position = picture.getPosition();
 		//tmpContext.drawImage(picture.getImage(), position.x, position.y, width * scale, height * scale);
 		var pictureAspect = image.height / image.width;
-		tmpContext.drawImage(image, position.x, position.y, width * scale, (width * pictureAspect) * scale);
-		
+		tmpContext.drawImage(image, position.x, position.y, width * scale, height * scale);
+
 		return tmpCanvas.toDataURL();
 	}
 
@@ -411,7 +411,7 @@ gridsquare.gridsquare = function(_canvasId, _width, _height, _gridColumns, _grid
 	this.disableSelect = function() {
 		selectable = false;
 	}
-	
+
 	this.disableLecturer = function(){
 		isLecturer = false;
 	}

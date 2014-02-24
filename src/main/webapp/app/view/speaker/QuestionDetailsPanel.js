@@ -800,7 +800,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		if(this.questionObj.questionType === 'gs'){
 
 			this.answerEditForm.gsGridCanvas.setHtml("<div align='center'><canvas id='"+this.answerEditForm.canvasId+"'></canvas></div>");
-			createGridSquare(this.answerEditForm.canvasId, this.answerEditForm.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterhoehe() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100, this);
+			createGridSquare(this.answerEditForm.canvasId, this.answerEditForm.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterweite() * 60) / 100), this.questionObj.gridsize, this.questionObj.gridsize, 100, this);
 			getGridSquare(this.answerEditForm.canvasId).loadImage(this.questionObj.image);
 			getGridSquare(this.answerEditForm.canvasId).importGrid(this.questionObj.possibleAnswers);
 			getGridSquare(this.answerEditForm.canvasId).enableEdit();
