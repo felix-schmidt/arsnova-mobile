@@ -18,14 +18,13 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  +--------------------------------------------------------------------------*/
-
 Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	extend: 'Ext.Panel',
 	
 	requires: ['ARSnova.view.speaker.form.ExpandingAnswerForm', 'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
 	           'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
 	           'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
-	           'ARSnova.view.speaker.form.NullQuestion'],
+	           'ARSnova.view.speaker.form.NullQuestion', 'ARSnova.utils.ComponentToggle'],
 	
 	config: {
 		title: 'NewQuestionPanel',
@@ -43,8 +42,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	backButton	: null,
 	saveButton	: null,
 	
-	/*preview panel and buttons*/
-	previewPanel:null,
 	/* items */
 	text: null,
 	subject: null,
@@ -55,6 +52,9 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	
 	initialize: function(){
 		this.callParent(arguments);
+		
+		this.toggler = Ext.create('ARSnova.utils.ComponentToggle');
+		
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.QUESTIONS,
 			ui		: 'back',
@@ -86,11 +86,12 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			placeHolder: Messages.CATEGORY_PLACEHOLDER
 		});
 		
-//		this.textarea = Ext.create('Ext.plugins.ResizableTextArea', {
-//			name	  	: 'text',
-//	    	placeHolder	: Messages.QUESTIONTEXT_PlACEHOLDER,
-//	    	maxHeight	: 140
-//		});
+		this.textarea = Ext.create('Ext.plugins.ResizableTextArea', {
+			name	  	: 'text',
+	    	placeHolder	: Messages.QUESTIONTEXT_PlACEHOLDER,
+	    	maxHeight	: 140
+		});
+		
 		
 		this.mainPart = Ext.create('Ext.form.FormPanel', {
 			cls: 'newQuestion',
@@ -99,38 +100,25 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			items: [{
 				xtype: 'fieldset',
 				items: [this.subject]
-			},
-//			{
-//				xtype: 'fieldset',
-//				items: [this.textarea]
-//			}
-			]
+			},{
+				xtype: 'fieldset',
+				items: [this.textarea]
+			}]
 		});
-		
-//		this.previewPanel=Ext.create('Ext.TabPanel', {
-//		    ui: 'light',
-//		    height: 300,
-//		    width:  (window.innerWidth > 0) ? window.innerWidth : screen.width,
-//		    scrollable: null,
-//		   
-//		    defaults: {
-//		        styleHtmlContent: true,
-//		    },
-//
-//		    items: [{
-//		            title: 'Texteditor',
-//		            items: [{
-//						xtype: 'fieldset',
-//						items: [this.textarea]
-//					}]
-//		        },{
-//		            title: 'Preview',
-//		            html: 'Preview Screen'
-//		        }],
-//		    scope: this
-//		});
-		
-		this.previewPanel=Ext.create('ARSnova.view.speaker.MathJaxMarkdownEditor');
+
+		this.previewToggle = Ext.create('Ext.field.Toggle', {
+        	label: Messages.PREVIEW,
+			listeners: {
+				scope: this,
+				change: function(field, newValue, oldValue) {
+					if (newValue) {
+						this.toggler.showPreviewFields();
+					} else {
+						this.toggler.showEditFields();
+					}
+				}
+			}
+		});
 		
 		this.releaseItems = [{
 			text: window.innerWidth < 600 ? Messages.ALL_SHORT : Messages.ALL_LONG,
@@ -260,30 +248,36 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		});
 		
 		this.multipleChoiceQuestion = Ext.create('ARSnova.view.speaker.form.ExpandingAnswerForm', {
-			hidden: true
+			hidden: true,
+			previewController: this.toggler
 		});
 
 		this.voteQuestion = Ext.create('ARSnova.view.speaker.form.VoteQuestion', {
-			hidden: true
+			hidden: true,
+			previewController: this.toggler
 		});
 		
 		this.schoolQuestion = Ext.create('ARSnova.view.speaker.form.SchoolQuestion', {
-			hidden: true
+			hidden: true,
+			previewController: this.toggler
 		});
 		
 		this.abcdQuestion = Ext.create('ARSnova.view.speaker.form.IndexedExpandingAnswerForm', {
-			hidden: true
+			hidden: true,
+			previewController: this.toggler
 		});
 		
 		this.freetextQuestion = Ext.create('Ext.form.FormPanel', {
 			hidden: true,
 			scrollable: null,
 			submitOnAction: false,
-			items: []
+			items: [],
+			previewController: this.toggler
 		});
 		
 		this.flashcardQuestion = Ext.create('ARSnova.view.speaker.form.FlashcardQuestion', {
-			hidden: true
+			hidden: true,
+			previewController: this.toggler
 		});
 		
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
@@ -382,21 +376,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			items: [
 		        this.backButton,
 		        {xtype:'spacer'},
-		        {xtype: 'togglefield',
-		        name: 'awesome',
-		        value: 1,
-		        label: Messages.EDIT,
-		        labelWidth: '40%',
-		        listeners: {
-		        	  change: function(slider, thumb, newValue, oldValue) {
-		                  if (this.isDisabled() == false && newValue==1) {   // isEnabled
-		                      alert('change Togglefield Event triggered');   // do something
-		                  }
-		                  else {
-		                      this.enable();                                 // enable togglefield  
-		                  }
-		              }
-		        },},
+		        this.previewToggle,
 		        this.saveButton
 			]
 		});
@@ -468,7 +448,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 				]
 			}),
 			this.mainPart,
-			this.previewPanel,
 			
 			/* only one of the question types will be shown at the same time */
 			this.voteQuestion,
@@ -487,6 +466,10 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		]);
 		
 		this.on('activate', this.onActivate);
+
+		this.toggler.registerForPreview(this.subject);
+		this.toggler.registerForPreview(this.textarea);
+		this.toggler.showEditFields();
 	},
 	
 	onActivate: function() {
@@ -494,13 +477,12 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	},
 	
 	saveHandler: function(){
-		//alert("Klasse NewQuestionPanel");
     	var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.newQuestionPanel;
     	var values = {};
 		
 		/* get text, subject of question from mainPart */
 		var mainPartValues = panel.mainPart.getValues();
-		values.text = this.previewPanel.getText();//mainPartValues.text;
+		values.text = mainPartValues.text;
 		values.subject = mainPartValues.subject;
 		values.abstention = !panel.abstentionPart.isHidden() && panel.getAbstention();
 		values.questionVariant = panel.getVariant();

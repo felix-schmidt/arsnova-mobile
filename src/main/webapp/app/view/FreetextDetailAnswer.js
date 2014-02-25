@@ -32,6 +32,8 @@ Ext.define('ARSnova.view.FreetextDetailAnswer', {
 	
 	constructor: function(args) {
 		this.callParent(args);
+
+		this.previewmanager = Ext.create('ARSnova.utils.ComponentToggle');
 		
 		this.answer = args.answer;
 		this.sTP = args.sTP;
@@ -78,16 +80,16 @@ Ext.define('ARSnova.view.FreetextDetailAnswer', {
 						disabled: true
 					},
 					{
-						xtype: 'textfield',
+						xtype: 'field',
+						styleHtmlContent: true,
 						label: Messages.QUESTION_SUBJECT,
-						value: this.answer.answerSubject,
-						disabled: true
+						html: mathJaxConvert(this.answer.answerSubject)
 					},
 					{
-						xtype: 'textareafield',
+						xtype: 'field',
+						styleHtmlContent: true,
 						label: Messages.FREETEXT_DETAIL_ANSWER,
-						value: this.answer.answerText,
-						disabled: true,
+						html: mathJaxConvert(this.answer.answerText),
 						maxRows: 8
 					}
 				]

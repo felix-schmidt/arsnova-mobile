@@ -379,6 +379,42 @@ Ext.application({
 	}
 });
 
+
+/**
+ * This function convert user-text to Markdown and MathJax.
+ */
+function mathJaxConvert (text) {
+	
+	/*
+	 * Get the user-text from input-field.
+	 */
+	var text = text;
+	/*
+	 * Avoid escape from newline character in MathJax-Tags.
+	 */
+	text = text.replace(/\\\\/g,"\\\\\\\\");
+	/*
+	 * lowercase mathjax: \LOR -> \lor
+	 */
+	text = text.replace(/\\[A-Z0-9_]+/g, function(tag){return tag.toLowerCase()});
+	/*
+	 * Generate a new Dom-element buffer for, MathJax transformation.
+	 */
+	var buffer = document.createElement("div");
+	/*
+	 * Parsing Markdown-Tags.
+	 */
+	buffer.innerHTML = markdown.toHTML(text);
+	/*
+	 * Parsing MathJax-Tags.
+	 */
+	MathJax.Hub.Queue(
+		["Typeset",MathJax.Hub, buffer]
+	);
+	
+	return buffer.innerHTML;
+}
+
 function clone(obj) {
     // Handle the 3 simple types, and null or undefined
     if (null == obj || "object" != typeof obj) return obj;

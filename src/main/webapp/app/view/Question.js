@@ -161,9 +161,9 @@ Ext.define('ARSnova.view.Question', {
 		
 		this.questionTitle = Ext.create('Ext.Panel', {
 			cls: 'roundedBox',
-			html: 
-				'<p class="title">' + Ext.util.Format.htmlEncode(this.questionObj.subject) + '<p/>' +
-				'<p>' + Ext.util.Format.htmlEncode(this.questionObj.text) + '</p>'
+			styleHtmlContent: true,
+			html: '<p class="title">' + mathJaxConvert(this.questionObj.subject) + '</p>' +
+			'<p>' + mathJaxConvert(this.questionObj.text) + '</p>'
 		});
 		
 		this.answerList = Ext.create('Ext.List', {
@@ -172,15 +172,19 @@ Ext.define('ARSnova.view.Question', {
 			cls: 'roundedBox',
 			variableHeights: true,	
 			scrollable: { disabled: true },
+			styleHtmlContent: true,
 			
 			itemTpl: new Ext.XTemplate(
-				'{text:htmlEncode}',
+				'{text:this.parseMathjax}',
 				'<tpl if="correct === true && this.isQuestionAnswered(values)">',
 					'&nbsp;<span style="padding: 0 0.2em 0 0.2em" class="x-list-item-correct">&#10003; </span>',
 				'</tpl>',
 				{
 					isQuestionAnswered: function(values) {
 						return values.questionAnswered === true;
+					},
+					parseMathjax: function(text) {
+						return mathJaxConvert(text)
 					}
 				}
 			),

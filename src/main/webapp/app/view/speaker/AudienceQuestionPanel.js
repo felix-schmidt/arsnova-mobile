@@ -62,7 +62,7 @@ Ext.define('ARSnova.view.speaker.AudienceQuestionPanel', {
 			sorters: 'text',
 			grouper: {
 		         groupFn: function(record) {
-		        	 return Ext.util.Format.htmlEncode(record.get('subject'));
+		        	 return mathJaxConvert(record.get('subject'));
 		         }
 		     }
 		});
@@ -86,10 +86,17 @@ Ext.define('ARSnova.view.speaker.AudienceQuestionPanel', {
 			defaultType: 'audiencequestionlistitem',
 
 			itemCls: 'forwardListButton',
-			itemTpl: '<tpl if="active"><div class="buttontext noOverflow">{text:htmlEncode}</div></tpl>' +
-					 '<tpl if="!active"><div class="isInactive buttontext noOverflow">{text:htmlEncode}</div></tpl>' +
-					 '<div class="x-list-item x-hasbadge">' +
-					 '<tpl if="numAnswers &gt; 0"><span class="redbadgeicon badgefixed">{numAnswers}</span></tpl></div>',
+			styleHtmlContent: true,
+			itemTpl: new Ext.XTemplate(
+					'<tpl if="active"><div class="buttontext noOverflow">{text:this.parseMathjax}</div></tpl>',
+					'<tpl if="!active"><div class="isInactive buttontext noOverflow">{text:this.parseMathjax}</div></tpl>',
+					'<div class="x-list-item x-hasbadge">',
+					'<tpl if="numAnswers &gt; 0"><span class="redbadgeicon badgefixed">{numAnswers}</span></tpl></div>',
+					{
+						parseMathjax: function(text) {
+							return mathJaxConvert(text)
+						}
+					}),
 			grouped: true,
 			store: this.questionStore,
 			

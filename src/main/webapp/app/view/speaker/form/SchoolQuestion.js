@@ -21,7 +21,8 @@ Ext.define('ARSnova.view.speaker.form.SchoolQuestion', {
 	config: {
 		maxAnswers: 6,
 		wording: [Messages.SCHOOL_A, Messages.SCHOOL_B, Messages.SCHOOL_C,
-		          Messages.SCHOOL_D, Messages.SCHOOL_E, Messages.SCHOOL_F]
+		          Messages.SCHOOL_D, Messages.SCHOOL_E, Messages.SCHOOL_F],
+		previewController: null
 	},
 	
 	constructor: function() {
@@ -41,6 +42,13 @@ Ext.define('ARSnova.view.speaker.form.SchoolQuestion', {
 			title: Messages.ANSWERS,
 			items: this.fields
 		}]);
+
+		/* add the fields to the previewController */
+		if (this.getPreviewController()) {
+			for (var i=0; i < this.fields.length; i++) {
+				this.getPreviewController().registerForPreview(this.fields[i]);
+			}
+		}
 	},
 	
 	initWithQuestion: function(question) {
