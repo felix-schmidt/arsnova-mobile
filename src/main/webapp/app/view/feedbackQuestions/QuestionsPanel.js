@@ -128,12 +128,17 @@ Ext.define('ARSnova.view.feedbackQuestions.QuestionsPanel', {
   		    	'<div class="search-item noOverflow">',
   			    	'<span style="color:gray;">{formattedTime}</span>',
   			    	'<tpl if="obj.get(\'read\')">',
-  				    	'<span style="padding-left:30px;">{subject:htmlEncode}</span>',
+  				    	'<span style="padding-left:30px;">{subject:this.parseMathjax}</span>',
   			    	'</tpl>',
   			    	'<tpl if="!obj.get(\'read\')">',
-				    	'<span style="padding-left:30px;font-weight:bold;color:red">{subject:htmlEncode}</span>',
+				    	'<span style="padding-left:30px;font-weight:bold;color:red">{subject:this.parseMathjax}</span>',
 			    	'</tpl>',
-  		    	'</div>'
+  		    	'</div>',
+  		    	{
+					parseMathjax: function(text) {
+						return mathJaxConvert(text)
+					}
+				}
 	    	),
 		    grouped: true,
 		    store: this.getStore(),
