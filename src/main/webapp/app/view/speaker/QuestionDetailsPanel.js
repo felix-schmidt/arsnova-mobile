@@ -85,7 +85,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	constructor: function(args){
 		this.callParent(args);
 
-		this.previewmanager = Ext.create('ARSnova.utils.ComponentToggle');
+		this.previewController = Ext.create('ARSnova.utils.PreviewController');
 		
 		var me = this;
 		this.questionObj = args.question;
@@ -137,15 +137,15 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		});
 
 		this.previewButton = Ext.create('Ext.field.Toggle', {
-        	label: Messages.PREVIEW,
-        	hidden: true,
+			label: Messages.PREVIEW,
+			hidden: true,
 			listeners: {
 				scope: this,
 				change: function(field, newValue, oldValue) {
 					if (newValue) {
-						this.previewmanager.showPreviewFields();
+						this.previewController.showPreviewFields();
 					} else {
-						this.previewmanager.showEditFields();
+						this.previewController.showEditFields();
 					}
 				}
 			}
@@ -752,7 +752,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		
 		this.answerEditForm = Ext.create(answerEditFormClass, {
 			hidden: true,
-			previewController: this.previewmanager
+			previewController: this.previewController
 		});
 		this.answerEditForm.initWithQuestion(Ext.clone(this.questionObj));
 		
@@ -771,9 +771,9 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		this.on('activate', this.onActivate);
 		this.on('deactivate', this.onDeactivate);
 
-		this.previewmanager.registerForPreview(this.subject);
-		this.previewmanager.registerForPreview(this.textarea);
-		this.previewmanager.showPreviewFields();
+		this.previewController.registerForPreview(this.subject);
+		this.previewController.registerForPreview(this.textarea);
+		this.previewController.showPreviewFields();
 	},
 	
 	prevNewCard: null,

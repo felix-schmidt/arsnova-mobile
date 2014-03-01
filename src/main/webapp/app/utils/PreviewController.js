@@ -1,6 +1,6 @@
 
 
-Ext.define('ARSnova.utils.ComponentToggle', {
+Ext.define('ARSnova.utils.PreviewController', {
 	extend: 'Ext.Base',
 	
 	config: {

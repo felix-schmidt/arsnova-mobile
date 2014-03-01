@@ -24,7 +24,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	requires: ['ARSnova.view.speaker.form.ExpandingAnswerForm', 'ARSnova.view.speaker.form.IndexedExpandingAnswerForm',
 	           'ARSnova.view.speaker.form.FlashcardQuestion', 'ARSnova.view.speaker.form.SchoolQuestion',
 	           'ARSnova.view.speaker.form.VoteQuestion', 'ARSnova.view.speaker.form.YesNoQuestion',
-	           'ARSnova.view.speaker.form.NullQuestion', 'ARSnova.utils.ComponentToggle'],
+	           'ARSnova.view.speaker.form.NullQuestion', 'ARSnova.utils.PreviewController'],
 	
 	config: {
 		title: 'NewQuestionPanel',
@@ -53,7 +53,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	initialize: function(){
 		this.callParent(arguments);
 		
-		this.toggler = Ext.create('ARSnova.utils.ComponentToggle');
+		this.previewController = Ext.create('ARSnova.utils.PreviewController');
 		
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.QUESTIONS,
@@ -92,7 +92,6 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 	    	maxHeight	: 140
 		});
 		
-		
 		this.mainPart = Ext.create('Ext.form.FormPanel', {
 			cls: 'newQuestion',
 			scrollable: null,
@@ -107,14 +106,14 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		});
 
 		this.previewToggle = Ext.create('Ext.field.Toggle', {
-        	label: Messages.PREVIEW,
+			label: Messages.PREVIEW,
 			listeners: {
 				scope: this,
 				change: function(field, newValue, oldValue) {
 					if (newValue) {
-						this.toggler.showPreviewFields();
+						this.previewController.showPreviewFields();
 					} else {
-						this.toggler.showEditFields();
+						this.previewController.showEditFields();
 					}
 				}
 			}
@@ -249,22 +248,22 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		
 		this.multipleChoiceQuestion = Ext.create('ARSnova.view.speaker.form.ExpandingAnswerForm', {
 			hidden: true,
-			previewController: this.toggler
+			previewController: this.previewController
 		});
 
 		this.voteQuestion = Ext.create('ARSnova.view.speaker.form.VoteQuestion', {
 			hidden: true,
-			previewController: this.toggler
+			previewController: this.previewController
 		});
 		
 		this.schoolQuestion = Ext.create('ARSnova.view.speaker.form.SchoolQuestion', {
 			hidden: true,
-			previewController: this.toggler
+			previewController: this.previewController
 		});
 		
 		this.abcdQuestion = Ext.create('ARSnova.view.speaker.form.IndexedExpandingAnswerForm', {
 			hidden: true,
-			previewController: this.toggler
+			previewController: this.previewController
 		});
 		
 		this.freetextQuestion = Ext.create('Ext.form.FormPanel', {
@@ -272,12 +271,12 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 			scrollable: null,
 			submitOnAction: false,
 			items: [],
-			previewController: this.toggler
+			previewController: this.previewController
 		});
 		
 		this.flashcardQuestion = Ext.create('ARSnova.view.speaker.form.FlashcardQuestion', {
 			hidden: true,
-			previewController: this.toggler
+			previewController: this.previewController
 		});
 		
 		this.questionOptions = Ext.create('Ext.SegmentedButton', {
@@ -467,9 +466,9 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 		
 		this.on('activate', this.onActivate);
 
-		this.toggler.registerForPreview(this.subject);
-		this.toggler.registerForPreview(this.textarea);
-		this.toggler.showEditFields();
+		this.previewController.registerForPreview(this.subject);
+		this.previewController.registerForPreview(this.textarea);
+		this.previewController.showEditFields();
 	},
 	
 	onActivate: function() {

@@ -32,8 +32,6 @@ Ext.define('ARSnova.view.FreetextDetailAnswer', {
 	
 	constructor: function(args) {
 		this.callParent(args);
-
-		this.previewmanager = Ext.create('ARSnova.utils.ComponentToggle');
 		
 		this.answer = args.answer;
 		this.sTP = args.sTP;

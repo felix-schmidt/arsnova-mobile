@@ -27,13 +27,13 @@ Ext.define('ARSnova.view.FreetextQuestion', {
 			direction: 'vertical',
 			directionLock: true
 		},
-		previewmanager: Ext.create('ARSnova.utils.ComponentToggle')
+		previewController: Ext.create('ARSnova.utils.PreviewController')
 	},
 	
 	constructor: function(args) {
 		this.callParent(args);
 
-		this.previewmanager = this.getPreviewmanager();
+		this.previewController = this.getPreviewController();
 		
 		var self = this;
 		this.questionObj = args.questionObj;
@@ -113,8 +113,8 @@ Ext.define('ARSnova.view.FreetextQuestion', {
 			]
 		})]);
 
-		this.previewmanager.registerForPreview(this.answerSubject);
-		this.previewmanager.registerForPreview(this.answerText);
+		this.previewController.registerForPreview(this.answerSubject);
+		this.previewController.registerForPreview(this.answerText);
 		
 		this.on('activate', function(){
 			/*

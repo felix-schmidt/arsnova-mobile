@@ -384,7 +384,6 @@ Ext.application({
  * This function convert user-text to Markdown and MathJax.
  */
 function mathJaxConvert (text) {
-	
 	/*
 	 * Get the user-text from input-field.
 	 */
@@ -411,7 +410,6 @@ function mathJaxConvert (text) {
 	MathJax.Hub.Queue(
 		["Typeset",MathJax.Hub, buffer]
 	);
-	
 	return buffer.innerHTML;
 }
 

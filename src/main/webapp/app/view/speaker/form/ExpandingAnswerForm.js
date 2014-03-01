@@ -52,7 +52,7 @@ Ext.define('ARSnova.view.speaker.form.ExpandingAnswerForm', {
 							this.getPreviewController().setHidden(this.answerComponents[i], i >= value);
 						} else {
 							this.answerComponents[i].setHidden(i >= value);
-						}						
+						}
 						this.correctComponents[i].setHidden(i >= value);
 					}
 				}

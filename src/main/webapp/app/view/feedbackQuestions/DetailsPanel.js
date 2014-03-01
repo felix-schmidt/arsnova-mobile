@@ -87,7 +87,7 @@ Ext.define('ARSnova.view.feedbackQuestions.DetailsPanel', {
 					xtype: "field",
 					styleHtmlContent: true,
 					label: Messages.QUESTION_TEXT,
-					htl: mathJaxConvert(this.questionObj.text)
+					html: mathJaxConvert(this.questionObj.text)
 				}]
 			}]
 		},{
