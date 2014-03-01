@@ -55,5 +55,11 @@ Ext.define('ARSnova.view.speaker.form.FlashcardQuestion', {
 		result.possibleAnswers = [{text: this.answer.getValue(), correct: true}];
 		
 		return result;
+	},
+	
+	markEmptyFields: function() {
+		if (this.answer.getValue().trim() === "") {
+			this.answer.addCls("required");
+		}
 	}
 });

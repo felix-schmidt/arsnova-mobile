@@ -21,12 +21,15 @@
 Ext.define('ARSnova.view.user.QuestionPanel', {
 	extend: 'Ext.Carousel',
 	
+	requires: ['ARSnova.view.Question'],
+	
 	config: {
 		fullscreen: true,
 		title	: Messages.QUESTIONS,
 		iconCls	: 'tabBarIconQuestion',
 		
-		questionLoader: null
+		questionLoader: null,
+		questionCountLoader: null
 	},
 	
 	/* toolbar items */
@@ -172,10 +175,12 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 	},
 	
 	setPreparationMode: function() {
+		this.setQuestionCountLoader(Ext.bind(ARSnova.app.questionModel.countPreparationQuestions, ARSnova.app.questionModel));
 		this.setQuestionLoader(Ext.bind(ARSnova.app.questionModel.getPreparationQuestionsForUser, ARSnova.app.questionModel));
 	},
 	
 	setLectureMode: function() {
+		this.setQuestionCountLoader(Ext.bind(ARSnova.app.questionModel.countLectureQuestions, ARSnova.app.questionModel));
 		this.setQuestionLoader(Ext.bind(ARSnova.app.questionModel.getLectureQuestionsForUser, ARSnova.app.questionModel));
 	},
 	
@@ -192,7 +197,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 				if (questions.length == 0){
 					//no available questions found
 					
-					ARSnova.app.questionModel.countSkillQuestions(localStorage.getItem("keyword"), {
+					self.getQuestionCountLoader()(localStorage.getItem("keyword"), {
 						success: function(response){
 							var questionsInCourse = Ext.decode(response.responseText);
 							
@@ -277,7 +282,10 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 		});
 	},
 	
-	addQuestion: function(question){
+	addQuestion: function(question){		
+		/**
+		 * add question to questionPanel
+		 */
 		if (question.questionType === 'freetext') {
 			this.add(Ext.create('ARSnova.view.FreetextQuestion', {
 				questionObj: question
