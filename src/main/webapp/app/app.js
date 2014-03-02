@@ -400,7 +400,7 @@ function mathJaxConvert (text) {
 	/*
 	 * Generate a new Dom-element buffer for, MathJax transformation.
 	 */
-	var buffer = document.createElement("div");
+	var buffer = document.createElement("span");
 	/*
 	 * Parsing Markdown-Tags.
 	 */
@@ -411,7 +411,14 @@ function mathJaxConvert (text) {
 	MathJax.Hub.Queue(
 		["Typeset",MathJax.Hub, buffer]
 	);
-	return buffer.innerHTML;
+	// if buffer contains one single p tag. return the innerhtml of this p tag
+	if (buffer.childNodes.length == 1
+		&& buffer.childNodes[0].nodeType == 1
+		&& buffer.childNodes[0].tagName == "P") {
+		return buffer.childNodes[0].innerHTML;
+	} else {
+		return buffer.innerHTML;
+	}
 }
 
 function clone(obj) {
