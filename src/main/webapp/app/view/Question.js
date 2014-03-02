@@ -126,7 +126,7 @@ Ext.define('ARSnova.view.Question', {
 		var questionListener = this.viewOnly || this.questionObj.questionType === "mc" ? {} : {
 			'itemtap': function(list, index, target, record) {
 				var confirm = function(answer, handler) {
-					Ext.Msg.confirm(Messages.ANSWER + ' "' + answer + '"', Messages.SUBMIT_ANSWER, handler);
+					Ext.Msg.confirm(Messages.ANSWER + ' "' + mathJaxConvert(answer) + '"', Messages.SUBMIT_ANSWER, handler);
 				};
 				if (record.get('id') === self.abstentionInternalId) {
 					return confirm(Messages.ABSTENTION, function(button) {
