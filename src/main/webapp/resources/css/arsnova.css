@@ -1015,6 +1015,10 @@ ol.standardList li {
 	min-width: 100px;
 }
 
+.previewToggleText {
+	padding-top: 6px !important;
+}
+
 .questionDetailsToggle {
 	background: transparent;
 	border: none;

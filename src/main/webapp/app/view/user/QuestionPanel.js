@@ -67,6 +67,8 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 
 		this.previewButton = Ext.create('Ext.field.Toggle', {
 			label: Messages.PREVIEW,
+			labelWrap: true,
+			labelCls: 'previewToggleText',
 			hidden: true,
 			listeners: {
 				scope: this,

@@ -44,6 +44,8 @@ Ext.define('ARSnova.view.feedback.AskPanel', {
 
 		this.previewButton = Ext.create('Ext.field.Toggle', {
 			label: Messages.PREVIEW,
+			labelWrap: true,
+			labelCls: 'previewToggleText',
 			listeners: {
 				scope: this,
 				change: function(field, newValue, oldValue) {
