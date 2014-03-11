@@ -197,7 +197,7 @@ Ext.define('ARSnova.view.speaker.form.GridSquareQuestion', {
 	this.gsSliderScale.setValue("100");
 	this.gsSliderSizeTitle.setHtml("<b>"+Messages.CHANGE_GRIDSIZE+"</b>");
 	this.gsSliderScaleTitle.setHtml("<br><br><b>"+Messages.CHANGE_SIZE+"</b>");
-	getGridSquare(this.canvasId).loadImage("/app/images/default.jpg");
+	getGridSquare(this.canvasId).loadImage("/resources/images/default.jpg");
 	getGridSquare(this.canvasId).setScale("100");
 	getGridSquare(this.canvasId).setGridSize("4","4");
 

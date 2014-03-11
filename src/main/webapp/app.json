@@ -68,6 +68,14 @@
       		"update": "full"
         },
         {
+      		"path": "app/utils/base64.js",
+      		"update": "full"
+        },
+        {
+      		"path": "app/utils/gridsquare.js",
+      		"update": "full"
+        },
+        {
       		"path": "app/utils/Ext.Array.js",
       		"update": "full"
         },
@@ -129,8 +137,10 @@
             "app/BrowserDetect.js",
             "app/BrowserSupport.js",
             "app/internationalization.js",
+            "app/utils/base64.js",
             "app/utils/Ext.Array.js",
             "app/utils/Ext.util.TaskRunner.js",
+            "app/utils/gridsquare.js",
             
             /* lib */
             "lib/moment.de.js",
@@ -149,6 +159,7 @@
             "resources/images/btn_guest.png",
             "resources/images/btn_thm.png",
             "resources/images/btn_uni.png",
+            "resources/images/default.jpg",
             "resources/images/delete_session.png",
             "resources/images/facebook_wide.png",
             "resources/images/facebook.png",

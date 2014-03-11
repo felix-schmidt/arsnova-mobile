@@ -243,7 +243,7 @@ Ext.define('ARSnova.view.speaker.NewQuestionPanel', {
 								this.gridsquareQuestion.show();
 								//ToDo Init Slider, Gridsize, ImageScale, Slider disable...
 								createGridSquare(this.gridsquareQuestion.canvasId, this.gridsquareQuestion.canvasId, parseInt((Fensterweite() * 80) / 100), parseInt((Fensterweite() * 60) / 100), this.gridsquareQuestion.gsSliderSize.getValue(), this.gridsquareQuestion.gsSliderSize.getValue(), 100, this);
-						      	getGridSquare(this.gridsquareQuestion.canvasId).loadImage('app/images/default.jpg');
+						      	getGridSquare(this.gridsquareQuestion.canvasId).loadImage('resources/images/default.jpg');
 						      	getGridSquare(this.gridsquareQuestion.canvasId).enableEdit();
 						      	getGridSquare(this.gridsquareQuestion.canvasId).enableSelect();
 

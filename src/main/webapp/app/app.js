@@ -23,9 +23,11 @@
  */
 //@require lib/moment.de.js
 //@requrie lib/moment.min.js
-//@require utils/Ext.util.TaskRunner.js
-//@require utils/Ext.util.ResizableTextArea.js
+//@require utils/base64.js
 //@require utils/Ext.Array.js
+//@require utils/Ext.util.ResizableTextArea.js
+//@require utils/Ext.util.TaskRunner.js
+//@require utils/gridsquare.js
 
 Ext.require([
     'Ext.Label',
@@ -38,7 +40,8 @@ Ext.require([
 	'Ext.chart.CartesianChart',
 	'Ext.SegmentedButton',
 	'Ext.data.JsonStore',
-	'Ext.device.Device'
+	'Ext.device.Device',
+	'Ext.ux.FileUp'
 ]);
 
 Ext.application({
