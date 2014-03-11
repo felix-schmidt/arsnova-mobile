@@ -52,6 +52,10 @@
             "x-bootstrap": true
         },
         {
+      		"path": "lib/markdown.js",
+      		"update": "full"
+        },
+        {
       		"path": "lib/moment.min.js",
       		"update": "full"
         },
@@ -133,6 +137,7 @@
             "app/utils/Ext.util.TaskRunner.js",
             
             /* lib */
+            "lib/markdown.js",
             "lib/moment.de.js",
             "lib/moment.min.js",
             "lib/rsvp.min.js",
@@ -184,6 +189,7 @@
         "resources/startup",
         "favicon.png",
         "lib/socket.io/socket.io.min.js",
+        "lib/markdown.js",
         "WEB-INF"
     ],
 

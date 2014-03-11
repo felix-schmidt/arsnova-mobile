@@ -71,12 +71,12 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 			var pA = this.questionObj.possibleAnswers[i];
 			if(pA.data){
 				this.questionStore.add({
-					text: pA.data.text,
+					text: markdown.toHTML(pA.data.text).replace(/<(?:.|\n)*?>/gm, ''),
 					value: 0
 				});
 			} else {
 				this.questionStore.add({
-					text: pA.text,
+					text: markdown.toHTML(pA.text).replace(/<(?:.|\n)*?>/gm, ''),
 					value: 0
 				});
 			}
@@ -118,7 +118,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		this.titlebar = Ext.create('Ext.Toolbar', {
 			cls		: 'questionStatisticTitle',
 			docked	: 'top',
-			title	: title
+			title	: markdown.toHTML(title).replace(/<(?:.|\n)*?>/gm, '')
 		});
 		
 		if( this.questionObj.questionType == "yesno" 	|| 

@@ -64,6 +64,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	backButton	: null,
 	cancelButton: null,
 	editButton	: null,
+	previewButton	: null,
 
 	questionObj : null,
 	
@@ -85,6 +86,8 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 	
 	constructor: function(args){
 		this.callParent(args);
+
+		this.previewController = Ext.create('ARSnova.utils.PreviewController');
 		
 		var me = this;
 		this.questionObj = args.question;
@@ -126,8 +129,29 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 				
 				this.hide();
 				panel.backButton.show();
+				/* workaround, make sure it triggers the handler of the previewButton */
+				panel.previewButton.setValue(0);
+				panel.previewButton.setValue(1);
+				panel.previewButton.hide();
 				panel.resetFields();
 				panel.editButton.config.setEnableAnswerEdit(panel, false);
+			}
+		});
+
+		this.previewButton = Ext.create('Ext.field.Toggle', {
+			label: Messages.PREVIEW,
+			labelWrap: true,
+			labelCls: 'previewToggleText',
+			hidden: true,
+			listeners: {
+				scope: this,
+				change: function(field, newValue, oldValue) {
+					if (newValue) {
+						this.previewController.showPreviewFields();
+					} else {
+						this.previewController.showEditFields();
+					}
+				}
 			}
 		});
 		
@@ -185,6 +209,10 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 				if(this.getText() == Messages.EDIT){
 					panel.cancelButton.show();
 					panel.backButton.hide();
+					/* workaround, make sure it triggers the handler of the previewButton */
+					panel.previewButton.setValue(1);
+					panel.previewButton.setValue(0);
+					panel.previewButton.show();
 					
 					this.setText(Messages.SAVE);
 					this.addCls('x-button-action');
@@ -194,6 +222,10 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 				} else {
 					panel.cancelButton.hide();
 					panel.backButton.show();
+					/* workaround, make sure it triggers the handler of the previewButton */
+					panel.previewButton.setValue(0);
+					panel.previewButton.setValue(1);
+					panel.previewButton.hide();
 					
 					var values = this.up('panel').down('#contentForm').getValues();
 					var question = Ext.create('ARSnova.model.Question', panel.questionObj);
@@ -301,6 +333,7 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		        this.backButton,
 		        this.cancelButton,
 		        {xtype:'spacer'},
+		        this.previewButton,
 		        this.editButton
 			]
 		});
@@ -535,16 +568,18 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		});
 		
 		this.actionsPanel = Ext.create('Ext.Panel', {
+			styleHtmlContent: true,
 			items: [
 				{
 					cls: 'gravure',
-					html: '\u201e' + Ext.util.Format.htmlEncode(this.questionObj.text) + '\u201f'
+					html: '\u201e' + mathJaxConvert(this.questionObj.text) + '\u201f'
 				},
 				this.firstRow,
 				this.secondRow
 			]
 		});
 		/* END ACTIONS PANEL */
+
 		
 		this.subject = Ext.create('Ext.field.Text', {
 			label: Messages.CATEGORY,
@@ -687,11 +722,16 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 			activeCls: 'search-item-active',
 			store: this.freetextAnswerStore, 
 			
+			styleHtmlContent: true,
 			itemCls: 'forwardListButton',
 			itemTpl: [
 				'<div class="search-item noOverflow">',
-				'<span style="color:gray">{formattedTime}</span><span style="padding-left:30px">{answerSubject:htmlEncode}</span>',
-				'</div>'
+				'<span style="color:gray">{formattedTime}</span><span style="padding-left:30px">{answerSubject:this.parseMathjax}</span>',
+				'</div>', {
+					parseMathjax: function(text) {
+						return mathJaxConvert(text)
+					}
+				}
 			],
 			deferEmptyText: false,
 			emptyText: ['<div style="background-color: white; border-left: 1px solid lightgray; border-right: 1px solid lightgray;">',
@@ -736,7 +776,8 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		this.abstentions = Ext.create('ARSnova.view.MultiBadgeButton', {
 			hidden		: this.questionObj.abstention === false,
 			ui			: 'normal',
-			text		: Messages.ABSTENTION,
+			styleHtmlContent: true,
+			text		: mathJaxConvert(Messages.ABSTENTION),
 			disabled	: true,
 			cls			: 'answerListButton',
 			badgeCls	: 'badgeicon'
@@ -771,7 +812,8 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		}
 		
 		this.answerEditForm = Ext.create(answerEditFormClass, {
-			hidden: true
+			hidden: true,
+			previewController: this.previewController
 		});
 		this.answerEditForm.initWithQuestion(Ext.clone(this.questionObj));
 		
@@ -790,6 +832,10 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 		
 		this.on('activate', this.onActivate);
 		this.on('deactivate', this.onDeactivate);
+
+		this.previewController.registerForPreview(this.subject);
+		this.previewController.registerForPreview(this.textarea);
+		this.previewController.showPreviewFields();
 	},
 	
 	prevNewCard: null,
@@ -839,13 +885,18 @@ Ext.define('ARSnova.view.speaker.QuestionDetailsPanel', {
 				cls			: 'answerListButton',
 				badgeCls	: 'badgeicon',
 				badgeText	: [{badgeText: '0'}],
+
+				styleHtmlContent: true,
 				html		: new Ext.XTemplate(
-								'{text:htmlEncode}',
+								'{text:this.parseMathjax}',
 								'<tpl if="correct === true && this.isFlashcard() === false">',
 									'&nbsp;<span style="padding: 0 0.2em 0 0.2em" class="x-list-item-correct">&#10003; </span>',
 								'</tpl>', {
 									isFlashcard: function() {
 										return me.questionObj.questionType === 'flashcard';
+									},
+									parseMathjax: function(text) {
+										return mathJaxConvert(text)
 									}
 								}).apply(pA)
 			});

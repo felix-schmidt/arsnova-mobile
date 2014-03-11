@@ -87,6 +87,7 @@ Ext.application({
     
     isIconPrecomposed: true,
 
+
     models: ['Answer', 'Feedback', 'LoggedIn', 'Question', 'Session', 'Statistic', 'Course', 'Auth', 'FeedbackQuestion'],
     
     views: ['MainTabPanel'],
@@ -188,7 +189,6 @@ Ext.application({
 		/* check previous login */
 		ARSnova.app.getController('Auth').checkLogin();
 	},
-
 	/**
 	 * reload application if manifest file is changed
 	 */
@@ -381,6 +381,45 @@ Ext.application({
 		localStorage.setItem('lastVisitedSessions', Ext.encode(sessions));
 	}
 });
+/**
+ * This function convert user-text to Markdown and MathJax.
+ */
+function mathJaxConvert (text) {
+	/*
+	 * Get the user-text from input-field.
+	 */
+	var text = text;
+	/*
+	 * Avoid escape from newline character in MathJax-Tags.
+	 */
+	text = text.replace(/\\\\/g,"\\\\\\\\");
+	/*
+	 * lowercase mathjax: \LOR -> \lor
+	 */
+	text = text.replace(/\\[A-Z0-9_]+/g, function(tag){return tag.toLowerCase()});
+	/*
+	 * Generate a new Dom-element buffer for, MathJax transformation.
+	 */
+	var buffer = document.createElement("span");
+	/*
+	 * Parsing Markdown-Tags.
+	 */
+	buffer.innerHTML = markdown.toHTML(text);
+	/*
+	 * Parsing MathJax-Tags.
+	 */
+	MathJax.Hub.Queue(
+		["Typeset",MathJax.Hub, buffer]
+	);
+	// if buffer contains one single p tag. return the innerhtml of this p tag
+	if (buffer.childNodes.length == 1
+		&& buffer.childNodes[0].nodeType == 1
+		&& buffer.childNodes[0].tagName == "P") {
+		return buffer.childNodes[0].innerHTML;
+	} else {
+		return buffer.innerHTML;
+	}
+}
 
 function clone(obj) {
     // Handle the 3 simple types, and null or undefined

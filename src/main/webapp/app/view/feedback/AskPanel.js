@@ -39,6 +39,24 @@ Ext.define('ARSnova.view.feedback.AskPanel', {
 	
 	initialize: function() {
 		this.callParent(arguments);
+
+		this.previewController = Ext.create('ARSnova.utils.PreviewController');
+
+		this.previewButton = Ext.create('Ext.field.Toggle', {
+			label: Messages.PREVIEW,
+			labelWrap: true,
+			labelCls: 'previewToggleText',
+			listeners: {
+				scope: this,
+				change: function(field, newValue, oldValue) {
+					if (newValue) {
+						this.previewController.showPreviewFields();
+					} else {
+						this.previewController.showEditFields();
+					}
+				}
+			}
+		});
 		
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.BACK,
@@ -58,7 +76,7 @@ Ext.define('ARSnova.view.feedback.AskPanel', {
 			docked: 'top',
 			ui: 'light',
 			title: Messages.QUESTION_TO_SPEAKER,
-			items: [this.backButton, {xtype: 'spacer'}, this.saveButton]
+			items: [this.backButton, {xtype: 'spacer'}, this.previewButton, this.saveButton]
 		}),
 		
 		this.subject = Ext.create('Ext.form.Text', {
@@ -99,6 +117,9 @@ Ext.define('ARSnova.view.feedback.AskPanel', {
 				scope: this
 			}]
 		}]);
+		
+		this.previewController.registerForPreview(this.subject);
+		this.previewController.registerForPreview(this.text);
 	},
 	
 	askQuestion: function() {

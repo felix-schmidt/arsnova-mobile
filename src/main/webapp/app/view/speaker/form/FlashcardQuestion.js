@@ -17,6 +17,10 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.form.FlashcardQuestion', {
 	extend: 'Ext.Container',
+
+	config: {
+		previewController: null
+	},
 	
 	constructor: function() {
 		this.callParent(arguments);
@@ -30,6 +34,11 @@ Ext.define('ARSnova.view.speaker.form.FlashcardQuestion', {
 			title: Messages.ANSWER,
 			items: this.answer
 		}]);
+
+		/* add the fields to the previewController */
+		if (this.getPreviewController()) {
+			this.getPreviewController().registerForPreview(this.answer);
+		}
 	},
 	
 	initWithQuestion: function(question) {

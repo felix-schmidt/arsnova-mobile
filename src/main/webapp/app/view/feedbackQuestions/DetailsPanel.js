@@ -79,15 +79,15 @@ Ext.define('ARSnova.view.feedbackQuestions.DetailsPanel', {
 					value: this.questionObj.fullDate,
 					disabled: true
 				}, {
-					xtype: 'textfield',
+					xtype: 'field',
+					styleHtmlContent: true,
 					label: Messages.QUESTION_SUBJECT,
-					value: this.questionObj.subject,
-					disabled: true
+					html: mathJaxConvert(this.questionObj.subject)
 				}, {
-					xtype: "textareafield",
+					xtype: "field",
+					styleHtmlContent: true,
 					label: Messages.QUESTION_TEXT,
-					value: this.questionObj.text,
-					disabled: true
+					html: mathJaxConvert(this.questionObj.text)
 				}]
 			}]
 		},{

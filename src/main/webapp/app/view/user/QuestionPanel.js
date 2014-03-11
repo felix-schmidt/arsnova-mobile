@@ -35,6 +35,8 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 	/* toolbar items */
 	toolbar		: null,
 	backButton	: null,
+	previewButton: null,
+	previewController: null,
 	chartPanel	: null,
 	questionCounter: 0,
 	
@@ -62,6 +64,23 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 		    	});
 			}
 		});
+
+		this.previewButton = Ext.create('Ext.field.Toggle', {
+			label: Messages.PREVIEW,
+			labelWrap: true,
+			labelCls: 'previewToggleText',
+			hidden: true,
+			listeners: {
+				scope: this,
+				change: function(field, newValue, oldValue) {
+					if (newValue) {
+						this.previewController.showPreviewFields();
+					} else {
+						this.previewController.showEditFields();
+					}
+				}
+			}
+		});
 		
 		this.on('activeitemchange', function(panel, newCard, oldCard) {
 			var backButtonHidden = this.backButton.isHidden();
@@ -82,6 +101,15 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.QUESTION_GRADE) : this.toolbar.setTitle(Messages.QUESTION_GRADE_SHORT);
 				} else if(newCard.questionObj.questionType === 'flashcard') {
 					(screenWidth > 320 || backButtonHidden) ? this.toolbar.setTitle(Messages.FLASHCARD) : this.toolbar.setTitle(Messages.QUESTION_FLASHCARD);
+				}
+
+				if (typeof newCard.getPreviewController === 'function') {
+					console.log("has preview")
+					this.previewController = newCard.getPreviewController();
+					this.previewButton.show();
+				} else {
+					this.previewController = null;
+					this.previewButton.hide();
 				}
 			}
 			
@@ -123,6 +151,7 @@ Ext.define('ARSnova.view.user.QuestionPanel', {
 			items: [
 		        this.backButton,
 		        { xtype: 'spacer' },
+		        this.previewButton,
 		        this.statisticButton,
 		        this.questionCounter
 	        ]

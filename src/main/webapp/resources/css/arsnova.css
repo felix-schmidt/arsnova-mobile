@@ -14,6 +14,10 @@
 	color: rgba(190,224,247,0.9);
 }
 
+.x-list-inner {
+	padding: 0;
+}
+
 /* remove "Sencha Touch GPL3" watermark from charts */
 .x-chart-watermark {
 	opacity: 0;
@@ -1009,6 +1013,10 @@ ol.standardList li {
 
 #contentFieldset>div {
 	min-width: 100px;
+}
+
+.previewToggleText {
+	padding-top: 6px !important;
 }
 
 .questionDetailsToggle {

@@ -28,7 +28,8 @@ Ext.define('ARSnova.view.speaker.form.ExpandingAnswerForm', {
 			placeHolder: Messages.OPTION_PLACEHOLDER,
 			/** 'arabic' or 'alphabet' **/
 			enumeration: 'arabic'
-		}
+		},
+		previewController: null
 	},
 
 	constructor: function() {
@@ -47,7 +48,11 @@ Ext.define('ARSnova.view.speaker.form.ExpandingAnswerForm', {
 				scope: this,
 				spin: function(selectField, value) {
 					for (var i=0; i < this.getMaxAnswers(); i++) {
-						this.answerComponents[i].setHidden(i >= value);
+						if (this.getPreviewController()) {
+							this.getPreviewController().setHidden(this.answerComponents[i], i >= value);
+						} else {
+							this.answerComponents[i].setHidden(i >= value);
+						}
 						this.correctComponents[i].setHidden(i >= value);
 					}
 				}
@@ -92,6 +97,10 @@ Ext.define('ARSnova.view.speaker.form.ExpandingAnswerForm', {
 				label:			this.getWording().placeHolder + " " + labelGenerator(i)
 			});
 			answerFieldset.add(this.answerComponents[i]);
+			/* add the fields to the previewController */
+			if (this.getPreviewController()) {
+				this.getPreviewController().registerForPreview(this.answerComponents[i]);
+			}
 		}
 		for (var i=0; i < this.getMaxAnswers(); i++) {
 			theComponentId = answerCorrectOptionEntryId + "-" + i;
