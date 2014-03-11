@@ -172,6 +172,8 @@ switch (lang) {
 			QUESTION_GRADE_SHORT: "Grade",
 			QUESTION_MC: "Multiple Choice",
 			QUESTION_MC_SHORT: "MC",
+			QUESTION_GRID_SQUARE: "Grid Square", // Team4
+			QUESTION_GRID_SQUARE_SHORT: "GS", // Team4
 			QUESTION_YESNO: "Yes | No",
 			QUESTION_YESNO_SHORT: "Yes | No",
 			QUESTION_SINGLE_CHOICE: "Single Choice",
@@ -271,10 +273,18 @@ switch (lang) {
 			BACK: "Back",
 			SAVE_AND_CONTINUE: "Save and Continue",
 			
+			SELECT_IMAGE: "Select image", // Gridsquare
+			CHANGE_SIZE: "Image size:",
+			CHANGE_GRIDSIZE: "Grid size:",
+			LOAD_IMAGE: "Load",
+			UPLOADING_IMAGE: "Loading",
+			
+			
 			/* question types */
 			EVALUATION: "Likert",
 			SCHOOL: "Grade",
 			MC: "MC",
+			GRID_SQUARE: "GS", // Team4
 			YESNO: "YN",
 			ABCD: "SC",
 			FREETEXT: "Txt",
@@ -295,6 +305,7 @@ switch (lang) {
 			EVALUATION_NEUTRAL: 	"neutral",
 			EVALUATION_MINUS: 		"disagree",
 			EVALUATION_MINUSMINUS: 	"strongly disagree",
+			
 			
 			/* about */
 			INFO: "Info",
@@ -475,6 +486,8 @@ switch (lang) {
 			QUESTION_GRADE_SHORT: "Note",
 			QUESTION_MC: "Mehrfachauswahl",
 			QUESTION_MC_SHORT: "MC",
+			QUESTION_GRID_SQUARE: "Planquadrat", // 
+			QUESTION_GRID_SQUARE_SHORT: "PQ", // Team4
 			QUESTION_YESNO: "Ja | Nein",
 			QUESTION_YESNO_SHORT: "Ja | Nein",
 			QUESTION_SINGLE_CHOICE: "Einfachauswahl",
@@ -574,10 +587,19 @@ switch (lang) {
 			MINUTES: "Minuten",
 			BACK: "Zurück",
 			
+			SELECT_IMAGE: "Bild auswählen", // Gridsquare
+			CHANGE_SIZE: "Bildgröße:",
+			CHANGE_GRIDSIZE: "Rastergröße:",
+			LOAD_IMAGE: "Laden",
+			UPLOADING_IMAGE: "Wird geladen",
+			
+			
+			
 			/* question types */
 			EVALUATION: "Likert",
 			SCHOOL: "Note",
 			MC: "MC",
+			GRID_SQUARE: "PQ", // Team4
 			YESNO: "J/N",
 			ABCD: "SC",
 			FREETEXT: "Txt",

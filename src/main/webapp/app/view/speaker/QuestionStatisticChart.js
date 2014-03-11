@@ -20,32 +20,32 @@
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 	extend: 'Ext.Panel',
-	
+
 	config: {
 		title	: Messages.STATISTIC,
 		style	: 'background-color: black',
 		iconCls	: 'tabBarIconCanteen',
 		layout	: 'fit'
 	},
-	
+
 	gradients: null,
 	questionObj: null,
 	questionChart: null,
 	questionStore: null,
 	lastPanel: null,
-	
+
 	/* toolbar items */
 	toolbar				: null,
-	
+
 	renewChartDataTask: {
 		name: 'renew the chart data at question statistics charts',
 		run: function(){
 			ARSnova.app.mainTabPanel._activeItem.getQuestionAnswers();
-			
+
 		},
 		interval: 10000 //10 seconds
 	},
-	
+
 	/**
 	 * count every 15 seconds all actually logged-in users for this sessions
 	 */
@@ -56,17 +56,17 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		},
 		interval: 15000
 	},
-	
+
 	constructor: function(args){
 		this.callParent(args);
 
 		this.questionObj = args.question;
 		this.lastPanel = args.lastPanel;
-		
+
 		this.questionStore = Ext.create('Ext.data.Store', {
 			fields: ['text', 'value', 'percent']
 		});
-	
+
 		for ( var i = 0; i < this.questionObj.possibleAnswers.length; i++) {
 			var pA = this.questionObj.possibleAnswers[i];
 			if(pA.data){
@@ -81,7 +81,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 				});
 			}
 		}
-		
+
 		this.backButton = Ext.create('Ext.Button', {
 			text	: Messages.BACK,
 			ui		: 'back',
@@ -96,11 +96,11 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 				});
 			}
 		});
-		
+
 		var title = Ext.util.Format.htmlEncode(this.questionObj.text);
 		if(window.innerWidth < 800 && title.length > (window.innerWidth / 10))
 			title = title.substring(0, (window.innerWidth) / 10) + "...";
-		
+
 		this.toolbar = Ext.create('Ext.Toolbar', {
 			docked: 'top',
 			ui: 'light',
@@ -114,22 +114,23 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 				style: { paddingRight: '10px' }
 			}]
 		});
-		
+
 		this.titlebar = Ext.create('Ext.Toolbar', {
 			cls		: 'questionStatisticTitle',
 			docked	: 'top',
 			title	: title
 		});
-		
-		if( this.questionObj.questionType == "yesno" 	|| 
+
+		if( this.questionObj.questionType == "yesno" 	||
 			this.questionObj.questionType == "mc" 		||
+			this.questionObj.questionType == "gs" 		||
 			( this.questionObj.questionType == "abcd" && !this.questionObj.noCorrect ) ) {
-			
+
 			if(this.questionObj.showAnswer){
 				this.gradients = [];
 				for ( var i = 0; i < this.questionObj.possibleAnswers.length; i++) {
 					var question = this.questionObj.possibleAnswers[i];
-					
+
 					if ((question.data && !question.data.correct) || (!question.data && !question.correct)){
 						this.gradients.push(
 							Ext.create('Ext.draw.gradient.Linear', {
@@ -148,7 +149,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 								]
 							})
 						);
-					}		
+					}
 				}
 			} else {
 				this.gradients = [
@@ -262,7 +263,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		        easing: 'bounceOut',
 		        duration: 1000
 		    },
-		    
+
 		    axes: [{
 		        type	: 'numeric',
 		        position: 'left',
@@ -282,7 +283,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		        	rotate: { degrees: 315 }
 		        }
 		    }],
-	        
+
 		    series: [{
 		        type: 'bar',
 		        xField: 'text',
@@ -300,13 +301,13 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		        		return text + " %";
 		        	}
 		        },
-		        renderer: function (sprite, config, rendererData, i) {		 
+		        renderer: function (sprite, config, rendererData, i) {
 		        	var panel;
-		        	
+
 		    		if(ARSnova.app.userRole == ARSnova.app.USER_ROLE_STUDENT) {
 						panel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.questionStatisticChart;
 		    		}
-		    		
+
 		    		else {
 		    			panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.questionStatisticChart;
 		    		}
@@ -315,31 +316,31 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		        }
 		    }]
 		});
-		
+
 		this.add([this.toolbar, this.titlebar, this.questionChart]);
 
 		this.on('activate', this.onActivate);
 	},
-	
+
 	getQuestionAnswers: function() {
 		ARSnova.app.questionModel.countAnswers(localStorage.getItem('keyword'), this.questionObj._id, {
 			success: function(response) {
 				var panel = ARSnova.app.mainTabPanel._activeItem;
 				var chart = panel.questionChart;
 				var store = chart.getStore();
-				
+
 				var answers = Ext.decode(response.responseText);
-				
+
 				var sum = 0;
 				var maxValue = 10;
-				
+
 				var tmp_possibleAnswers = [];
 				for ( var i = 0; i < tmp_possibleAnswers.length; i++) {
 					var el = tmp_possibleAnswers[i];
 					var record = store.findRecord('text', el, 0, false, true, true);
 					record.set('value', 0);
 				}
-				
+
 				for ( var i = 0; i < panel.questionObj.possibleAnswers.length; i++) {
 					var el = panel.questionObj.possibleAnswers[i];
 					if(el.data)
@@ -347,11 +348,11 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 					else
 						tmp_possibleAnswers.push(el.text);
 				}
-				
+
 				var mcAnswerCount = [];
 				var abstentionCount = 0;
 				for ( var i = 0, el; el = answers[i]; i++) {
-					if (panel.questionObj.questionType === "mc") {
+					if (panel.questionObj.questionType === "mc" || panel.questionObj.questionType === "gs") {
 						if (!el.answerText) {
 							abstentionCount = el.abstentionCount;
 							continue;
@@ -362,7 +363,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 						if (values.length !== panel.questionObj.possibleAnswers.length) {
 							return;
 						}
-						
+
 						for (var j=0; j < el.answerCount; j++) {
 							values.forEach(function(selected, index) {
 								if (typeof mcAnswerCount[index] === "undefined") {
@@ -385,11 +386,11 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 						record.set('value', el.answerCount);
 					}
 					sum += el.answerCount;
-					
+
 					if (el.answerCount > maxValue) {
 						maxValue = Math.ceil(el.answerCount / 10) * 10;
 					}
-					
+
 					var idx = tmp_possibleAnswers.indexOf(el.answerText); // Find the index
 					if(idx!=-1) tmp_possibleAnswers.splice(idx, 1); // Remove it if really found!
 				}
@@ -401,7 +402,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 						record.set('value', abstentionCount);
 					}
 				}
-				
+
 				// Calculate percentages
 				var totalResults = store.sum('value');
 				store.each(function(record) {
@@ -409,10 +410,10 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 					record.set('percent', percent);
 				});
 				chart.getAxes()[0].setMaximum(maxValue);
-				
+
 				// renew the chart-data
 				chart.redraw();
-				
+
 				//update quote in toolbar
 				var quote = panel.toolbar.items.items[2];
 				var users = quote.getHtml().split("/");
@@ -425,32 +426,32 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 			}
 		});
 	},
-	
+
 	onActivate: function() {
 		taskManager.start(this.renewChartDataTask);
 		taskManager.start(this.countActiveUsersTask);
 		this.doTypeset();
 	},
-	
-	doTypeset: function(parent) {		
+
+	doTypeset: function(parent) {
 		if (typeof this.titlebar.element !== "undefined") {
 			MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.titlebar.element.dom]);
-			
+
 			// get the computed height of MathJax and set it as new height for question titlebar
 			var mjaxDom		= this.titlebar.element.dom.childNodes[0].childNodes[0].childNodes[0];
-			var mjaxHeight	= window.getComputedStyle(mjaxDom, "").getPropertyValue("height");	
+			var mjaxHeight	= window.getComputedStyle(mjaxDom, "").getPropertyValue("height");
 			this.titlebar.setHeight(mjaxHeight);
 		} else {
 			// If the element has not been drawn yet, we need to retry later
 			Ext.defer(Ext.bind(this.doTypeset, this), 100);
 		}
 	},
-	
+
 	countActiveUsers: function(){
 		ARSnova.app.loggedInModel.countActiveUsersBySession(localStorage.getItem("keyword"), {
 			success: function(response){
 				var value = parseInt(response.responseText);
-				
+
 				//update quote in toolbar
 				var quote = ARSnova.app.mainTabPanel._activeItem.toolbar.items.items[2];
 				var users = quote.getHtml().split("/");

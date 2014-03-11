@@ -26,7 +26,7 @@ Ext.define("ARSnova.controller.Questions", {
 	           'ARSnova.view.FreetextDetailAnswer',
 	           'ARSnova.view.feedbackQuestions.DetailsPanel'
 	],
-	
+
 	index: function(options){
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.backButton.show();
 		ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel, 'slide');
@@ -34,7 +34,7 @@ Ext.define("ARSnova.controller.Questions", {
 			panel.backButton.hide();
 		}, this, {single: true});
 	},
-	
+
 	lectureIndex: function(options){
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.setLectureMode();
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.backButton.show();
@@ -44,7 +44,7 @@ Ext.define("ARSnova.controller.Questions", {
 			panel.backButton.hide();
 		}, this, {single: true});
 	},
-	
+
 	preparationIndex: function(options){
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.setPreparationMode();
 		ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel.backButton.show();
@@ -54,7 +54,7 @@ Ext.define("ARSnova.controller.Questions", {
 			panel.backButton.hide();
 		}, this, {single: true});
 	},
-	
+
 	listQuestions: function(){
 		var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
 		sTP.newQuestionPanel.setVariant('lecture');
@@ -64,32 +64,32 @@ Ext.define("ARSnova.controller.Questions", {
 		sTP.audienceQuestionPanel.newQuestionButton.text = Messages.NEW_LECTURE_QUESTION;
 		sTP.animateActiveItem(sTP.audienceQuestionPanel, 'slide');
 	},
-	
+
 	getQuestions: function() {
 		var question = Ext.create('ARSnova.model.Question');
 		question.getLectureQuestions.apply(question, arguments);
 	},
-	
+
 	deleteAnswers: function() {
 		var question = Ext.create('ARSnova.model.Question');
 		question.deleteAnswers.apply(question, arguments);
 	},
-	
+
 	deleteAllQuestionsAnswers: function(callbacks) {
 		var question = Ext.create('ARSnova.model.Question');
 		question.deleteAllQuestionsAnswers(localStorage.getItem("keyword"), callbacks);
 	},
-	
+
 	destroyAll: function() {
 		var question = Ext.create('ARSnova.model.Question');
 		question.deleteAllLectureQuestions.apply(question, arguments);
 	},
-	
+
 	countAnswersByQuestion: function() {
 		var question = Ext.create('ARSnova.model.Question');
 		question.countAnswersByQuestion.apply(question, arguments);
 	},
-    
+
     listFeedbackQuestions: function(){
     	ARSnova.app.mainTabPanel.tabPanel.feedbackQuestionsPanel.questionsPanel.backButton.show();
     	ARSnova.app.mainTabPanel.tabPanel.animateActiveItem(ARSnova.app.mainTabPanel.tabPanel.feedbackQuestionsPanel, 'slide');
@@ -97,7 +97,7 @@ Ext.define("ARSnova.controller.Questions", {
     		panel.questionsPanel.backButton.hide();
     	}, this, {single: true});
     },
-    
+
     add: function(options){
     	var question = Ext.create('ARSnova.model.Question', {
 			type	 	: options.type,
@@ -112,6 +112,8 @@ Ext.define("ARSnova.controller.Questions", {
 			possibleAnswers: options.possibleAnswers,
 			noCorrect	: options.noCorrect,
 			abstention	: options.abstention,
+			gridsize	: options.gridsize,
+			image	: options.image,
 			showStatistic: 1
 		});
     	question.set('_id', undefined);
@@ -158,13 +160,13 @@ Ext.define("ARSnova.controller.Questions", {
     		Ext.Msg.alert('Hinweis', 'Ihre Eingaben sind unvollständig');
     		return;
     	}
-    	
+
 		question.saveSkillQuestion({
 			success: options.successFunc,
 			failure: options.failureFunc
 		});
     },
-    
+
     details: function(options){
     	var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
     	sTP.questionDetailsPanel = Ext.create('ARSnova.view.speaker.QuestionDetailsPanel', {
@@ -175,7 +177,7 @@ Ext.define("ARSnova.controller.Questions", {
 
 	freetextDetailAnswer: function(options) {
 		var parentPanel;
-		
+
 		var isFromFreetextAnswerPanel = false;
 		if(typeof options.panel !== 'undefined') {
 			isFromFreetextAnswerPanel = ARSnova.app.mainTabPanel.getActiveItem().constructor === options.panel.constructor;
@@ -194,14 +196,14 @@ Ext.define("ARSnova.controller.Questions", {
 			sTP		: parentPanel,
 			answer	: options.answer
 		});
-	
+
 		parentPanel.animateActiveItem(freetextDetailAnswerPanel, {
 			type		: 'slide',
 			direction	: 'left',
 			duration	: 700
 		}, 'slide');
 	},
-    
+
     detailsFeedbackQuestion: function(options){
     	var questionModel = Ext.create('ARSnova.model.Question', options.question.data);
     	questionModel.getInterposed({
@@ -209,7 +211,7 @@ Ext.define("ARSnova.controller.Questions", {
     			var question = Ext.create('ARSnova.model.Question', Ext.decode(response.responseText));
     			question.set('formattedTime', options.formattedTime);
     			question.set('fullDate', options.fullDate);
-    			
+
 				var newPanel = Ext.create('ARSnova.view.feedbackQuestions.DetailsPanel', {
 					question: question.data
 				});
@@ -221,19 +223,19 @@ Ext.define("ARSnova.controller.Questions", {
 			}
     	});
     },
-    
+
 	setActive: function(options){
 		ARSnova.app.questionModel.getSkillQuestion(options.questionId, {
 			success: function(response) {
 				var question = Ext.create('ARSnova.model.Question', Ext.decode(response.responseText));
 				question.set('active', options.active);
 				question.raw.active = options.active;
-				
+
 				question.publishSkillQuestion({
 					success: function(response){
 						var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.questionDetailsPanel;
 						var questionStatus = panel.questionStatusButton;
-						
+
 						if(options.active == 1){
 							questionStatus.questionOpenedSuccessfully();
 						} else {
@@ -250,7 +252,7 @@ Ext.define("ARSnova.controller.Questions", {
 			}
 		});
 	},
-	
+
 	setAllActive: function(options) {
 		ARSnova.app.questionModel.publishAllSkillQuestions(localStorage.getItem("keyword"), options.active, {
 			success: function() {
@@ -261,7 +263,7 @@ Ext.define("ARSnova.controller.Questions", {
 			}
 		});
 	},
-    
+
     adHoc: function(){
     	var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
     	sTP.audienceQuestionPanel.setController(this);
@@ -271,7 +273,7 @@ Ext.define("ARSnova.controller.Questions", {
 			type: 'slide',
 			duration: 700
 		});
-		
+
 		/* change the backButton-redirection to inClassPanel,
 		 * but only for one function call */
 		var backButton = sTP.newQuestionPanel.down('button[ui=back]');
@@ -296,7 +298,7 @@ Ext.define("ARSnova.controller.Questions", {
 			panel.backButton.setText("Fragen");
 		}, this, {single:true});
     },
-	
+
 	deleteAllInterposedQuestions: function(callbacks) {
 		ARSnova.app.questionModel.deleteAllInterposedQuestions(localStorage.getItem('keyword'), callbacks);
 	}
