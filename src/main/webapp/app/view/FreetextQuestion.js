@@ -39,14 +39,21 @@ Ext.define('ARSnova.view.FreetextQuestion', {
 		this.questionObj = args.questionObj;
 		this.viewOnly = typeof args.viewOnly === "undefined" ? false : args.viewOnly;
 
-		this.on('preparestatisticsbutton', function(button) {
+		this.on('preparestatisticsbutton', function(button, index) {
 			button.scope = this;
 			button.setHandler(function() {
-				var p = Ext.create('ARSnova.view.FreetextAnswerPanel', {
-					question: self.questionObj,
-					lastPanel: self
-				});
-				ARSnova.app.mainTabPanel.animateActiveItem(p, 'slide');
+        var speakerPanel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
+        var userPanel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel;
+        if (speakerPanel) {
+          speakerPanel.statisticsCarousel.setActivePanelIndex(index);
+          ARSnova.app.mainTabPanel.animateActiveItem(speakerPanel.statisticsCarousel, 'slide');
+        } else if (userPanel) {
+				  var p = Ext.create('ARSnova.view.FreetextAnswerPanel', {
+					  question: self.questionObj,
+					  lastPanel: self
+				  });
+				  ARSnova.app.mainTabPanel.animateActiveItem(p, 'slide');
+        }
 			});
 		});
 

@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------+
  This file is part of ARSnova.
  app/utils/Ext.util.TaksRunner.js
- - Beschreibung: TaskRunner für periodische Aufgaben 
+ - Beschreibung: TaskRunner für periodische Aufgaben
  - Version:      1.0, 01/05/12
  - Autor(en):    Entnommen aus ExtJS
  +---------------------------------------------------------------------------+
@@ -45,9 +45,9 @@ var TaskRunner = function(interval) {
     removeTask = function(t) {
     	/*
     	 * removeQueue.push(t);
-    	 */       
+    	 */
     	Ext.Array.remove(tasks, t);
-    	
+
         if (t.onStop) {
             t.onStop.apply(t.scope || t);
         }
@@ -78,19 +78,23 @@ var TaskRunner = function(interval) {
             t = tasks[i];
             itime = now - t.taskRunTime;
             if (t.interval <= itime) {
+              try {
                 rt = t.run.apply(t.scope || t, t.args || [++t.taskRunCount]);
                 t.taskRunTime = now;
                 if (rt === false || t.taskRunCount === t.repeat) {
                     removeTask(t);
                     return;
                 }
+              } catch (e) {
+                removeTask(t);
+              }
             }
             if (t.duration && t.duration <= (now - t.taskStartTime)) {
                 removeTask(t);
             }
         }
     };
-    
+
     this.start = function(task) {
     	if(debug) console.log("starting task: " + task.name);
     	if(Ext.Array.contains(tasks, task)) return false;
@@ -118,7 +122,7 @@ var TaskRunner = function(interval) {
         tasks = [];
         removeQueue = [];
     };
-    
+
     this.getTasks = function() {
     	console.log(tasks);
     };

@@ -60,15 +60,21 @@ Ext.define('ARSnova.view.Question', {
       });
     });
 
-		this.on('preparestatisticsbutton', function(button) {
+		this.on('preparestatisticsbutton', function(button, index) {
 			button.scope = this;
 			button.setHandler(function() {
-				var panel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel || ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
-				panel.questionStatisticChart = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
-					question	: self.questionObj,
-					lastPanel	: self
-				});
-				ARSnova.app.mainTabPanel.animateActiveItem(panel.questionStatisticChart, 'slide');
+        var speakerPanel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
+        var userPanel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel;
+        if (speakerPanel) {
+          speakerPanel.statisticsCarousel.setActivePanelIndex(index);
+          ARSnova.app.mainTabPanel.animateActiveItem(speakerPanel.statisticsCarousel, 'slide');
+        } else if (userPanel) {
+          userPanel.questionStatisticsChart = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
+            question: self.questionObj,
+            lastPanel: self
+          });
+          ARSnova.app.mainTabPanel.animateActiveItem(userPanel.questionStatisticsChart, 'slide');
+        }
 			});
 		});
 

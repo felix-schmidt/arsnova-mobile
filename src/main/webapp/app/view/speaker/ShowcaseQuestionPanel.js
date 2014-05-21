@@ -39,7 +39,7 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 			this.toolbar.setQuestionTitle(newCard.questionObj);
 			this.toolbar.incrementQuestionCounter(panel.activeIndex);
 
-			newCard.fireEvent('preparestatisticsbutton', this.toolbar.statisticsButton);
+			newCard.fireEvent('preparestatisticsbutton', this.toolbar.statisticsButton, panel.activeIndex);
 		}, this);
 
 		this.toolbar = Ext.create('ARSnova.view.components.QuestionToolbar', {

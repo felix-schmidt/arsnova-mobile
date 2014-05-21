@@ -23,6 +23,9 @@ Ext.define('ARSnova.view.components.QuestionToolbar', {
 		docked: 'top',
 		ui: 'light',
 
+		firstCounter: 0,
+		secondCounter: 0,
+		statisticsEnabled: true,
 		backButtonHandler: Ext.emptyFn,
 		statisticsButtonHandler: Ext.emptyFn
 	},
@@ -53,7 +56,8 @@ Ext.define('ARSnova.view.components.QuestionToolbar', {
 		this.statisticsButton = Ext.create('Ext.Button', {
 			text: ' ',
 			cls: 'statisticIconSmall',
-			handler: this.getStatisticsButtonHandler()
+			handler: this.getStatisticsButtonHandler(),
+			hidden: !this.getStatisticsEnabled()
 		});
 
 		this.add([
@@ -95,15 +99,32 @@ Ext.define('ARSnova.view.components.QuestionToolbar', {
 	},
 
 	incrementQuestionCounter: function(activeIndex) {
-		var counter = this.questionCounter.getHtml().split("/");
-		counter[0] = activeIndex + 1;
-		this.questionCounter.setHtml(counter.join("/"));
+		this.setFirstCounterElement(activeIndex + 1);
 	},
 
 	resetQuestionCounter: function(maxValue) {
+		this.setQuestionCounter(1, maxValue);
+	},
+
+	setQuestionCounter: function(min, max) {
+		this.setFirstCounter(min);
+		this.setSecondCounter(max);
+	},
+
+	setFirstCounterElement: function(min) {
+		this.setFirstCounter(min);
+		this.updateQuestionCounter();
+	},
+
+	setSecondCounterElement: function(max) {
+		this.setSecondCounter(max);
+		this.updateQuestionCounter();
+	},
+
+	updateQuestionCounter: function() {
 		var counter = this.questionCounter.getHtml().split("/");
-		counter[0] = "1";
-		counter[1] = maxValue;
+		counter[0] = this.getFirstCounter();
+		counter[1] = this.getSecondCounter();
 		this.questionCounter.setHtml(counter.join("/"));
 	},
 
