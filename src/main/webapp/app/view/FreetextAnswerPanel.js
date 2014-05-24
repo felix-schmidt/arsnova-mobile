@@ -87,11 +87,6 @@ Ext.define('ARSnova.view.FreetextAnswerPanel', {
 			layout: 'fit',
 			flex: 1,
 
-			itemConfig: {
-				importantFields: ['answerSubject']
-			},
-			defaultType: 'audiencequestionlistitem',
-
 			itemCls: 'forwardListButton',
 			itemTpl: [
 				'<div class="search-item noOverflow">',

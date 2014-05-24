@@ -437,8 +437,10 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 
 	doTypeset: function(parent) {
 		if (typeof this.titlebar.element !== "undefined") {
-			MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.titlebar.element.dom]);
-
+			if ("undefined" !== typeof MathJax) {
+				MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.titlebar.element.dom]);
+			}
+			
 			// get the computed height of MathJax and set it as new height for question titlebar
 			var mjaxDom		= this.titlebar.element.dom.childNodes[0].childNodes[0].childNodes[0];
 			var mjaxHeight	= window.getComputedStyle(mjaxDom, "").getPropertyValue("height");
