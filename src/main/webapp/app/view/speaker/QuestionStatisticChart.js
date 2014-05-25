@@ -19,16 +19,11 @@
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
-	extend: 'Ext.Panel',
+	extend: 'Ext.Component',
 
-  require: ['ARSnova.view.components.QuestionToolbar'],
 
-	config: {
-		title	: Messages.STATISTIC,
-		style	: 'background-color: black',
-		iconCls	: 'tabBarIconCanteen',
-		layout	: 'fit'
-	},
+
+
 
 	gradients: null,
 	questionObj: null,
@@ -440,7 +435,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 			if ("undefined" !== typeof MathJax) {
 				MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.titlebar.element.dom]);
 			}
-			
+
 			// get the computed height of MathJax and set it as new height for question titlebar
 			var mjaxDom		= this.titlebar.element.dom.childNodes[0].childNodes[0].childNodes[0];
 			var mjaxHeight	= window.getComputedStyle(mjaxDom, "").getPropertyValue("height");

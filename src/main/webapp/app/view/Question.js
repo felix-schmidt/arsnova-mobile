@@ -60,14 +60,14 @@ Ext.define('ARSnova.view.Question', {
       });
     });
 
-		this.on('preparestatisticsbutton', function(button, index) {
+		this.on('preparestatisticsbutton', function(button, index, navigationView) {
 			button.scope = this;
 			button.setHandler(function() {
         var speakerPanel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
         var userPanel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel;
         if (speakerPanel) {
           speakerPanel.statisticsCarousel.setActivePanelIndex(index);
-          ARSnova.app.mainTabPanel.animateActiveItem(speakerPanel.statisticsCarousel, 'slide');
+          navigationView.push(speakerPanel.statisticsCarousel);
         } else if (userPanel) {
           userPanel.questionStatisticsChart = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
             question: self.questionObj,

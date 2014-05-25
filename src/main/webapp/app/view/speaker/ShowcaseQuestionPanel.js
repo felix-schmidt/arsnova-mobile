@@ -29,17 +29,16 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 		title	: Messages.QUESTIONS,
 		iconCls	: 'tabBarIconQuestion',
 
-		controller: null
+		controller: null,
+    dynamicToolbar: true,
+    numElements: 0
 	},
 
 	initialize: function() {
 		this.callParent(arguments);
 
 		this.on('activeitemchange', function(panel, newCard, oldCard) {
-			this.toolbar.setQuestionTitle(newCard.questionObj);
-			this.toolbar.incrementQuestionCounter(panel.activeIndex);
 
-			newCard.fireEvent('preparestatisticsbutton', this.toolbar.statisticsButton, panel.activeIndex);
 		}, this);
 
 		this.toolbar = Ext.create('ARSnova.view.components.QuestionToolbar', {
@@ -57,7 +56,7 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
       }
     });
 
-		this.add([this.toolbar]);
+		//this.add([this.toolbar]);
 
 		this.on('activate', this.beforeActivate, this, null, 'before');
 		this.on('activate', this.onActivate);
@@ -84,7 +83,7 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 				var questions = Ext.decode(response.responseText);
 				var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.showcaseQuestionPanel;
 
-				panel.toolbar.resetQuestionCounter(questions.length);
+				panel.setNumElements(questions.length);
 
 				if (questions.length == 1){
 					panel._indicator.hide();

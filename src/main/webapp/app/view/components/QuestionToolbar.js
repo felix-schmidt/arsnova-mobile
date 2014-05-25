@@ -96,6 +96,7 @@ Ext.define('ARSnova.view.components.QuestionToolbar', {
 		}
 
 		this.setTitle(title);
+		return title;
 	},
 
 	incrementQuestionCounter: function(activeIndex) {
@@ -109,6 +110,7 @@ Ext.define('ARSnova.view.components.QuestionToolbar', {
 	setQuestionCounter: function(min, max) {
 		this.setFirstCounter(min);
 		this.setSecondCounter(max);
+		this.updateQuestionCounter();
 	},
 
 	setFirstCounterElement: function(min) {
