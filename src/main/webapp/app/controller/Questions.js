@@ -60,7 +60,6 @@ Ext.define("ARSnova.controller.Questions", {
 		sTP.newQuestionPanel.setVariant('lecture');
 		sTP.audienceQuestionPanel.setController(this);
 		sTP.showcaseQuestionPanel.setController(this);
-    sTP.statisticsCarousel.setController(this);
 		sTP.audienceQuestionPanel.toolbar.getTitle().setTitle(Messages.LECTURE_QUESTIONS);
 		sTP.audienceQuestionPanel.newQuestionButton.text = Messages.NEW_LECTURE_QUESTION;
 		sTP.animateActiveItem(sTP.audienceQuestionPanel, 'slide');

@@ -50,12 +50,14 @@ Ext.define('ARSnova.view.components.QuestionToolbar', {
 
 		this.questionCounter = Ext.create('Ext.Component', {
 			cls: "x-toolbar-title alignRight counterText",
-			html: '0/0'
+			html: '0/0',
+			align: 'right'
 		});
 
 		this.statisticsButton = Ext.create('Ext.Button', {
 			text: ' ',
 			cls: 'statisticIconSmall',
+			align: 'right',
 			handler: this.getStatisticsButtonHandler(),
 			hidden: !this.getStatisticsEnabled()
 		});

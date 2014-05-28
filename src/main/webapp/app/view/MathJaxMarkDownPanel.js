@@ -28,7 +28,6 @@ Ext.define('ARSnova.view.MathJaxMarkDownPanel', {
 	ui: 'normal',
 
 	config: {
-		id        		 : 'content',
 		title			 : 'MathJaxMarkDownPanel',
 		cls				 : 'roundedBox',
 		fullscreen		 : false,

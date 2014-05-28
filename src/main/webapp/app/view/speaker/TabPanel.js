@@ -25,7 +25,6 @@ Ext.define('ARSnova.view.speaker.TabPanel', {
 	           'ARSnova.view.speaker.AudienceQuestionPanel',
 	           'ARSnova.view.speaker.NewQuestionPanel',
 	           'ARSnova.view.speaker.ShowcaseQuestionPanel',
-             'ARSnova.view.StatisticsCarousel',
              'ARSnova.view.NavigationView'
 	],
 
@@ -45,7 +44,6 @@ Ext.define('ARSnova.view.speaker.TabPanel', {
 		this.audienceQuestionPanel 		= Ext.create('ARSnova.view.speaker.AudienceQuestionPanel');
 		this.newQuestionPanel 			= Ext.create('ARSnova.view.speaker.NewQuestionPanel');
 		this.showcaseQuestionPanel		= Ext.create('ARSnova.view.speaker.ShowcaseQuestionPanel');
-    this.statisticsCarousel = Ext.create('ARSnova.view.StatisticsCarousel');
     this.navigationView = Ext.create('ARSnova.view.NavigationView', {
       root: this
     });

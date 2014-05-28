@@ -19,21 +19,20 @@
  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  +--------------------------------------------------------------------------*/
 Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
-	extend: 'Ext.Component',
+	extend: 'Ext.Container',
+
+  config: {
+    fullscreen: true,
+    layout: 'vbox'
+  },
 
 
 
-
-
-	gradients: null,
 	questionObj: null,
 	questionChart: null,
 	questionStore: null,
 	lastPanel: null,
 	gridStatistic : null,
-
-	/* toolbar items */
-	toolbar				: null,
 
 	renewChartDataTask: {
 		name: 'renew the chart data at question statistics charts',
@@ -85,7 +84,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		if(window.innerWidth < 800 && title.length > (window.innerWidth / 10))
 			title = title.substring(0, (window.innerWidth) / 10) + "...";
 
-		this.toolbar = Ext.create('ARSnova.view.components.QuestionToolbar', {
+		/*this.toolbar = Ext.create('ARSnova.view.components.QuestionToolbar', {
       statisticsEnabled: false,
       backButtonHandler: function() {
         var callback = me.backButtonHandler;
@@ -96,13 +95,14 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
           duration	: 700
         });
       }
-		});
+		});*/
 
 		this.titlebar = Ext.create('Ext.Toolbar', {
 			cls		: 'questionStatisticTitle',
 			docked	: 'top',
 			title	: title,
 			border  : '0px',
+      flex: 1
 		});
 
 		if(this.questionObj.questionType == "grid"){
@@ -111,194 +111,14 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 			this.setScrollable(true);
 		}
 
-		if( this.questionObj.questionType == "yesno" 	||
-			this.questionObj.questionType == "mc" 		||
-			( this.questionObj.questionType == "abcd" && !this.questionObj.noCorrect ) ) {
+		this.questionChart = Ext.create('ARSnova.view.components.QuestionStatisticsChart', {
+      store: this.questionStore,
+      hidden: this.questionObj.questionType === "grid",
+      questionObject: this.questionObj,
+      flex: 2
+    });
 
-			if(this.questionObj.showAnswer){
-				this.gradients = [];
-				for ( var i = 0; i < this.questionObj.possibleAnswers.length; i++) {
-					var question = this.questionObj.possibleAnswers[i];
-
-					if ((question.data && !question.data.correct) || (!question.data && !question.correct)){
-						this.gradients.push(
-							Ext.create('Ext.draw.gradient.Linear', {
-								degrees: 90,
-								stops: [{ offset: 0,	color: 'rgb(212, 40, 40)' },
-								        { offset: 100,	color: 'rgb(117, 14, 14)' }
-								]
-							})
-						);
-					} else {
-						this.gradients.push(
-							Ext.create('Ext.draw.gradient.Linear', {
-								degrees: 90,
-								stops: [{ offset: 0,	color: 'rgb(43, 221, 115)'  },
-								        { offset: 100,	color: 'rgb(14, 117, 56)' }
-								]
-							})
-						);
-					}
-				}
-			} else {
-				this.gradients = [
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(22, 64, 128)'  },
-						        { offset: 100,	color: 'rgb(0, 14, 88)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(48, 128, 128)'  },
-						        { offset: 100,	color: 'rgb(8, 88, 88)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(128, 128, 25)'  },
-						        { offset: 100,	color: 'rgb(88, 88, 0)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(128, 28, 128)' },
-						        { offset: 100,	color: 'rgb(88, 0, 88)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(128, 21, 21)' },
-						        { offset: 100,	color: 'rgb(88, 0, 0)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(128, 64, 22)' },
-						        { offset: 100,	color: 'rgb(88, 24, 0)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(64, 0, 128)' },
-						        { offset: 100,	color: 'rgb(40, 2, 79)' }
-						]
-					}),
-					Ext.create('Ext.draw.gradient.Linear', {
-						degrees: 90,
-						stops: [{ offset: 0,	color: 'rgb(4, 88, 34)' },
-						        { offset: 100,	color: 'rgb(2, 62, 31)' }
-						]
-					})
-				];
-			}
-		} else {
-			this.gradients = [
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(22, 64, 128)' },
-					        { offset: 100,	color: 'rgb(0, 14, 88)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(48, 128, 128)' },
-					        { offset: 100,	color: 'rgb(8, 88, 88)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(128, 128, 25)' },
-					        { offset: 100,	color: 'rgb(88, 88, 0)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(128, 28, 128)' },
-					        { offset: 100,	color: 'rgb(88, 0, 88)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(128, 21, 21)' },
-					        { offset: 100,	color: 'rgb(88, 0, 0)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(128, 64, 22)' },
-					        { offset: 100,	color: 'rgb(88, 24, 0)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(64, 0, 128)' },
-					        { offset: 100,	color: 'rgb(40, 2, 79)' }
-					]
-				}),
-				Ext.create('Ext.draw.gradient.Linear', {
-					degrees: 90,
-					stops: [{ offset: 0,	color: 'rgb(4, 88, 34)' },
-					        { offset: 100,	color: 'rgb(2, 62, 31)' }
-					]
-				})
-			];
-		}
-
-		this.questionChart = Ext.create('Ext.chart.CartesianChart', {
-		    store: this.questionStore,
-		    hidden: this.questionObj.questionType === "grid",
-
-		    animate: {
-		        easing: 'bounceOut',
-		        duration: 1000
-		    },
-
-		    axes: [{
-		        type	: 'numeric',
-		        position: 'left',
-		        fields	: ['value'],
-		        minimum: 0,
-		        style: { stroke: 'white' },
-		        label: {
-		        	color: 'white'
-		        }
-		    }, {
-		        type	: 'category',
-		        position: 'bottom',
-		        fields	: ['text'],
-		        style: { stroke: 'white' },
-		        label: {
-		        	color: 'white',
-		        	rotate: { degrees: 315 }
-		        }
-		    }],
-
-		    series: [{
-		        type: 'bar',
-		        xField: 'text',
-		        yField: 'value',
-		        style: {
-		        	minGapWidth: 25,
-		        	maxBarWidth: 200
-		        },
-		        label: {
-		        	display	: 'insideEnd',
-		        	field	: 'percent',
-		        	color	: '#fff',
-		        	orientation: 'horizontal',
-		        	renderer: function(text) {
-		        		return text + " %";
-		        	}
-		        },
-		        renderer: function (sprite, config, rendererData, i) {
-		        	return { fill : me.gradients[i % me.gradients.length] };
-		        }
-		    }]
-		});
-
-
-		this.add([this.toolbar, this.titlebar, this.questionChart]);
+		this.add([this.titlebar, this.questionChart]);
 
 		if (this.questionObj.questionType === "grid") {
 			this.setStyle('background-color: #C5CCD3');
@@ -313,8 +133,8 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 
 		this.on('activate', this.onActivate);
     this.on('deactivate', function() {
-      taskManager.stop(this.renewChartDataTask);
-      taskManager.stop(this.countActiveUsersTask);
+      //taskManager.stop(this.renewChartDataTask);
+      //taskManager.stop(this.countActiveUsersTask);
     }, this);
 	},
 
@@ -403,18 +223,18 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 				}
 
 				// Calculate percentages
-				var totalResults = store.sum('value');
+				/*var totalResults = store.sum('value');
 				store.each(function(record) {
 					var percent = Math.round((record.get('value') / totalResults) * 100);
 					record.set('percent', percent);
 				});
-				chart.getAxes()[0].setMaximum(maxValue);
+				chart.getAxes()[0].setMaximum(maxValue);*/
 
 				// renew the chart-data
 				chart.redraw();
 
 				//update quote in toolbar
-        me.toolbar.setFirstCounterElement(sum);
+        //me.toolbar.setFirstCounterElement(sum);
 			},
 			failure: function() {
 				console.log('server-side error');
@@ -425,8 +245,8 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 	onActivate: function() {
     this.renewChartDataTask.run = Ext.bind(this.renewChartDataTask.run, this);
     this.countActiveUsersTask.run = Ext.bind(this.countActiveUsersTask.run, this);
-		taskManager.start(this.renewChartDataTask);
-		taskManager.start(this.countActiveUsersTask);
+		//taskManager.start(this.renewChartDataTask);
+		//taskManager.start(this.countActiveUsersTask);
 		this.doTypeset();
 	},
 
@@ -451,7 +271,7 @@ Ext.define('ARSnova.view.speaker.QuestionStatisticChart', {
 		ARSnova.app.loggedInModel.countActiveUsersBySession(localStorage.getItem("keyword"), {
 			success: function(response){
 				var value = parseInt(response.responseText);
-        me.toolbar.setSecondCounterElement(value);
+        //me.toolbar.setSecondCounterElement(value);
 			},
 			failure: function(){
 				console.log('server-side error');

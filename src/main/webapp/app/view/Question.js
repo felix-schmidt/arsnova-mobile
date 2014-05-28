@@ -66,8 +66,6 @@ Ext.define('ARSnova.view.Question', {
         var speakerPanel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
         var userPanel = ARSnova.app.mainTabPanel.tabPanel.userQuestionsPanel;
         if (speakerPanel) {
-          speakerPanel.statisticsCarousel.setActivePanelIndex(index);
-          navigationView.push(speakerPanel.statisticsCarousel);
         } else if (userPanel) {
           userPanel.questionStatisticsChart = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
             question: self.questionObj,

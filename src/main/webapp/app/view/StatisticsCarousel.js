@@ -19,9 +19,8 @@ Ext.define('ARSnova.view.StatisticsCarousel', {
 	extend: 'Ext.Carousel',
 
 	config: {
-		activePanelIndex: 0,
-
-		controller: null
+		activeItemIndex: 0,
+		questions: []
 	},
 
 	constructor: function() {
@@ -45,27 +44,15 @@ Ext.define('ARSnova.view.StatisticsCarousel', {
 	},
 
 	addStatistics: function(question) {
-		var me = this;
 		var statisticsPanel;
-		var handler = function(panel) {
-			// When leaving the statistics view, make sure we end up on the same question that the stats had shown.
-			var tabpanel = panel.getActiveItem();
-			if (tabpanel.showcaseQuestionPanel) {
-				tabpanel.showcaseQuestionPanel.setActiveItem(me.getActiveIndex());
-			}
-		};
 
 		if (question.questionType !== 'freetext') {
 			statisticsPanel = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
-				question: question,
-				lastPanel: this,
-				backButtonHandler: handler
+				question: question
 			});
 		} else {
 			statisticsPanel = Ext.create('ARSnova.view.FreetextAnswerPanel', {
-				question: question,
-				lastPanel: this,
-				backButtonHandler: handler
+				question: question
 			});
 		}
 		this.add(statisticsPanel);
@@ -89,15 +76,9 @@ Ext.define('ARSnova.view.StatisticsCarousel', {
 	},
 
 	getAllSkillQuestions: function() {
-		var me = this;
-		this.getController().getQuestions(localStorage.getItem("keyword"), {
-			success: function(response) {
-				var questions = Ext.decode(response.responseText);
-				questions.forEach(function(q) {
-					me.addStatistics(q);
-				});
-				me.setActiveItem(me.getActivePanelIndex());
-			}
-		});
+		this.getQuestions().forEach(function(q) {
+			this.addStatistics(q);
+		}, this);
+		this.setActiveItem(this.getActiveItemIndex());
 	}
 });

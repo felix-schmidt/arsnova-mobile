@@ -20,8 +20,7 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 
 	requires: [
     'ARSnova.view.Question',
-	  'ARSnova.view.speaker.QuestionStatisticChart',
-    'ARSnova.view.components.QuestionToolbar'
+	  'ARSnova.view.StatisticsCarousel'
 	],
 
 	config: {
@@ -30,45 +29,31 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 		iconCls	: 'tabBarIconQuestion',
 
 		controller: null,
-    dynamicToolbar: true,
-    numElements: 0
+    numElements: 0,
+    navigationView: null,
+    questions: []
 	},
 
-	initialize: function() {
+	constructor: function() {
 		this.callParent(arguments);
 
-		this.on('activeitemchange', function(panel, newCard, oldCard) {
+    this.statisticsCarousel = Ext.create('ARSnova.view.StatisticsCarousel');
 
-		}, this);
-
-		this.toolbar = Ext.create('ARSnova.view.components.QuestionToolbar', {
-      backButtonHandler: function(animation) {
-        var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
-        sTP.animateActiveItem(sTP.audienceQuestionPanel, animation);
-      },
-      statisticsButtonHandler: function() {
-        var sTP = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel;
-        sTP.questionStatisticChart = Ext.create('ARSnova.view.speaker.QuestionStatisticChart', {
-          question: ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel._activeItem._activeItem.questionObj,
-          lastPanel: this
-        });
-        ARSnova.app.mainTabPanel.animateActiveItem(sTP.questionStatisticChart, 'slide');
-      }
-    });
-
-		//this.add([this.toolbar]);
-
-		this.on('activate', this.beforeActivate, this, null, 'before');
-		this.on('activate', this.onActivate);
-		this.on('add', function(panel, component, index) {
-			component.doTypeset && component.doTypeset(panel);
-		});
+    this.on('navigationview', function(nav) {
+      this.setNavigationView(nav);
+      nav.on('statistics', function() {
+        this.statisticsCarousel.setQuestions(this.getQuestions());
+        this.statisticsCarousel.setActiveItemIndex(this.getActiveIndex());
+        nav.push(this.statisticsCarousel);
+      }, this);
+    }, this);
+		this.onBefore('activate', this.beforeActivate, this);
+		this.on('activate', this.onActivate, this);
 	},
 
 	beforeActivate: function(){
 		this.removeAll();
 		this._indicator.show();
-		this.toolbar.setTitle(Messages.QUESTION);
 	},
 
 	onActivate: function(){
@@ -77,33 +62,25 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 
 	getAllSkillQuestions: function() {
 		var hideIndicator = ARSnova.app.showLoadMask(Messages.LOAD_MASK_SEARCH_QUESTIONS);
+    var panel = this;
 
 		this.getController().getQuestions(localStorage.getItem("keyword"), {
 			success: function(response) {
 				var questions = Ext.decode(response.responseText);
-				var panel = ARSnova.app.mainTabPanel.tabPanel.speakerTabPanel.showcaseQuestionPanel;
-
+        panel.setQuestions(questions);
+        questions.forEach(function(q) {
+          panel.addQuestion(q);
+        });
 				panel.setNumElements(questions.length);
 
 				if (questions.length == 1){
 					panel._indicator.hide();
 				}
 
-				var questionsArr = [];
-				var questionIds = [];
-				questions.forEach(function(question){
-					questionsArr[question._id] = question;
-					questionIds.push(question._id);
-				});
-				questionIds.forEach(function(questionId){
-					panel.addQuestion(questionsArr[questionId]);
-				});
-
 				// bugfix (workaround): after removing all items from carousel the active index
 				// is set to -1. To fix that you have manually  set the activeItem on the first
 				// question.
 				panel.setActiveItem(0);
-				panel.checkFirstQuestion();
 				hideIndicator();
 			},
 			failure: function(response) {
@@ -127,11 +104,5 @@ Ext.define('ARSnova.view.speaker.ShowcaseQuestionPanel', {
 			});
 		}
     this.add(question);
-	},
-
-	checkFirstQuestion: function() {
-		var firstQuestionView = this.items.items[0];
-
-		firstQuestionView.fireEvent('preparestatisticsbutton', this.toolbar.statisticsButton);
 	}
 });

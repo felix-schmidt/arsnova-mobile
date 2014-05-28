@@ -4,9 +4,11 @@ Ext.define("ARSnova.view.NavigationView", {
 	require: ['ARSnova.view.components.QuestionToolbar'],
 
 	config: {
+		autoDestroy: false,
 		navigationBar: {
 			ui: 'light'
 		},
+		iconCls	: 'tabBarIconHome',
 
 		root: null
 	},
@@ -25,10 +27,13 @@ Ext.define("ARSnova.view.NavigationView", {
 		this.on('push', function(self, view) {
 			// Allow dynamic change of navigation bar elements
 			view.on('activeitemchange', this.updateNavbar, this);
+			view.fireEvent('navigationview', this);
+		}, this);
+		this.questionToolbar.statisticsButton.on('tap', function() {
+			this.fireEvent('statistics');
 		}, this);
 
 		this.getNavigationBar().add([
-			{ xtype: 'spacer' },
 			this.questionToolbar.questionCounter,
 			this.questionToolbar.statisticsButton
 		]);
